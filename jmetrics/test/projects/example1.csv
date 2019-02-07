@@ -1,0 +1,6 @@
+Category,       Ca,     Ce,     A,      I,      Dn
+Vehicle,        2,      1,      0.33,   0.33,   0.33
+Material,       1,      0,      0,      0,      1
+Airplane,       0,      1,      0,      1,      0
+Car,            0,      1,      0,      1,      0
+Wheel,          1,      1,      0,      0.5,    0.5
