@@ -1,10 +1,16 @@
 package fr.ubordeaux.jmetrics.metrics.components;
 
-public class NormalizedDistance implements MetricsComponent {
+public class NormalizedDistance extends AbstractMetricsComponent {
 
-    @Override
-    public double getValue() {
-        return 0;
+    public NormalizedDistance(double value) {
+        super(value);
     }
 
+    @Override
+    protected boolean isValid(double value) {
+        if(value >= 0 && value <= 1){
+            return true;
+        }
+        return false;
+    }
 }

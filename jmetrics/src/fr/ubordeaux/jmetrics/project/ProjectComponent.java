@@ -7,4 +7,9 @@ public abstract class ProjectComponent {
 
     private String name;
 
+    public ProjectComponent(String name) {
+        this.name = name;
+    }
+
+
 }
