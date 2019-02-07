@@ -31,7 +31,7 @@ public class FileSystemExplorer {
                 getFileFrom(f);
             }
             if (f.isFile() && validClassName(f.getName())) {
-                new ClassFile(currentPath + "/"+ f.getName().substring(0, f.getName().lastIndexOf(".")));
+                new ClassFile(currentPath + "/"+ f.getName().substring(0, f.getName().lastIndexOf(".")), f);
                 //System.out.println("Class : " + currentPath + "/"+ f.getName().substring(0, f.getName().lastIndexOf(".")));
             }
         }
