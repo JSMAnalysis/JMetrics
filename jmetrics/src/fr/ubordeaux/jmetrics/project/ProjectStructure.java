@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class ProjectStructure {
 
-    ProjectComponent structure;
+    private ProjectComponent structure;
 
     private static ProjectStructure ourInstance = new ProjectStructure();
 
@@ -15,7 +15,13 @@ public class ProjectStructure {
         return ourInstance;
     }
 
-    private ProjectStructure() { }
+    private ProjectStructure() {
+
+    }
+
+    public void setStructure(ProjectComponent component){
+
+    }
 
     public ClassFile getClass(String name) {
         return null;
@@ -25,8 +31,12 @@ public class ProjectStructure {
         return null;
     }
 
-    public List<ClassFile> getClasses() { return null; }
+    public List<ClassFile> getClasses() {
+        return null;
+    }
 
-    public List<PackageDirectory> getPackages() { return null; }
+    public List<PackageDirectory> getPackages() {
+        return null;
+    }
 
 }
