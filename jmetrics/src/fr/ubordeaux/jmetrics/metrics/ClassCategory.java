@@ -6,6 +6,6 @@ import java.util.Set;
 
 public abstract class ClassCategory {
 
-    private Set<MetricsComponent> smetricsSet;
+    private Set<MetricsComponent> metricsSet;
 
 }
