@@ -11,5 +11,7 @@ public abstract class ProjectComponent {
         this.name = name;
     }
 
-
+    public String getName() {
+        return name;
+    }
 }

@@ -29,6 +29,4 @@ public class ClassFile extends ProjectComponent {
         }
     }
 
-    // Input of analysis method : Stream ?
-
 }
