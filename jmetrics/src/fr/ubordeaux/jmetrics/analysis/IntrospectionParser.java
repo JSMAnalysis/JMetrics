@@ -3,14 +3,17 @@ package fr.ubordeaux.jmetrics.analysis;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public abstract class IntrospectionParser {
 
     public Class getClassFromFile(ClassFile file){
         byte[] byteCode;
         try {
-            byteCode = new byte[file.getInputStream().available()];
+            InputStream stream = file.getInputStream();
+            byteCode = new byte[stream.available()];
             file.getInputStream().read(byteCode);
+            stream.close();
         }
         catch (IOException e){
             throw new ClassFileNotFoundException("The file associated with the class "

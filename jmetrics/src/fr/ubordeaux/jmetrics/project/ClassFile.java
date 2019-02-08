@@ -20,6 +20,11 @@ public class ClassFile extends ProjectComponent {
         return file.getPath();
     }
 
+    /**
+     * Open a stream on the file property.
+     * Note that the caller is responsible for closing the stream.
+     * @return Stream that point to the file.
+     */
     public InputStream getInputStream(){
         try {
             return new FileInputStream(file);
