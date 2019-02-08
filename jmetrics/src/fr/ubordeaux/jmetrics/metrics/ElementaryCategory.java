@@ -4,6 +4,9 @@ import fr.ubordeaux.jmetrics.project.ClassFile;
 
 public class ElementaryCategory extends ClassCategory {
 
-    private ClassFile category;
+    public ElementaryCategory(ClassFile file) {
+        this.category = file;
+        this.name = file.getName();
+    }
 
 }
