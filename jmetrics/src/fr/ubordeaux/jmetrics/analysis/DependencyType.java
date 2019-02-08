@@ -4,6 +4,5 @@ public enum DependencyType {
     Inheritance,
     Aggregation,
     Signature,
-    Internal,
-    Genericity
+    Internal
 }
