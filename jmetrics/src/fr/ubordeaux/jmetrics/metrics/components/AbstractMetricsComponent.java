@@ -19,4 +19,18 @@ public abstract class AbstractMetricsComponent implements MetricsComponent{
     public double getValue(){
         return value;
     }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof AbstractMetricsComponent)){
+            return false;
+        }
+        AbstractMetricsComponent other = (AbstractMetricsComponent) obj;
+        return other.value == value;
+    }
 }
