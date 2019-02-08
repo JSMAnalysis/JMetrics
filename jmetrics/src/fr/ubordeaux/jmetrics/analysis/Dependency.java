@@ -1,5 +1,6 @@
 package fr.ubordeaux.jmetrics.analysis;
 
+import fr.ubordeaux.jmetrics.metrics.ClassCategory;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 
 /**
@@ -7,21 +8,21 @@ import fr.ubordeaux.jmetrics.project.ClassFile;
  */
 public class Dependency {
 
-    private ClassFile source;
-    private ClassFile destination;
+    private ClassCategory source;
+    private ClassCategory destination;
     private DependencyType type;
 
-    public Dependency(ClassFile source, ClassFile destination, DependencyType type) {
+    public Dependency(ClassCategory source, ClassCategory destination, DependencyType type) {
         this.source = source;
         this.destination = destination;
         this.type = type;
     }
 
-    public ClassFile getSource() {
+    public ClassCategory getSource() {
         return source;
     }
 
-    public ClassFile getDestination() {
+    public ClassCategory getDestination() {
         return destination;
     }
 
