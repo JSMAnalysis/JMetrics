@@ -9,14 +9,9 @@ import java.io.InputStream;
  * Represent .class File (containing ByteCode).
  */
 public class ClassFile extends ProjectComponent {
-    private File file;
 
     public ClassFile(File file){
         super(file);
-    }
-
-    public String getPath(){
-        return file.getPath();
     }
 
     /**

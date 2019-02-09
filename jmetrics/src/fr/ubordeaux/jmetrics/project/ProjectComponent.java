@@ -7,9 +7,9 @@ import java.io.File;
  */
 public abstract class ProjectComponent {
 
-    private String name;
-    private File file;
-    private String path;
+    protected String name;
+    protected File file;
+    protected String path;
 
     public ProjectComponent(File file) {
         this.file = file;
@@ -25,6 +25,8 @@ public abstract class ProjectComponent {
         return file;
     }
 
-
+    public String getPath() {
+        return path;
+    }
 
 }

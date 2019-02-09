@@ -80,7 +80,6 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
      * A getter to obtain all the nodes contained in the graph.
      * @return A copy of the {@link Set} of nodes contained in the graph.
      */
-    //TODO Définir si on renvoie une copie pour l'encapsulation ou si on renvoie le Set d'origine pour améliorer les performances
     public Set<N> getNodeSet(){
         return new HashSet<>(adjacencyList.keySet());
     }

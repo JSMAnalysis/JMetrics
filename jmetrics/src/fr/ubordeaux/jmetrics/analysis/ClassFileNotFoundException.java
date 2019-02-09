@@ -5,4 +5,5 @@ public class ClassFileNotFoundException extends RuntimeException {
     public ClassFileNotFoundException(String message) {
         super(message);
     }
+
 }

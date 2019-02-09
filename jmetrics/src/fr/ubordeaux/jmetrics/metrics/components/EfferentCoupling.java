@@ -1,6 +1,6 @@
 package fr.ubordeaux.jmetrics.metrics.components;
 
-public class EfferentCoupling extends AbstractMetricsComponent {
+public class EfferentCoupling extends MetricsComponent {
 
     public EfferentCoupling(double value) {
         super(value);
@@ -8,9 +8,7 @@ public class EfferentCoupling extends AbstractMetricsComponent {
 
     @Override
     protected boolean isValid(double value) {
-        if(value >= 0 && value == Math.floor(value) ){
-            return true;
-        }
-        return false;
+        return value >= 0 && value == Math.floor(value);
     }
+
 }

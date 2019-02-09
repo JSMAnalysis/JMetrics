@@ -1,13 +1,11 @@
 package project;
 
 import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
-import fr.ubordeaux.jmetrics.project.PackageDirectory;
 import fr.ubordeaux.jmetrics.project.ProjectComponent;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -15,7 +13,7 @@ import static org.junit.Assert.*;
 public class FileSystemExplorerTest {
     FileSystemExplorer f;
     File file;
-    public final static String pathName = "out/test/jmetrics/projects";
+    public final static String pathName = "out/test/jmetrics/ground_truth";
 
     @Before
     public void setUp() throws Exception {
@@ -54,11 +52,11 @@ public class FileSystemExplorerTest {
     @Test
     public void testCountOfFile() {
         int i = 0;
-        List<ProjectComponent> liste = f.getRecursiveStructure(file);
-        for (ProjectComponent ignored : liste) {
+        List<ProjectComponent> list = f.getRecursiveStructure(file);
+        for (ProjectComponent ignored : list) {
             i++;
         }
-        assertEquals(i,liste.size());
+        assertEquals(i, list.size());
     }
 
 }

@@ -1,4 +1,4 @@
-package projects.example1;
+package ground_truth.example1;
 
 public class Car extends Vehicle {
 

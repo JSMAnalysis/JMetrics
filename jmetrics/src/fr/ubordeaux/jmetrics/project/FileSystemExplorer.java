@@ -8,17 +8,17 @@ import java.util.List;
  * Service that traverses directories to generate Project Structure.
  */
 public class FileSystemExplorer {
+
     private final static String CLASS_EXTENSION = ".class";
-    private final static String JAVA_EXTENSION = ".java";
 
     public ProjectComponent generateStructure(String path) {
         if (!isValidPath(path)) {
-            throw new IllegalArgumentException("Path not valid !");
+            throw new IllegalArgumentException("Path not valid");
         }
         PackageDirectory project = new PackageDirectory(new File(path));
         project.setContent(getRecursiveStructure(new File(path)));
         if (!isValidJavaProject(project)) {
-            throw new WrongProjectFormatException("Not a Java Project");
+            throw new BadProjectFormatException("Not a Compiled Java Project");
         }
         return project;
     }
@@ -40,27 +40,18 @@ public class FileSystemExplorer {
     }
 
     /**
-     *
-     * @param name A filename.
-     * @return True if the filename starts with a dot, False otherwise.
+     * Verify that a filename correspond to a class file.
+     * @param filename The filename to verify.
+     * @return true if the filename is a class file, false otherwise.
      */
-    private boolean validPackageName(String name) {
-        return !name.startsWith(".");
+    private boolean isClassFile(String filename) {
+        return filename.endsWith(CLASS_EXTENSION);
     }
 
     /**
-     *
-     * @param name A filename.
-     * @return True if the filename ends with the .class extension, False otherwise.
-     */
-    private boolean isClassFile(String name) {
-        return name.endsWith(CLASS_EXTENSION);
-    }
-
-    /**
-     *
-     * @param path Path of a file.
-     * @return true if the path is valid (lead to a file) and if that is a directory (package), False otherwise.
+     * Verify that a given path exists and correspond to a directory.
+     * @param path The Path of to verify.
+     * @return true if the path exists and leads to a directory, false otherwise.
      */
     private boolean isValidPath(String path) {
         File file = new File(path);
@@ -68,11 +59,8 @@ public class FileSystemExplorer {
     }
 
     private boolean isValidJavaProject(PackageDirectory project) {
-        List<ProjectComponent> content = project.getContent();
-        for (ProjectComponent component : content) {
-            if (!(component.getName().endsWith(CLASS_EXTENSION) || component.getName().endsWith(JAVA_EXTENSION)))
-                return false;
-        }
+        // TODO: Check that there is at least 2 class file in the project.
         return true;
     }
+
 }

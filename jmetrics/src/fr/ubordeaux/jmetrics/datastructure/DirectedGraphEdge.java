@@ -6,6 +6,7 @@ import java.util.Objects;
  * Defines the base data structure used to store information about a directed graph's edge.
  */
 public class DirectedGraphEdge<N> {
+
     private N source;
     private N target;
 
@@ -33,7 +34,7 @@ public class DirectedGraphEdge<N> {
             return false;
         }
         DirectedGraphEdge other = (DirectedGraphEdge) obj;
-        return this.source.equals(other.source)
-                && this.target.equals(other.target);
+        return this.source.equals(other.source) && this.target.equals(other.target);
     }
+
 }
