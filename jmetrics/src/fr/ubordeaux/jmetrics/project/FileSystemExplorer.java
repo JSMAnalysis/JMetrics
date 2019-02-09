@@ -1,46 +1,42 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Service that traverses directories to generate Project Structure.
  */
 public class FileSystemExplorer {
-    public final static String CLASS_EXTENSION = ".class";
+    private final static String CLASS_EXTENSION = ".class";
+    private final static String JAVA_EXTENSION = ".java";
 
-
-    public void generateStructure(String path) {
-        File file = new File(path);
-        getFileFrom(file);
+    public ProjectComponent generateStructure(String path) {
+        if (!isValidPath(path)) {
+            throw new IllegalArgumentException("Path not valid !");
+        }
+        PackageDirectory project = new PackageDirectory(new File(path));
+        project.setContent(getRecursiveStructure(new File(path)));
+        if (!isValidJavaProject(project)) {
+            throw new WrongProjectFormatException("Not a Java Project");
+        }
+        return project;
     }
 
-    /**
-     * Retrieve name of all the packages and classes based on the path
-     * @param path Relative Path of the file
-     */
-    private void getFileFrom(File path) {
-        if (! isValidPath(path.getPath())) {
-            throw new IllegalArgumentException("Path not valid !!");
-        }
-
-        String currentPath = path.getAbsoluteFile().getPath();
-        if (validPackageName(currentPath)) {
-            currentPath = path.getPath() + "";
-        }
-        File[] files = path.listFiles();
-        assert files != null;
-        for (File f: files) {
-            if (f.isDirectory() && validPackageName(f.getName())) {
-                System.out.println("Package : "  + f.getName() ); // DEBUG
-                new PackageDirectory(f.getName());
-                getFileFrom(f);
-            }
-            if (f.isFile() && validClassName(f.getName())) {
-                String fileName = f.getName().substring(0, f.getName().lastIndexOf("."));
-                new ClassFile(currentPath + "/"+ fileName, f);
-                System.out.println("Class : " + currentPath + "/"+ fileName); // DEBUG
+    public List<ProjectComponent> getRecursiveStructure(File node) {
+        List<ProjectComponent> components = new ArrayList<>();
+        File[] files = node.listFiles();
+        if (files == null) return components;
+        for (File file: files) {
+            if (file.isFile() && isClassFile(file.getName())) {
+                ClassFile c = new ClassFile(file);
+                components.add(c);
+            } else if (file.isDirectory()) {
+                PackageDirectory p = new PackageDirectory(file);
+                p.setContent(getRecursiveStructure(file));
             }
         }
+        return components;
     }
 
     /**
@@ -57,7 +53,7 @@ public class FileSystemExplorer {
      * @param name A filename.
      * @return True if the filename ends with the .class extension, False otherwise.
      */
-    private boolean validClassName(String name) {
+    private boolean isClassFile(String name) {
         return name.endsWith(CLASS_EXTENSION);
     }
 
@@ -71,4 +67,12 @@ public class FileSystemExplorer {
         return file.exists() && file.isDirectory();
     }
 
+    private boolean isValidJavaProject(PackageDirectory project) {
+        List<ProjectComponent> content = project.getContent();
+        for (ProjectComponent component : content) {
+            if (!(component.getName().endsWith(CLASS_EXTENSION) || component.getName().endsWith(JAVA_EXTENSION)))
+                return false;
+        }
+        return true;
+    }
 }

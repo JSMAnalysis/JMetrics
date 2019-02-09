@@ -11,9 +11,8 @@ import java.io.InputStream;
 public class ClassFile extends ProjectComponent {
     private File file;
 
-    public ClassFile(String name, File file){
-        super(name);
-        this.file = file;
+    public ClassFile(File file){
+        super(file);
     }
 
     public String getPath(){
