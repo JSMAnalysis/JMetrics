@@ -3,8 +3,6 @@ package fr.ubordeaux.jmetrics.datastructure;
 import fr.ubordeaux.jmetrics.analysis.Dependency;
 import fr.ubordeaux.jmetrics.metrics.ClassCategory;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**

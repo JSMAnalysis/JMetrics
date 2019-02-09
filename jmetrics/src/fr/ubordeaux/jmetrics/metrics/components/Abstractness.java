@@ -1,8 +1,6 @@
 package fr.ubordeaux.jmetrics.metrics.components;
 
-// corresponds to the metric A in Martin's
-public class Abstractness extends AbstractMetricsComponent {
-
+public class Abstractness extends MetricsComponent {
 
     public Abstractness(double value) {
         super(value);
@@ -10,9 +8,7 @@ public class Abstractness extends AbstractMetricsComponent {
 
     @Override
     protected boolean isValid(double value) {
-        if(value >= 0 && value <= 1){
-            return true;
-        }
-        return false;
+        return value >= 0 && value <= 1;
     }
+
 }

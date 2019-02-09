@@ -1,74 +1,66 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Service that traverses directories to generate Project Structure.
  */
 public class FileSystemExplorer {
-    public final static String CLASS_EXTENSION = ".class";
 
+    private final static String CLASS_EXTENSION = ".class";
 
-    public void generateStructure(String path) {
-        File file = new File(path);
-        getFileFrom(file);
+    public ProjectComponent generateStructure(String path) {
+        if (!isValidPath(path)) {
+            throw new IllegalArgumentException("Path not valid");
+        }
+        PackageDirectory project = new PackageDirectory(new File(path));
+        project.setContent(getRecursiveStructure(new File(path)));
+        if (!isValidJavaProject(project)) {
+            throw new BadProjectFormatException("Not a Compiled Java Project");
+        }
+        return project;
     }
 
-    /**
-     * Retrieve name of all the packages and classes based on the path
-     * @param path Relative Path of the file
-     */
-    private void getFileFrom(File path) {
-        if (! isValidPath(path.getPath())) {
-            throw new IllegalArgumentException("Path not valid !!");
-        }
-
-        String currentPath = path.getAbsoluteFile().getPath();
-        if (validPackageName(currentPath)) {
-            currentPath = path.getPath() + "";
-        }
-        File[] files = path.listFiles();
-        assert files != null;
-        for (File f: files) {
-            if (f.isDirectory() && validPackageName(f.getName())) {
-                System.out.println("Package : "  + f.getName() ); // DEBUG
-                new PackageDirectory(f.getName());
-                getFileFrom(f);
-            }
-            if (f.isFile() && validClassName(f.getName())) {
-                String fileName = f.getName().substring(0, f.getName().lastIndexOf("."));
-                new ClassFile(currentPath + "/"+ fileName, f);
-                System.out.println("Class : " + currentPath + "/"+ fileName); // DEBUG
+    public List<ProjectComponent> getRecursiveStructure(File node) {
+        List<ProjectComponent> components = new ArrayList<>();
+        File[] files = node.listFiles();
+        if (files == null) return components;
+        for (File file: files) {
+            if (file.isFile() && isClassFile(file.getName())) {
+                ClassFile c = new ClassFile(file);
+                components.add(c);
+            } else if (file.isDirectory()) {
+                PackageDirectory p = new PackageDirectory(file);
+                p.setContent(getRecursiveStructure(file));
             }
         }
+        return components;
     }
 
     /**
-     *
-     * @param name A filename.
-     * @return True if the filename starts with a dot, False otherwise.
+     * Verify that a filename correspond to a class file.
+     * @param filename The filename to verify.
+     * @return true if the filename is a class file, false otherwise.
      */
-    private boolean validPackageName(String name) {
-        return !name.startsWith(".");
+    private boolean isClassFile(String filename) {
+        return filename.endsWith(CLASS_EXTENSION);
     }
 
     /**
-     *
-     * @param name A filename.
-     * @return True if the filename ends with the .class extension, False otherwise.
-     */
-    private boolean validClassName(String name) {
-        return name.endsWith(CLASS_EXTENSION);
-    }
-
-    /**
-     *
-     * @param path Path of a file.
-     * @return true if the path is valid (lead to a file) and if that is a directory (package), False otherwise.
+     * Verify that a given path exists and correspond to a directory.
+     * @param path The Path of to verify.
+     * @return true if the path exists and leads to a directory, false otherwise.
      */
     private boolean isValidPath(String path) {
         File file = new File(path);
         return file.exists() && file.isDirectory();
+    }
+
+    private boolean isValidJavaProject(PackageDirectory project) {
+        // TODO: Check that there is at least 2 class file in the project.
+        return true;
     }
 
 }

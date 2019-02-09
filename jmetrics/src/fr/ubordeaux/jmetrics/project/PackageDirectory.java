@@ -1,5 +1,6 @@
 package fr.ubordeaux.jmetrics.project;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class PackageDirectory extends ProjectComponent {
 
     private List<ProjectComponent> content;
 
-    public PackageDirectory(String name) {
-        super(name);
+    public PackageDirectory(File file) {
+        super(file);
     }
 
     public List<ProjectComponent> getContent() {

@@ -14,8 +14,7 @@ public abstract class IntrospectionParser {
             byteCode = new byte[stream.available()];
             file.getInputStream().read(byteCode);
             stream.close();
-        }
-        catch (IOException e){
+        } catch (IOException e){
             throw new ClassFileNotFoundException("The file associated with the class "
                     + file.getName()
                     + " does not seem to exist or is temporarily unavailable.");

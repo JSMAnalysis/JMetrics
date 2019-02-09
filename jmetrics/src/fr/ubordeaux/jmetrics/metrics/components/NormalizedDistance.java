@@ -1,6 +1,6 @@
 package fr.ubordeaux.jmetrics.metrics.components;
 
-public class NormalizedDistance extends AbstractMetricsComponent {
+public class NormalizedDistance extends MetricsComponent {
 
     public NormalizedDistance(double value) {
         super(value);
@@ -8,9 +8,7 @@ public class NormalizedDistance extends AbstractMetricsComponent {
 
     @Override
     protected boolean isValid(double value) {
-        if(value >= 0 && value <= 1){
-            return true;
-        }
-        return false;
+        return value >= 0 && value <= 1;
     }
+
 }

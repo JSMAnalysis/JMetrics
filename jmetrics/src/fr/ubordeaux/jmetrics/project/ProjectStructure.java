@@ -56,7 +56,7 @@ public class ProjectStructure {
     }
 
     /**
-     * Not yet implemented.
+     * TODO: Not yet implemented.
      * @return List of package directory that compose the project.
      */
     public List<PackageDirectory> getPackages() {
