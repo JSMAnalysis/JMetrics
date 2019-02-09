@@ -16,14 +16,14 @@ public class FileSystemExplorerTest {
 
   @Test
   public void testImportFileFromPathWithCorrectPath() {
-    f.generateStructure("out/test/jmetrics/projects");
+    f.generateStructure("out/test/projects");
     assertTrue(true);
   }
 
   @Test
   public void testImportFileFromPathWithInvalidPath() {
     try {
-      f.generateStructure("out/test/jmetrics/toto");
+      f.generateStructure("out/test/toto");
       assertTrue(false);
     } catch (Exception e) {
       assertTrue(true);

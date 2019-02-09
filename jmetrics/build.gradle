@@ -1,0 +1,37 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+defaultTasks 'compileJava', 'compileTestJava'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies{
+    testImplementation 'junit:junit:4.12'
+}
+
+project.libsDirName = '../out/jar'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        java.outputDir = file('out/bin')
+    }
+    test{
+        java{
+            srcDirs = ['test']
+        }
+        java.outputDir = file('out/test')
+    }
+}
+
+application {
+    mainClassName = 'fr.ubordeaux.jmetrics.Main'
+}
+
+run{
+    standardInput = System.in
+}
