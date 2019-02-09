@@ -5,8 +5,8 @@ import java.util.*;
 /**
  * Defines a directed graph data structures with usual primitives.
  */
-public class DirectedGraph {
-    private Map<DirectedGraphNode, List<DirectedGraphEdge>> adjacencyList;
+public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
+    private Map<N, List<E>> adjacencyList;
 
     public DirectedGraph() {
         adjacencyList = new HashMap<>();
@@ -16,7 +16,7 @@ public class DirectedGraph {
      * Adds a node to the graph if it does not already exist.
      * @param node The node to add.
      */
-    public void addNode(DirectedGraphNode node){
+    public void addNode(N node){
         this.adjacencyList.putIfAbsent(node, new ArrayList<>());
     }
 
@@ -25,14 +25,14 @@ public class DirectedGraph {
      * function has no effect.
      * @param node The node to remove.
      */
-    public void removeNode(DirectedGraphNode node){
+    public void removeNode(N node){
         if(!hasNode(node)){
             return;
         }
         //removes all edges which the node is targeted by
-        for(List<DirectedGraphEdge> edges : adjacencyList.values()){
-            List<DirectedGraphEdge> edgesToRemove = new ArrayList<>();
-            for(DirectedGraphEdge edge : edges){
+        for(List<E> edges : adjacencyList.values()){
+            List<E> edgesToRemove = new ArrayList<>();
+            for(E edge : edges){
                 if(edge.getTarget().equals(node)){
                     edgesToRemove.add(edge);
                 }
@@ -48,7 +48,7 @@ public class DirectedGraph {
      * @param edge The edge to add.
      * @throws NodeNotFoundException if either the destination or the source of the edge is not part of the graph.
      */
-    public void addEdge(DirectedGraphEdge edge){
+    public void addEdge(E edge){
         if(!hasNode(edge.getSource()) || !hasNode(edge.getTarget())){
             throw new NodeNotFoundException("The edge contains nodes that are not part of the graph");
         }
@@ -60,7 +60,7 @@ public class DirectedGraph {
      * @param edge The edge to remove.
      * @throws NodeNotFoundException if either the destination or the source of the edge is not part of the graph.
      */
-    public void removeEdge(DirectedGraphEdge edge){
+    public void removeEdge(E edge){
         if(!hasNode(edge.getSource()) || !hasNode(edge.getTarget())){
             throw new NodeNotFoundException("The edge contains nodes that are not part of the graph");
         }
@@ -72,7 +72,7 @@ public class DirectedGraph {
      * @param node The node to test the existence of.
      * @return true if the node exists, false otherwise.
      */
-    public boolean hasNode(DirectedGraphNode node){
+    public boolean hasNode(N node){
         return adjacencyList.containsKey(node);
     }
 
@@ -81,7 +81,7 @@ public class DirectedGraph {
      * @return A copy of the {@link Set} of nodes contained in the graph.
      */
     //TODO Définir si on renvoie une copie pour l'encapsulation ou si on renvoie le Set d'origine pour améliorer les performances
-    public Set<DirectedGraphNode> getNodeSet(){
+    public Set<N> getNodeSet(){
         return new HashSet<>(adjacencyList.keySet());
     }
 
@@ -90,8 +90,8 @@ public class DirectedGraph {
      * @param source The node that is the source of the edges.
      * @return A {@link List} containing all the edges coming from the provided node.
      */
-    public List<DirectedGraphEdge> getOutcomingEdgeList(DirectedGraphNode source){
-        List<DirectedGraphEdge> edges = adjacencyList.get(source);
+    public List<E> getOutcomingEdgeList(N source){
+        List<E> edges = adjacencyList.get(source);
         if(hasNode(source)){
             return new ArrayList<>(adjacencyList.get(source));
         }
@@ -105,12 +105,12 @@ public class DirectedGraph {
      * @return A {@link List} containing all the edges coming from the provided source to the provided destination.
      * @throws NodeNotFoundException if either the destination or the source is not part of the graph.
      */
-    public List<DirectedGraphEdge> getIncomingEdgesList(DirectedGraphNode destination, DirectedGraphNode source){
-        List<DirectedGraphEdge> incomingEdges = new ArrayList<>();
+    public List<E> getIncomingEdgesList(N destination, N source){
+        List<E> incomingEdges = new ArrayList<>();
         if(!hasNode(destination) || !hasNode(source)){
             throw new NodeNotFoundException("Either the destination or source node does not exist.");
         }
-        for(DirectedGraphEdge edge : adjacencyList.get(source)){
+        for(E edge : adjacencyList.get(source)){
             if(edge.getTarget().equals(destination)){
                 incomingEdges.add(edge);
             }
@@ -124,12 +124,12 @@ public class DirectedGraph {
      * @return A {@link List} containing all the edges arriving to the provided destination.
      * @throws NodeNotFoundException if the destination is not part of the graph.
      */
-    public List<DirectedGraphEdge> getIncomingEdgesList(DirectedGraphNode destination){
-        List<DirectedGraphEdge> incomingEdges = new ArrayList<>();
+    public List<E> getIncomingEdgesList(N destination){
+        List<E> incomingEdges = new ArrayList<>();
         if(!hasNode(destination)){
             throw new NodeNotFoundException("The destination node does not exist.");
         }
-        for(DirectedGraphNode source : adjacencyList.keySet()){
+        for(N source : adjacencyList.keySet()){
             incomingEdges.addAll(getIncomingEdgesList(destination, source));
         }
         return incomingEdges;

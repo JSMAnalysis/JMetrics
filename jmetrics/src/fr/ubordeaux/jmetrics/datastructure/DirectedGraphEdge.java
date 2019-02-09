@@ -5,20 +5,20 @@ import java.util.Objects;
 /**
  * Defines the base data structure used to store information about a directed graph's edge.
  */
-public class DirectedGraphEdge {
-    private DirectedGraphNode source;
-    private DirectedGraphNode target;
+public class DirectedGraphEdge<N> {
+    private N source;
+    private N target;
 
-    public DirectedGraphEdge(DirectedGraphNode source, DirectedGraphNode target){
+    public DirectedGraphEdge(N source, N target){
         this.source = source;
         this.target = target;
     }
 
-    public DirectedGraphNode getSource() {
+    public N getSource() {
         return source;
     }
 
-    public DirectedGraphNode getTarget() {
+    public N getTarget() {
         return target;
     }
 

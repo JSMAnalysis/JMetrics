@@ -13,19 +13,16 @@ import java.util.Set;
 public class GraphConstructor {
 
     public DirectedGraph constructGraph(Set<ClassCategory> categories, Set<Dependency> dependencies) {
-        DirectedGraph graph = new DirectedGraph();
-        Map<ClassCategory, DirectedGraphNode> nodes = new HashMap<>();
+        DirectedGraph<ClassCategory, DependencyEdge> graph = new DirectedGraph<>();
 
         for (ClassCategory category : categories) {
-            DirectedGraphNode node = new DirectedGraphNode(category.getName());
-            nodes.put(category, node);
-            graph.addNode(node);
+            graph.addNode(category);
         }
 
         for(Dependency dependency : dependencies) {
-            DirectedGraphEdge edge = new DependencyEdge(
-                    nodes.get(dependency.getSource()),
-                    nodes.get(dependency.getDestination()),
+            DependencyEdge edge = new DependencyEdge(
+                    dependency.getSource(),
+                    dependency.getDestination(),
                     dependency.getType()
             );
             graph.addEdge(edge);
