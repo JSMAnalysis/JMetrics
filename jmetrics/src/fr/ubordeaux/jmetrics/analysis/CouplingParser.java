@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface CouplingParser {
 
-    List<Dependency> getInheritanceDependency(ClassFile file);
-    List<Dependency> getAggregationDependencies(ClassFile file);
-    List<Dependency> getSignatureDependencies(ClassFile file);
-    List<Dependency> getInternalDependencies(ClassFile file);
+    List<Dependency> getInheritanceDependency(ClassFile srcFile);
+    List<Dependency> getAggregationDependencies(ClassFile srcFile);
+    List<Dependency> getSignatureDependencies(ClassFile srcFile);
+    List<Dependency> getInternalDependencies(ClassFile srcFile);
 
 }
