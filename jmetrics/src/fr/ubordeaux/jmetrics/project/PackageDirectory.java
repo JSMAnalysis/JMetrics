@@ -1,6 +1,6 @@
 package fr.ubordeaux.jmetrics.project;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,14 +8,18 @@ import java.util.List;
  */
 public class PackageDirectory extends ProjectComponent {
 
-    List<ProjectComponent> content;
+    private List<ProjectComponent> content;
 
     public PackageDirectory(String name) {
         super(name);
     }
 
-    public List<String> getCategoriesNames() {
-        return null;
+    public List<ProjectComponent> getContent() {
+        return new ArrayList<>(content);
+    }
+
+    public void setContent(List<ProjectComponent> content) {
+        this.content = content;
     }
 
 }

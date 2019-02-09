@@ -1,13 +1,16 @@
 package fr.ubordeaux.jmetrics.project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides structure to represent a Java Project.
+ * Provides structure (as Singleton) to represent a Java Project.
  */
 public class ProjectStructure {
 
     private ProjectComponent structure;
+
+    private List<ClassFile> cacheClasses = null;
 
     private static ProjectStructure ourInstance = new ProjectStructure();
 
@@ -15,26 +18,47 @@ public class ProjectStructure {
         return ourInstance;
     }
 
-    private ProjectStructure() {
+    private ProjectStructure() {  }
 
+    public void setStructure(ProjectComponent rootComponent) {
+        this.structure = rootComponent;
     }
 
-    public void setStructure(ProjectComponent component){
-
-    }
-
-    public ClassFile getClass(String name) {
-        return null;
-    }
-
-    public PackageDirectory getPackage(String name) {
-        return null;
-    }
-
+    /**
+     * Return the entire set of class files of the project.
+     * @return List of class files that compose the project.
+     */
     public List<ClassFile> getClasses() {
-        return null;
+        if (this.cacheClasses == null)
+            this.cacheClasses = recursiveEnumerateClasses(structure, new ArrayList<>());
+        return this.cacheClasses;
     }
 
+    /**
+     * Enumerate recursively classes inside the project.
+     * @param tree The root of the explored sub-tree (initial call: the root component of the ProjectStructure).
+     * @param accumulator The accumulator (initial call: Empty List).
+     * @return Classes that compose the given tree.
+     */
+    private List<ClassFile> recursiveEnumerateClasses(ProjectComponent tree, List<ClassFile> accumulator) {
+        List<ClassFile> classes = new ArrayList<>(accumulator);
+        if (tree instanceof ClassFile) {
+            ClassFile file = (ClassFile) tree;
+            classes.add(file);
+        } else {
+            PackageDirectory directory = (PackageDirectory) tree;
+            List<ProjectComponent> content = directory.getContent();
+            for (ProjectComponent component : content) {
+                classes = recursiveEnumerateClasses(component, classes);
+            }
+        }
+        return classes;
+    }
+
+    /**
+     * Not yet implemented.
+     * @return List of package directory that compose the project.
+     */
     public List<PackageDirectory> getPackages() {
         return null;
     }
