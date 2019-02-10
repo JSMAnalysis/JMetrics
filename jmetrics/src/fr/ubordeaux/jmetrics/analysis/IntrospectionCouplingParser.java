@@ -17,7 +17,7 @@ import java.util.List;
 public class IntrospectionCouplingParser extends IntrospectionParser implements CouplingParser {
 
     @Override
-    public List<Dependency> getInheritanceDependency(ClassFile srcFile) {
+    public List<Dependency> getInheritanceDependencies(ClassFile srcFile) {
         Class srcClass = getClassFromFile(srcFile);
         Class   superClass = srcClass.getSuperclass();
         Class[] interfaces = srcClass.getInterfaces();
