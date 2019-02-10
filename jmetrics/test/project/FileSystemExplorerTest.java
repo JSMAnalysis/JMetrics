@@ -5,6 +5,10 @@ import fr.ubordeaux.jmetrics.project.InvalidProjectPathException;
 import fr.ubordeaux.jmetrics.project.ProjectComponent;
 
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
+
+import ground_truth.GroundTruthManager;
+
+import ground_truth.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class FileSystemExplorerTest {
 
     private FileSystemExplorer explorer;
-    private final static String groundTruthPath = "out/test/classes/ground_truth/";
-    private final static String projectExample1Path = groundTruthPath + "example1/";
-    private final static int projectExample1NumberOfClasses = 6;
+    private GroundTruthManager GT;
 
     @BeforeEach
     void setUp() {
         explorer = new FileSystemExplorer();
+        GT = new GroundTruthManager();
     }
 
 
@@ -27,7 +30,8 @@ class FileSystemExplorerTest {
     @Test
     void testImportProjectWithCorrectPath() {
         try {
-            ProjectComponent rootComponent = explorer.generateStructure(projectExample1Path);
+            Project example1 = GT.getProject(1);
+            ProjectComponent rootComponent = explorer.generateStructure(example1.getPath());
         } catch(InvalidProjectPathException e) {
             fail("The given path lead to existing directory but InvalidProjectPathException have been thrown.");
         }
@@ -36,8 +40,7 @@ class FileSystemExplorerTest {
     @Test
     void testImportProjectWithWrongPath() {
         assertThrows(InvalidProjectPathException.class, ()->{
-            String invalidPath = "pompadour/42/";
-            ProjectComponent rootComponent = explorer.generateStructure(invalidPath);
+            ProjectComponent rootComponent = explorer.generateStructure(GT.invalidGroundTruthPath);
         });
     }
 
@@ -45,17 +48,18 @@ class FileSystemExplorerTest {
 
     @Test
     void testComponentsName() {
-
+        // Function not yet implemented.
     }
 
 
 
     @Test
     void testClassFileCount() {
-        ProjectComponent rootComponent = explorer.generateStructure(projectExample1Path);
+        Project example1 = GT.getProject(1);
+        ProjectComponent rootComponent = explorer.generateStructure(example1.getPath());
         ProjectStructure.getInstance().setStructure(rootComponent);
         int numberOfClassesInGeneratedStructure = ProjectStructure.getInstance().getClasses().size();
-        assertEquals(projectExample1NumberOfClasses, numberOfClassesInGeneratedStructure);
+        assertEquals(example1.getNumberOfClasses(), numberOfClassesInGeneratedStructure);
     }
 
     @Test

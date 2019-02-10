@@ -25,6 +25,20 @@ public class ProjectStructure {
     }
 
     /**
+     * Get Class File by name.
+     * @param name The name of the searched ClassFile.
+     * @return The Class File searched if exists, null otherwise.
+     */
+    public ClassFile getClassFile(String name) {
+        for (ClassFile file: getClasses()) {
+            if (file.getName().equals(name)) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Return the entire set of class files of the project.
      * @return List of class files that compose the project.
      */
