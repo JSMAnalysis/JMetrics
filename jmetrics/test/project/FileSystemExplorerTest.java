@@ -1,62 +1,66 @@
 package project;
 
 import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
+import fr.ubordeaux.jmetrics.project.InvalidProjectPathException;
 import fr.ubordeaux.jmetrics.project.ProjectComponent;
-import org.junit.Before;
-import org.junit.Test;
 
-import java.io.File;
-import java.util.List;
+import fr.ubordeaux.jmetrics.project.ProjectStructure;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FileSystemExplorerTest {
-    FileSystemExplorer f;
-    File file;
-    public final static String pathName = "out/test/ground_truth";
+class FileSystemExplorerTest {
 
-    @Before
-    public void setUp() throws Exception {
-        f = new FileSystemExplorer();
-        file = new File(pathName);
+    private FileSystemExplorer explorer;
+    private final static String groundTruthPath = "out/test/classes/ground_truth/";
+    private final static String projectExample1Path = groundTruthPath + "example1/";
+    private final static int projectExample1NumberOfClasses = 6;
+
+    @BeforeEach
+    void setUp() {
+        explorer = new FileSystemExplorer();
     }
 
-    @Test
-    public void testImportFileFromPathWithCorrectPath() {
-        f.generateStructure(pathName);
-        assertTrue(true);
-    }
+
 
     @Test
-    public void testImportFileFromPathWithInvalidPath() {
+    void testImportProjectWithCorrectPath() {
         try {
-            f.generateStructure("out/test/toto");
-            assertTrue(false);
-        } catch (Exception e) {
-            assertTrue(true);
+            ProjectComponent rootComponent = explorer.generateStructure(projectExample1Path);
+        } catch(InvalidProjectPathException e) {
+            fail("The given path lead to existing directory but InvalidProjectPathException have been thrown.");
         }
     }
 
     @Test
-    public void testValidPackageName() {
-        List<ProjectComponent> pcList = f.getRecursiveStructure(file);
-        for (ProjectComponent l : pcList) {
-            if (l.getName().equals("example1")) {
-                assertTrue(true);
-                return;
-            }
-            fail();
-        }
+    void testImportProjectWithWrongPath() {
+        assertThrows(InvalidProjectPathException.class, ()->{
+            String invalidPath = "pompadour/42/";
+            ProjectComponent rootComponent = explorer.generateStructure(invalidPath);
+        });
+    }
+
+
+
+    @Test
+    void testComponentsName() {
+
+    }
+
+
+
+    @Test
+    void testClassFileCount() {
+        ProjectComponent rootComponent = explorer.generateStructure(projectExample1Path);
+        ProjectStructure.getInstance().setStructure(rootComponent);
+        int numberOfClassesInGeneratedStructure = ProjectStructure.getInstance().getClasses().size();
+        assertEquals(projectExample1NumberOfClasses, numberOfClassesInGeneratedStructure);
     }
 
     @Test
-    public void testCountOfFile() {
-        int i = 0;
-        List<ProjectComponent> list = f.getRecursiveStructure(file);
-        for (ProjectComponent ignored : list) {
-            i++;
-        }
-        assertEquals(i, list.size());
+    void testPackageDirectoryCount() {
+        // Function not yet implemented.
     }
 
 }

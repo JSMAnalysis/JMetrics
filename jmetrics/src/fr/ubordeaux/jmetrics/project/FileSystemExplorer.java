@@ -13,12 +13,12 @@ public class FileSystemExplorer {
 
     public ProjectComponent generateStructure(String path) {
         if (!isValidPath(path)) {
-            throw new IllegalArgumentException("Path not valid");
+            throw new InvalidProjectPathException("Path does not exist or does not lead to a directory.");
         }
         PackageDirectory project = new PackageDirectory(new File(path));
         project.setContent(getRecursiveStructure(new File(path)));
         if (!isValidJavaProject(project)) {
-            throw new BadProjectFormatException("Not a Compiled Java Project");
+            throw new BadProjectFormatException("Path does not lead to a Compiled Java Project.");
         }
         return project;
     }
