@@ -25,7 +25,7 @@ class IntrospectionAbstractnessParserTest {
 
     @Test
     void countMethodTest() {
-        GT.loadExample(1);
+        GT.loadExample(0);
         ProjectStructure PS = ProjectStructure.getInstance();
         ClassFile file = PS.getClassFile("Airplane.class");
         if (file == null) fail("Error");

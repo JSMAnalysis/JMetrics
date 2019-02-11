@@ -14,7 +14,7 @@ public class GroundTruthManager {
 
     private List<Project> projects;
 
-    public static final String groundTruthPath = "out/test/classes/ground_truth/";
+    public static final String groundTruthPath = "out/test/ground_truth/";
     public final String invalidGroundTruthPath = "pompadour/42/";
 
 
