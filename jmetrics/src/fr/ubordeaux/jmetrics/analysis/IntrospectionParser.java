@@ -20,15 +20,15 @@ public abstract class IntrospectionParser {
                     + " does not seem to exist or is temporarily unavailable.");
         }
         ByteCodeClassLoader loader = new ByteCodeClassLoader();
-        return loader.getClassFromByteCode(file.getName(), byteCode);
+        return loader.getClassFromByteCode(byteCode);
     }
 
     /**
      * A class loader that is able to create a class object from an array of bytes.
      */
     private class ByteCodeClassLoader extends ClassLoader{
-        public Class getClassFromByteCode(String name, byte[] bytes){
-            return defineClass(name, bytes, 0, bytes.length);
+        public Class getClassFromByteCode(byte[] bytes){
+            return defineClass(null, bytes, 0, bytes.length);
         }
     }
 
