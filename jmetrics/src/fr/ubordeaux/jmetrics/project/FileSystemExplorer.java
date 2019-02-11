@@ -1,7 +1,6 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +17,6 @@ public class FileSystemExplorer {
         }
         PackageDirectory project = new PackageDirectory(new File(path));
         project.setContent(getRecursiveStructure(new File(path), new ArrayList<>()));
-        if (!isValidJavaProject(project)) {
-            throw new BadProjectFormatException("Path does not lead to a Compiled Java Project.");
-        }
         return project;
     }
 
@@ -32,7 +28,7 @@ public class FileSystemExplorer {
      */
     private List<ProjectComponent> getRecursiveStructure(File node, List<ProjectComponent> accumulator) {
         List<ProjectComponent> components = new ArrayList<>(accumulator);
-        if(node.isFile() && isClassFile(node.getName())){
+        if(isClassFile(node)){
             components.add(new ClassFile(node));
         }
         else if(node.isDirectory()) {
@@ -47,12 +43,12 @@ public class FileSystemExplorer {
     }
 
     /**
-     * Verify that a filename correspond to a class file.
-     * @param filename The filename to verify.
-     * @return true if the filename is a class file, false otherwise.
+     * Verify that a file is a class file.
+     * @param file The file to verify.
+     * @return true if the file is a class file, false otherwise.
      */
-    private boolean isClassFile(String filename) {
-        return filename.endsWith(CLASS_EXTENSION);
+    private boolean isClassFile(File file) {
+        return file.isFile() && file.getName().endsWith(CLASS_EXTENSION);
     }
 
     /**
@@ -64,10 +60,4 @@ public class FileSystemExplorer {
         File file = new File(path);
         return file.exists() && file.isDirectory();
     }
-
-    private boolean isValidJavaProject(PackageDirectory project) {
-        // TODO: Check that there is at least 1 class file in the project.
-        return true;
-    }
-
 }
