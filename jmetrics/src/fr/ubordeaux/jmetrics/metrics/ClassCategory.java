@@ -9,21 +9,15 @@ import java.util.Set;
 public abstract class ClassCategory {
 
     private String name;
-    private ProjectComponent component;
     private Set<MetricsComponent> metricsSet;
 
-    public ClassCategory(String name, ProjectComponent component){
+    public ClassCategory(String name){
         this.name = name;
-        this.component = component;
         this.metricsSet = new HashSet<>();
     }
 
     public String getName() {
         return name;
-    }
-
-    public ProjectComponent getComponent(){
-        return component;
     }
 
     public Set<MetricsComponent> getMetricsSet(){
