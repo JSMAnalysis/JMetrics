@@ -32,7 +32,7 @@ public class GroundTruthManager {
     }
 
     public Project getProject(int index) {
-        return projects.get(index - 1);
+        return projects.get(index);
     }
 
     /**
