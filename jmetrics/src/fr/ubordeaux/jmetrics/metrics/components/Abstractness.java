@@ -5,7 +5,7 @@ import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
 public class Abstractness extends MetricsComponent {
 
     public Abstractness(AbstractnessData data) {
-        super(data.getNumberOfMethods() == 0 ? 0 : data.getNumberOfAbstractMethods() / data.getNumberOfMethods());
+        super(data.getNumberOfMethods() == 0 ? 0 : (double)data.getNumberOfAbstractMethods() / (double)data.getNumberOfMethods());
     }
 
     @Override
