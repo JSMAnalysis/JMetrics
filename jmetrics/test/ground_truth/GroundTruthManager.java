@@ -32,7 +32,7 @@ public class GroundTruthManager {
     }
 
     public Project getProject(int index) {
-        return projects.get(index);
+        return projects.get(index - 1);
     }
 
     /**
@@ -41,7 +41,7 @@ public class GroundTruthManager {
      */
     public void loadExample(int projectNumber) {
         FileSystemExplorer explorer = new FileSystemExplorer();
-        Project p = projects.get(projectNumber - 1);
+        Project p = getProject(projectNumber);
         String path = groundTruthPath + p.getDirectory();
         ProjectComponent rootComponent = explorer.generateStructure(path);
         ProjectStructure.getInstance().setStructure(rootComponent);
