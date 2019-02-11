@@ -14,7 +14,7 @@ public class GroundTruthManager {
 
     private List<Project> projects;
 
-    public static final String groundTruthPath = "out/test/classes/ground_truth/";
+    public static final String groundTruthPath = "out/test/ground_truth/";
     public final String invalidGroundTruthPath = "pompadour/42/";
 
 
@@ -41,7 +41,7 @@ public class GroundTruthManager {
      */
     public void loadExample(int projectNumber) {
         FileSystemExplorer explorer = new FileSystemExplorer();
-        Project p = projects.get(projectNumber - 1);
+        Project p = getProject(projectNumber);
         String path = groundTruthPath + p.getDirectory();
         ProjectComponent rootComponent = explorer.generateStructure(path);
         ProjectStructure.getInstance().setStructure(rootComponent);

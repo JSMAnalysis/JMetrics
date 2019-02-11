@@ -2,7 +2,7 @@ package ground_truth;
 
 public class Project {
 
-    private static int staticID;
+    private static int staticID = 0;
     private int id;
 
     private String directory;
