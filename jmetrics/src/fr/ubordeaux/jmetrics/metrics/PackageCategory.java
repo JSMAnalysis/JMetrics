@@ -5,7 +5,7 @@ import fr.ubordeaux.jmetrics.project.PackageDirectory;
 public class PackageCategory extends ClassCategory {
 
     public PackageCategory(PackageDirectory directory) {
-        super(directory.getName(), directory);
+        super(directory.getName());
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class GraphConstructor {
 
-    public DirectedGraph constructGraph(Set<ClassCategory> categories, Set<Dependency> dependencies) {
+    public DirectedGraph<ClassCategory, DependencyEdge> constructGraph(Set<ClassCategory> categories, Set<Dependency> dependencies) {
         DirectedGraph<ClassCategory, DependencyEdge> graph = new DirectedGraph<>();
 
         for (ClassCategory category : categories) {
