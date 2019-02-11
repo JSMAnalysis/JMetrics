@@ -1,9 +1,13 @@
 package fr.ubordeaux.jmetrics.metrics.components;
 
+import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
+import fr.ubordeaux.jmetrics.datastructure.DirectedGraph;
+import fr.ubordeaux.jmetrics.metrics.ClassCategory;
+
 public class AfferentCoupling extends MetricsComponent {
 
-    public AfferentCoupling(double value) {
-        super(value);
+    public AfferentCoupling(DirectedGraph<ClassCategory, DependencyEdge> graph, ClassCategory category) {
+        super(graph.getIncomingEdgesList(category).size());
     }
 
     @Override

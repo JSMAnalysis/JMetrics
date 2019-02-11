@@ -2,8 +2,8 @@ package fr.ubordeaux.jmetrics.metrics.components;
 
 public class NormalizedDistance extends MetricsComponent {
 
-    public NormalizedDistance(double value) {
-        super(value);
+    public NormalizedDistance(double abstractness, double instability) {
+        super(Math.abs(abstractness + instability - 1));
     }
 
     @Override
