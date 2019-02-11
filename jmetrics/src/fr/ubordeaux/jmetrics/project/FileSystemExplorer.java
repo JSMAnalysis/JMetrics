@@ -1,6 +1,7 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,24 +17,30 @@ public class FileSystemExplorer {
             throw new InvalidProjectPathException("Path does not exist or does not lead to a directory.");
         }
         PackageDirectory project = new PackageDirectory(new File(path));
-        project.setContent(getRecursiveStructure(new File(path)));
+        project.setContent(getRecursiveStructure(new File(path), new ArrayList<>()));
         if (!isValidJavaProject(project)) {
             throw new BadProjectFormatException("Path does not lead to a Compiled Java Project.");
         }
         return project;
     }
 
-    public List<ProjectComponent> getRecursiveStructure(File node) {
-        List<ProjectComponent> components = new ArrayList<>();
-        File[] files = node.listFiles();
-        if (files == null) return components;
-        for (File file: files) {
-            if (file.isFile() && isClassFile(file.getName())) {
-                ClassFile c = new ClassFile(file);
-                components.add(c);
-            } else if (file.isDirectory()) {
-                PackageDirectory p = new PackageDirectory(file);
-                p.setContent(getRecursiveStructure(file));
+    /**
+     * Explore a project's structure recursively.
+     * @param node The {@link File} to explore.
+     * @param accumulator An accumulator representing the list built so far. Must be initialized as an empty list.
+     * @return The structure of the given node.
+     */
+    private List<ProjectComponent> getRecursiveStructure(File node, List<ProjectComponent> accumulator) {
+        List<ProjectComponent> components = new ArrayList<>(accumulator);
+        if(node.isFile() && isClassFile(node.getName())){
+            components.add(new ClassFile(node));
+        }
+        else if(node.isDirectory()) {
+            File[] files = node.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    components = getRecursiveStructure(file, components);
+                }
             }
         }
         return components;
@@ -59,7 +66,7 @@ public class FileSystemExplorer {
     }
 
     private boolean isValidJavaProject(PackageDirectory project) {
-        // TODO: Check that there is at least 2 class file in the project.
+        // TODO: Check that there is at least 1 class file in the project.
         return true;
     }
 
