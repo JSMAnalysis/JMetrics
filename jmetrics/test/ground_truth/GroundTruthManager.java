@@ -18,10 +18,12 @@ public class GroundTruthManager {
      */
     static final String groundTruthPath = "out/test/ground_truth/";
 
+    static final String exampleTwoPath = "domain/kitchen/";
+
     /**
      * Number of projects in the Ground Truth.
      */
-    public static final int groundTruthSize = 1;
+    public static final int groundTruthSize = 2;
 
     /**
      * List of the project inside the GroundTruth.
@@ -84,7 +86,64 @@ public class GroundTruthManager {
     }
 
     private void setupExample2() {
-        Project Example2 = new Project("example2/", 0, 0);
+        Project Example2 = new Project("example2/", 11, 2);
+
+        // kitchen package
+        Example2.addClass(exampleTwoPath + "BasePizza.class",
+                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
+        );
+        Example2.addClass(exampleTwoPath + "PastaType.class",
+                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
+        );
+        Example2.addClass(exampleTwoPath + "PizzaSize.class",
+                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
+        );
+
+        Example2.addClass(exampleTwoPath + "Pizza.class",
+                new ClassInformation(1, 0, 1, 1, 0.5, 0, 0.5)
+        );
+        Example2.addClass(exampleTwoPath + "Main.class",
+                new ClassInformation(1, 0, 0, 0, 0, 0, 1)
+        );
+
+        // kitchen/ingredients package
+        Example2.addClass(exampleTwoPath + "ingredients/Ingredient.class",
+                new ClassInformation(1, 1, 2, 1, 0.33, 0.33, 0.33)
+        );
+        Example2.addClass(exampleTwoPath + "ingredients/Tomato.class",
+                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
+        );
+        Example2.addClass(exampleTwoPath + "ingredients/Pickles.class",
+                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
+        );
+
+        // store package
+        Example2.addClass("store/Customer.class",
+                new ClassInformation(1, 0, 1, 1, 0.5, 0, 0.5)
+        );
+        Example2.addClass("store/Pizzaiolo.class",
+                new ClassInformation(1, 0, 1, 1, 0.5, 0, 0.5)
+        );
+        Example2.addClass("store/Pizzaria.class",
+                new ClassInformation(1, 0, 0, 2, 1, 0, 0)
+        );
+
+        Example2.addDependency(exampleTwoPath + "ingredients/Tomato.class",exampleTwoPath + "ingredients/Ingredient.class", DependencyType.Inheritance);
+        Example2.addDependency(exampleTwoPath + "ingredients/Pickles.class",exampleTwoPath + "ingredients/Ingredient.class", DependencyType.Inheritance);
+        Example2.addDependency(exampleTwoPath + "ingredients/Ingredient.class",exampleTwoPath + "Pizza.class",DependencyType.Aggregation);
+        Example2.addDependency(exampleTwoPath + "Pizza.class","store/Customer.class", DependencyType.Aggregation);
+        Example2.addDependency(exampleTwoPath + "Pizza.class","store/Customer.class", DependencyType.Signature);
+        Example2.addDependency(exampleTwoPath + "Pizza.class","store/Pizzaiolo.class", DependencyType.Aggregation);
+        Example2.addDependency(exampleTwoPath + "Pizza.class","store/Pizzaiolo.class", DependencyType.Signature);
+        Example2.addDependency("store/Pizzaria.class","store/Pizzaiolo.class", DependencyType.Aggregation);
+        Example2.addDependency("store/Pizzaria.class","store/Customer.class", DependencyType.Aggregation);
+        Example2.addDependency(exampleTwoPath + "Pizza.class",exampleTwoPath + "BasePizza.class",   DependencyType.Signature);
+        Example2.addDependency(exampleTwoPath + "Pizza.class",exampleTwoPath + "BasePizza.class",   DependencyType.Aggregation);
+        Example2.addDependency(exampleTwoPath + "Pizza.class",exampleTwoPath + "PastaType.class",   DependencyType.Signature);
+        Example2.addDependency(exampleTwoPath + "Pizza.class",exampleTwoPath + "PastaType.class",   DependencyType.Aggregation);
+        Example2.addDependency(exampleTwoPath + "Pizza.class",exampleTwoPath + "PizzaSize.class",   DependencyType.Signature);
+        Example2.addDependency(exampleTwoPath + "Pizza.class",exampleTwoPath + "PizzaSize.class",   DependencyType.Aggregation);
+
         projects.add(Example2);
     }
 

@@ -6,6 +6,8 @@ public class Pizzaria {
     private List<Pizzaiolo> employees;
     private List<Customer> customers;
 
+    public void run () {
 
+    }
 
 }

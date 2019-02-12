@@ -25,4 +25,27 @@ public class Pizza {
         ingredientList.add(i);
     }
 
+    public BasePizza getBase() {
+        return base;
+    }
+
+    public PizzaSize getPizzaSize() {
+        return pizzaSize;
+    }
+
+    public PastaType getPastaType() {
+        return pastaType;
+    }
+
+    public void setBase(BasePizza base) {
+        this.base = base;
+    }
+
+    public void setPizzaSize(PizzaSize pizzaSize) {
+        this.pizzaSize = pizzaSize;
+    }
+
+    public void setPastaType(PastaType pastaType) {
+        this.pastaType = pastaType;
+    }
 }
