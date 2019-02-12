@@ -2,6 +2,7 @@ package analysis;
 
 import fr.ubordeaux.jmetrics.analysis.AbstractnessParser;
 import fr.ubordeaux.jmetrics.analysis.IntrospectionAbstractnessParser;
+import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
@@ -34,8 +35,9 @@ class IntrospectionAbstractnessParserTest {
             List<ClassFile> PSClasses = ProjectStructure.getInstance().getClasses();
             Map<ClassFile, ClassInformation> GTClasses = GT.getProject(projectNumber).getClasses();
             for (ClassFile PSFile: PSClasses) {
-                int numberOfMethodsCalculated = parser.getNumberOfMethods(PSFile);
-                int numberOfAbstractMethodsCalculated = parser.getNumberOfAbstractMethods(PSFile);
+                AbstractnessData data = parser.getAbstractnessData(PSFile);
+                int numberOfMethodsCalculated = data.getNumberOfMethods();
+                int numberOfAbstractMethodsCalculated = data.getNumberOfAbstractMethods();
 
                 for (ClassFile GTFile: GTClasses.keySet()) {
                     if (PSFile.getName().equals(GTFile.getName())) {
