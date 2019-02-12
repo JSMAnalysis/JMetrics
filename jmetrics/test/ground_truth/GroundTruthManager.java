@@ -102,7 +102,7 @@ public class GroundTruthManager {
         Example2.addClass(exampleTwoPath + "Pizza.class",
                 new ClassInformation(1, 0, 1, 1, 0.5, 0, 0.5)
         );
-        Example2.addClass(exampleTwoPath + "Main.class",
+        Example2.addClass("domain/Main.class",
                 new ClassInformation(1, 0, 0, 0, 0, 0, 1)
         );
 
