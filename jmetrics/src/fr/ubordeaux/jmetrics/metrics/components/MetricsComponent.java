@@ -2,6 +2,8 @@ package fr.ubordeaux.jmetrics.metrics.components;
 
 import fr.ubordeaux.jmetrics.metrics.BadMetricsValueException;
 
+import java.util.Objects;
+
 public abstract class MetricsComponent {
 
     private double value;
@@ -20,17 +22,15 @@ public abstract class MetricsComponent {
     }
 
     @Override
-    public int hashCode() {
-        return Double.hashCode(value);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MetricsComponent that = (MetricsComponent) o;
+        return Double.compare(that.value, value) == 0;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof MetricsComponent)){
-            return false;
-        }
-        MetricsComponent other = (MetricsComponent) obj;
-        return other.value == value;
+    public int hashCode() {
+        return Objects.hash(value);
     }
-
 }

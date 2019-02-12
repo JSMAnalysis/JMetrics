@@ -24,17 +24,16 @@ public class DirectedGraphEdge<N> {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(source, target);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DirectedGraphEdge<?> that = (DirectedGraphEdge<?>) o;
+        return source.equals(that.source) &&
+                target.equals(that.target);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof DirectedGraphEdge)){
-            return false;
-        }
-        DirectedGraphEdge other = (DirectedGraphEdge) obj;
-        return this.source.equals(other.source) && this.target.equals(other.target);
+    public int hashCode() {
+        return Objects.hash(source, target);
     }
-
 }

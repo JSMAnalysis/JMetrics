@@ -1,15 +1,16 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
- * Represents node of a Project Structure (.class file or package)
+ * Represents a node of a Project Structure (.class file or package)
  */
 public abstract class ProjectComponent {
 
-    protected String name;
-    protected File file;
-    protected String path;
+    private String name;
+    private File file;
+    private String path;
 
     public ProjectComponent(File file) {
         this.file = file;
@@ -29,4 +30,18 @@ public abstract class ProjectComponent {
         return path;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProjectComponent that = (ProjectComponent) o;
+        return name.equals(that.name) &&
+                file.equals(that.file) &&
+                path.equals(that.path);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, file, path);
+    }
 }

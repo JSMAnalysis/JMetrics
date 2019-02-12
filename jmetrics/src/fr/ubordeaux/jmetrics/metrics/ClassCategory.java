@@ -4,6 +4,7 @@ import fr.ubordeaux.jmetrics.metrics.components.MetricsComponent;
 import fr.ubordeaux.jmetrics.project.ProjectComponent;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class ClassCategory {
@@ -28,4 +29,17 @@ public abstract class ClassCategory {
         this.metricsSet.add(metrics);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClassCategory that = (ClassCategory) o;
+        return name.equals(that.name) &&
+                metricsSet.equals(that.metricsSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, metricsSet);
+    }
 }

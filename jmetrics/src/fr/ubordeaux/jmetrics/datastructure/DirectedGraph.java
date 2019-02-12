@@ -134,4 +134,16 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
         return incomingEdges;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DirectedGraph<?, ?> that = (DirectedGraph<?, ?>) o;
+        return adjacencyList.equals(that.adjacencyList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(adjacencyList);
+    }
 }
