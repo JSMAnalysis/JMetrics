@@ -37,7 +37,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         ArrayList<Class> efferentDependencies = new ArrayList<>();
         for (Field field: srcClass.getDeclaredFields()) {
             Class type = field.getType();
-            if (!type.isPrimitive() && !efferentDependencies.contains(type)) {
+            if (!type.isPrimitive() && !efferentDependencies.contains(type) && srcClass != type) {
                 efferentDependencies.add(type);
             }
         }
@@ -64,7 +64,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         }
 
         for (Class dep: methodDependencies) {
-            if (!dep.isPrimitive() && !efferentDependencies.contains(dep)) {
+            if (!dep.isPrimitive() && !efferentDependencies.contains(dep) && srcClass != dep) {
                 efferentDependencies.add(dep);
             }
         }
@@ -94,7 +94,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         for (Class classEff: efferentDependencies) {
             for (ClassFile dstFile: projectClasses) {
                 Class dstClass = getClassFromFile(dstFile);
-                if (dstClass == classEff) { // Is the test enough ? Require a canonicalName comparison ?
+                if (dstClass.getCanonicalName().equals(classEff.getCanonicalName())) {
                     ClassCategory dst = new ElementaryCategory(dstFile);
                     matchDependencies.add(dst);
                 }

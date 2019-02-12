@@ -1,16 +1,26 @@
 package analysis;
 
+import fr.ubordeaux.jmetrics.analysis.CouplingParser;
+import fr.ubordeaux.jmetrics.analysis.Dependency;
 import fr.ubordeaux.jmetrics.analysis.IntrospectionCouplingParser;
-import fr.ubordeaux.jmetrics.analysis.IntrospectionParser;
+import fr.ubordeaux.jmetrics.project.ClassFile;
+import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
 import ground_truth.GroundTruthManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 class IntrospectionCouplingParserTest {
 
-    private IntrospectionParser parser;
+    private CouplingParser parser;
     private GroundTruthManager GT;
 
     @BeforeEach
@@ -21,17 +31,49 @@ class IntrospectionCouplingParserTest {
 
     @Test
     void testInheritanceDependenciesAnalysis() {
+        // TODO: Iterate through the GroundTruth.
+        GT.loadExample(1);
+        List<Dependency> GTDependencies = GT.getProject(1).getDependencies();
 
+        List<ClassFile> PSClasses = ProjectStructure.getInstance().getClasses();
+        List<Dependency> PSDependencies = new ArrayList<>();
+        for (ClassFile PSFile: PSClasses) {
+            PSDependencies.addAll(parser.getInheritanceDependencies(PSFile));
+            PSDependencies.addAll(parser.getAggregationDependencies(PSFile));
+            PSDependencies.addAll(parser.getSignatureDependencies(PSFile));
+        }
+
+        assertEquals(PSDependencies.size(), GTDependencies.size(),
+                "The number of dependencies analyzed is different from the number of dependencies " +
+                        "referenced in the ground truth");
+
+        boolean sameSrc, sameDst, sameType;
+        Iterator<Dependency> GTiter = GTDependencies.iterator();
+        Iterator<Dependency> PSiter = PSDependencies.iterator();
+        for (;GTiter.hasNext();) {
+            Dependency GTDependency = GTiter.next();
+            Dependency PSDependency = PSiter.next();
+            sameSrc = GTDependency.getSource().getName().equals(PSDependency.getSource().getName());
+            sameDst = GTDependency.getDestination().getName().equals(PSDependency.getDestination().getName());
+            sameType = GTDependency.getType().equals(PSDependency.getType());
+            if (!sameSrc && !sameDst && !sameType && !GTiter.hasNext()) {
+                fail("A dependency in the Ground Truth is not present in the result of analyze.");
+            }
+        }
     }
 
-    @Test
-    void testAggregationDependenciesAnalysis() {
-
-    }
-
-    @Test
-    void testSignatureDependenciesAnalysis() {
-
+    /**
+     * Debug purpose function.
+     */
+    void printDependencies(String prefix, List<Dependency> list) {
+        int i = 0;
+        for (Dependency dependency: list) {
+            i++;
+            System.out.println(
+                    prefix + " Dependency " + i + " (" + dependency.getType() + ") : " +
+                    dependency.getSource().getName() + " -> " + dependency.getDestination().getName()
+            );
+        }
     }
 
 }

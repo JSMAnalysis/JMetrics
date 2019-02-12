@@ -62,8 +62,9 @@ public class GroundTruthManager {
         Example1.addClass("Main.class",
                 new ClassInformation(1, 0, 0, 0, 0, 0, 1)
         );
+        // RQ : Material is an Enum. JavaCompiler generate automatically 2 methods for Enum : values and valueOf
         Example1.addClass("Material.class",
-                new ClassInformation(0, 0, 1, 0, 0, 0, 1)
+                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
         );
         Example1.addClass("Vehicle.class",
                 new ClassInformation(1, 1, 2, 1, 0.33, 0.33, 0.33)
@@ -74,10 +75,10 @@ public class GroundTruthManager {
 
         Example1.addDependency("Airplane.class",    "Vehicle.class",    DependencyType.Inheritance);
         Example1.addDependency("Car.class",         "Vehicle.class",    DependencyType.Inheritance);
-        Example1.addDependency("Vehicle.class",     "Wheel.class",      DependencyType.Signature);
         Example1.addDependency("Wheel.class",       "Material.class",   DependencyType.Signature);
         Example1.addDependency("Wheel.class",       "Material.class",   DependencyType.Aggregation);
-        // TODO: Dependency to add (Genericity) : ("Vehicle.class", "Wheel.class", DependencyType.Aggregation)
+        // TODO: Dependency (through Generic Types) to add :
+        //  ("Vehicle.class", "Wheel.class", DependencyType.Aggregation)
 
         projects.add(Example1);
     }
