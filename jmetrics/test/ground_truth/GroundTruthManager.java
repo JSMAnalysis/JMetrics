@@ -19,6 +19,11 @@ public class GroundTruthManager {
     static final String groundTruthPath = "out/test/ground_truth/";
 
     /**
+     * Number of projects in the Ground Truth.
+     */
+    public static final int groundTruthSize = 1;
+
+    /**
      * List of the project inside the GroundTruth.
      */
     private List<Project> projects;

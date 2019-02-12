@@ -27,7 +27,7 @@ class FileSystemExplorerTest {
     @Test
     void testImportProjectWithCorrectPath() {
         try {
-            Project example1 = GT.getProject(0);
+            Project example1 = GT.getProject(1);
             String validProjectPath = example1.getPath();
             ProjectComponent rootComponent = explorer.generateStructure(validProjectPath);
         } catch(InvalidProjectPathException e) {
@@ -45,7 +45,7 @@ class FileSystemExplorerTest {
 
     @Test
     void testClassFileCount() {
-        Project example1 = GT.getProject(0);
+        Project example1 = GT.getProject(1);
         ProjectComponent rootComponent = explorer.generateStructure(example1.getPath());
         ProjectStructure.getInstance().setStructure(rootComponent);
         int numberOfClassesInGeneratedStructure = ProjectStructure.getInstance().getClasses().size();
