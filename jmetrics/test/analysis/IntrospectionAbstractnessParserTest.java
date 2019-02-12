@@ -29,20 +29,20 @@ class IntrospectionAbstractnessParserTest {
 
     @Test
     void countMethodTest() {
-        // TODO: Iterate through the GroundTruth.
-        GT.loadExample(1);
-        List<ClassFile> PSClasses = ProjectStructure.getInstance().getClasses();
-        Map<ClassFile, ClassInformation> GTClasses = GT.getProject(1).getClasses();
-        for (ClassFile PSFile: PSClasses) {
-            int numberOfMethodsCalculated = parser.getNumberOfMethods(PSFile);
-            int numberOfAbstractMethodsCalculated = parser.getNumberOfAbstractMethods(PSFile);
-            // DEBUG
-            // System.out.println(PSFile.getName() + " : [" + numberOfMethodsCalculated + "," + numberOfAbstractMethodsCalculated + "]");
-            for (ClassFile GTFile: GTClasses.keySet()) {
-                if (PSFile.getName().equals(GTFile.getName())) {
-                    ClassInformation GTInfo = GTClasses.get(GTFile);
-                    assertEquals(numberOfMethodsCalculated, GTInfo.getNumberOfMethod());
-                    assertEquals(numberOfAbstractMethodsCalculated, GTInfo.getNumberOfAbstractMethod());
+        for (int projectNumber = 1; projectNumber <= GroundTruthManager.groundTruthSize; projectNumber++) {
+            GT.loadExample(projectNumber);
+            List<ClassFile> PSClasses = ProjectStructure.getInstance().getClasses();
+            Map<ClassFile, ClassInformation> GTClasses = GT.getProject(projectNumber).getClasses();
+            for (ClassFile PSFile: PSClasses) {
+                int numberOfMethodsCalculated = parser.getNumberOfMethods(PSFile);
+                int numberOfAbstractMethodsCalculated = parser.getNumberOfAbstractMethods(PSFile);
+
+                for (ClassFile GTFile: GTClasses.keySet()) {
+                    if (PSFile.getName().equals(GTFile.getName())) {
+                        ClassInformation GTInfo = GTClasses.get(GTFile);
+                        assertEquals(numberOfMethodsCalculated, GTInfo.getNumberOfMethod());
+                        assertEquals(numberOfAbstractMethodsCalculated, GTInfo.getNumberOfAbstractMethod());
+                    }
                 }
             }
         }
