@@ -3,7 +3,6 @@ package project;
 import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
 import fr.ubordeaux.jmetrics.project.InvalidProjectPathException;
 import fr.ubordeaux.jmetrics.project.ProjectComponent;
-
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
 import ground_truth.GroundTruthManager;
@@ -25,13 +24,12 @@ class FileSystemExplorerTest {
         GT = new GroundTruthManager();
     }
 
-
-
     @Test
     void testImportProjectWithCorrectPath() {
         try {
             Project example1 = GT.getProject(0);
-            ProjectComponent rootComponent = explorer.generateStructure(example1.getPath());
+            String validProjectPath = example1.getPath();
+            ProjectComponent rootComponent = explorer.generateStructure(validProjectPath);
         } catch(InvalidProjectPathException e) {
             fail("The given path lead to existing directory but InvalidProjectPathException have been thrown.");
         }
@@ -40,18 +38,10 @@ class FileSystemExplorerTest {
     @Test
     void testImportProjectWithWrongPath() {
         assertThrows(InvalidProjectPathException.class, ()->{
-            ProjectComponent rootComponent = explorer.generateStructure(GT.invalidGroundTruthPath);
+            String invalidProjectPath = "pompadour/42/";
+            ProjectComponent rootComponent = explorer.generateStructure(invalidProjectPath);
         });
     }
-
-
-
-    @Test
-    void testComponentsName() {
-        // Function not yet implemented.
-    }
-
-
 
     @Test
     void testClassFileCount() {
@@ -64,7 +54,7 @@ class FileSystemExplorerTest {
 
     @Test
     void testPackageDirectoryCount() {
-        // Function not yet implemented.
+        // Method getPackages of class ProjectStructure is not yet implemented.
     }
 
 }

@@ -13,23 +13,20 @@ import java.util.List;
  */
 public class GroundTruthManager {
 
+    /**
+     * Path to the compiled GroundTruth projects.
+     */
+    static final String groundTruthPath = "out/test/ground_truth/";
+
+    /**
+     * List of the project inside the GroundTruth.
+     */
     private List<Project> projects;
-
-    public static final String groundTruthPath = "out/test/ground_truth/";
-    public final String invalidGroundTruthPath = "pompadour/42/";
-
 
     public GroundTruthManager() {
         projects = new ArrayList<>();
-        setupProjects();
-    }
-
-    private void setupProjects() {
         setupExample1();
-    }
-
-    public Project getProject(int index) {
-        return projects.get(index);
+        setupExample2();
     }
 
     /**
@@ -44,17 +41,31 @@ public class GroundTruthManager {
         ProjectStructure.getInstance().setStructure(rootComponent);
     }
 
-    private void setupExample1() {
-        Project Example1 = new Project("example1/");
-        Example1.setNumberOfClass(6);
-        Example1.setNumberOfPackage(0);
+    public Project getProject(int projectNumber) {
+        return projects.get(projectNumber - 1);
+    }
 
-        Example1.addClass("Airplane.class", 1,  0);
-        Example1.addClass("Car.class",      1,  0);
-        Example1.addClass("Main.class",     1,  0);
-        Example1.addClass("Material.class", 0,  0);
-        Example1.addClass("Vehicle.class",  1,  1);
-        Example1.addClass("Wheel.class",    2,  0);
+    private void setupExample1() {
+        Project Example1 = new Project("example1/", 6, 0);
+
+        Example1.addClass("Airplane.class",
+                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
+        );
+        Example1.addClass("Car.class",
+                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
+        );
+        Example1.addClass("Main.class",
+                new ClassInformation(1, 0, 0, 0, 0, 0, 1)
+        );
+        Example1.addClass("Material.class",
+                new ClassInformation(0, 0, 1, 0, 0, 0, 1)
+        );
+        Example1.addClass("Vehicle.class",
+                new ClassInformation(1, 1, 2, 1, 0.33, 0.33, 0.33)
+        );
+        Example1.addClass("Wheel.class",
+                new ClassInformation(2, 0, 1, 1, 0.5, 0, 0.5)
+        );
 
         Example1.addDependency("Airplane.class",    "Vehicle.class",    DependencyType.Inheritance);
         Example1.addDependency("Car.class",         "Vehicle.class",    DependencyType.Inheritance);
@@ -64,6 +75,11 @@ public class GroundTruthManager {
         // TODO: Dependency to add (Genericity) : ("Vehicle.class", "Wheel.class", DependencyType.Aggregation)
 
         projects.add(Example1);
+    }
+
+    private void setupExample2() {
+        Project Example2 = new Project("example2/", 0, 0);
+        projects.add(Example2);
     }
 
 }

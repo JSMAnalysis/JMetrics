@@ -5,12 +5,16 @@ import fr.ubordeaux.jmetrics.analysis.IntrospectionAbstractnessParser;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
+import ground_truth.ClassInformation;
 import ground_truth.GroundTruthManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IntrospectionAbstractnessParserTest {
 
@@ -25,16 +29,23 @@ class IntrospectionAbstractnessParserTest {
 
     @Test
     void countMethodTest() {
-        GT.loadExample(0);
-        ProjectStructure PS = ProjectStructure.getInstance();
-        ClassFile file = PS.getClassFile("Airplane.class");
-        if (file == null) fail("Error");
-        int numberOfMethods = parser.getNumberOfMethods(file);
-    }
-
-    @Test
-    void countAbstractMethodTest() {
-
+        // TODO: Iterate through the GroundTruth.
+        GT.loadExample(1);
+        List<ClassFile> PSClasses = ProjectStructure.getInstance().getClasses();
+        Map<ClassFile, ClassInformation> GTClasses = GT.getProject(1).getClasses();
+        for (ClassFile PSFile: PSClasses) {
+            int numberOfMethodsCalculated = parser.getNumberOfMethods(PSFile);
+            int numberOfAbstractMethodsCalculated = parser.getNumberOfAbstractMethods(PSFile);
+            // DEBUG
+            // System.out.println(PSFile.getName() + " : [" + numberOfMethodsCalculated + "," + numberOfAbstractMethodsCalculated + "]");
+            for (ClassFile GTFile: GTClasses.keySet()) {
+                if (PSFile.getName().equals(GTFile.getName())) {
+                    ClassInformation GTInfo = GTClasses.get(GTFile);
+                    assertEquals(numberOfMethodsCalculated, GTInfo.getNumberOfMethod());
+                    assertEquals(numberOfAbstractMethodsCalculated, GTInfo.getNumberOfAbstractMethod());
+                }
+            }
+        }
     }
 
 }

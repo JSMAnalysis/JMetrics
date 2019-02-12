@@ -9,6 +9,9 @@ import fr.ubordeaux.jmetrics.project.ClassFile;
 import java.io.File;
 import java.util.*;
 
+/**
+ * Represents an example project in the ground truth.
+ */
 public class Project {
 
     private String directory;
@@ -16,74 +19,65 @@ public class Project {
     private int numberOfPackages;
 
     /**
-     * Map that stores classes of the example project associated to a tuple (nbMethod, nbAbstractMethod)
+     * Map that stores classes of the project and their associated information.
      */
-    private Map<ClassCategory, MethodCounter> classes;
+    private Map<ClassFile, ClassInformation> classes;
+
+    /**
+     * List of dependencies of the project.
+     */
     private List<Dependency> dependencies;
 
-    Project (String directory) {
+    Project (String directory, int numberOfClasses, int numberOfPackages) {
         this.directory = directory;
+        this.numberOfClasses = numberOfClasses;
+        this.numberOfPackages = numberOfPackages;
         this.classes = new HashMap<>();
         this.dependencies = new ArrayList<>();
     }
 
-    public void setNumberOfClass(int numberOfClasses) {
-        this.numberOfClasses = numberOfClasses;
-    }
+    public String getDirectory() { return directory; }
 
-    public void setNumberOfPackage(int numberOfPackages) {
-        this.numberOfPackages = numberOfPackages;
-    }
+    public int getNumberOfClasses() { return this.numberOfClasses; }
 
-    public String getDirectory() {
-        return directory;
-    }
+    public int getNumberOfPackages() { return this.numberOfPackages; }
 
-    public int getNumberOfClasses() {
-        return this.numberOfClasses;
-    }
-
-    public int getNumberOfPackages() {
-        return this.numberOfPackages;
-    }
-
+    /**
+     * Get the relative path to the project (concatenate groundTruthPath with the directory name).
+     * @return The path to the project.
+     */
     public String getPath() {
         return GroundTruthManager.groundTruthPath + directory;
-    }
-
-    public HashMap<ClassCategory, MethodCounter> getClasses() {
-        return new HashMap<>(classes);
-    }
-
-    public void addClass(String className, int numberOfMethod, int numberOfAbstractMethod) {
-        ClassCategory category = getClassCategory(className);
-        MethodCounter counter = new MethodCounter(numberOfMethod, numberOfAbstractMethod);
-        classes.put(category, counter);
     }
 
     public List<Dependency> getDependencies() {
         return new ArrayList<>(dependencies);
     }
 
+    public HashMap<ClassFile, ClassInformation> getClasses() {
+        return new HashMap<>(classes);
+    }
+
+
+
+    public void addClass(String className, ClassInformation classInfo) {
+        ClassFile file = getClassFile(className);
+        classes.put(file, classInfo);
+    }
+
     public void addDependency(String srcName, String dstName, DependencyType type) {
         dependencies.add(new Dependency(getClassCategory(srcName), getClassCategory(dstName), type));
     }
 
-    class MethodCounter {
-        private int numberOfMethod;
-        private int numberOfAbstractMethod;
-        MethodCounter(int numberOfMethod, int numberOfAbstractMethod) {
-            this.numberOfMethod = numberOfMethod;
-            this.numberOfAbstractMethod = numberOfAbstractMethod;
-        }
-        public int getNumberOfMethod() { return numberOfMethod; }
-        public int getNumberOfAbstractMethod() { return numberOfAbstractMethod; }
+
+
+    public ClassFile getClassFile(String name) {
+        String path = getPath() + directory + name;
+        return new ClassFile(new File(path));
     }
 
-    private ClassCategory getClassCategory(String className) {
-        String path = GroundTruthManager.groundTruthPath + directory + className;
-        ClassFile file = new ClassFile(new File(path));
-        return new ElementaryCategory(file);
+    public ClassCategory getClassCategory(String className) {
+        return new ElementaryCategory(getClassFile(className));
     }
 
 }

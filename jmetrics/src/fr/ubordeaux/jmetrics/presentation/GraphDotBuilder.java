@@ -12,8 +12,8 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
 
     private static final String BEGINNING_TOKEN = "digraph jmetrics_graph { ";
     private static final String ENDING_TOKEN = "}";
-    private static final String LINEEND_TOKEN = ";";
-    private static final String LABEl_BEGIN = "[label=\"";
+    private static final String LINE_END_TOKEN = ";";
+    private static final String LABEL_BEGIN = "[label=\"";
     private static final String LABEL_END = "\"]";
     private static final String EDGE_TOKEN = " -> ";
 
@@ -36,10 +36,10 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     public void addNode(ClassCategory category){
         mapping.putIfAbsent(category, ++nodeNumber);
         strBuilder.append(nodeNumber);
-        strBuilder.append(LABEl_BEGIN);
+        strBuilder.append(LABEL_BEGIN);
         strBuilder.append(category.getName());
         strBuilder.append(LABEL_END);
-        strBuilder.append(LINEEND_TOKEN);
+        strBuilder.append(LINE_END_TOKEN);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         strBuilder.append(mapping.get(edge.getSource()));
         strBuilder.append(EDGE_TOKEN);
         strBuilder.append(mapping.get(edge.getTarget()));
-        strBuilder.append(LINEEND_TOKEN);
+        strBuilder.append(LINE_END_TOKEN);
     }
 
     @Override
