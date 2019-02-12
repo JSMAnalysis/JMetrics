@@ -42,7 +42,7 @@ public class Main {
         Map<ClassFile, AbstractnessData> aData = new HashMap<>();
         AbstractnessParser aParser = new IntrospectionAbstractnessParser();
         for (ClassFile c : classes) {
-            aData.put(c, new AbstractnessData(aParser.getNumberOfMethods(c), aParser.getNumberOfAbstractMethods(c)));
+            aData.put(c, aParser.getAbstractnessData(c));
         }
 
         /// Coupling analysis
