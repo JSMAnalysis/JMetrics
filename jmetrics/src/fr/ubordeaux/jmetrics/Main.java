@@ -2,17 +2,18 @@ package fr.ubordeaux.jmetrics;
 
 import fr.ubordeaux.jmetrics.analysis.*;
 import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
-import fr.ubordeaux.jmetrics.metrics.components.Abstractness;
+import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
+import fr.ubordeaux.jmetrics.datastructure.DirectedGraph;
+import fr.ubordeaux.jmetrics.datastructure.GraphConstructor;
+import fr.ubordeaux.jmetrics.metrics.ClassCategory;
+import fr.ubordeaux.jmetrics.metrics.ElementaryCategory;
+import fr.ubordeaux.jmetrics.metrics.components.*;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
 import fr.ubordeaux.jmetrics.project.InvalidProjectPathException;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
@@ -54,9 +55,29 @@ public class Main {
         }
 
         // Graph construction
+        Set<ClassCategory> nodes = new HashSet<>();
+        for (ClassFile c : classes) {
+            nodes.add(new ElementaryCategory(c));
+        }
+        DirectedGraph<ClassCategory, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
+
+        // Metrics computation
+        MetricsComponent A, CA, CE, I, Dn;
+        for (ClassCategory c : nodes) {
+            //A = new Abstractness()  TODO
+            CA = new AfferentCoupling(graph, c);
+            CE = new EfferentCoupling(graph, c);
+            I = new Instability(CE.getValue(), CA.getValue());
+            //Dn = new NormalizedDistance() TODO
 
 
-
+            System.out.println(c.getName());
+            //System.out.println("A : "); TODO
+            System.out.println("Ca : " + CA.getValue());
+            System.out.println("Ce : " + CE.getValue());
+            System.out.println("I : " + I.getValue());
+            //System.out.println("Dn : " + Dn.getValue()); TODO
+        }
 
         System.out.println("The full execution pipeline is not currently implemented");
     }
