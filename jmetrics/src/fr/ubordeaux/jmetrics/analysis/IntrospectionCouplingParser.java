@@ -23,7 +23,9 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         Class[] interfaces = srcClass.getInterfaces();
 
         ArrayList<Class> efferentDependencies = new ArrayList<>(Arrays.asList(interfaces));
-        efferentDependencies.add(superClass);
+        if(superClass != null) {
+            efferentDependencies.add(superClass);
+        }
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
         List<ClassCategory> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
@@ -94,7 +96,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         for (Class classEff: efferentDependencies) {
             for (ClassFile dstFile: projectClasses) {
                 Class dstClass = getClassFromFile(dstFile);
-                if (dstClass.getCanonicalName().equals(classEff.getCanonicalName())) {
+                if (dstClass.getName().equals(classEff.getName())) {
                     ClassCategory dst = new ElementaryCategory(dstFile);
                     matchDependencies.add(dst);
                 }

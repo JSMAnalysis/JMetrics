@@ -26,9 +26,10 @@ public class Main {
         String path = args[0];
 
         // Project's exploration
+        ProjectStructure structure = ProjectStructure.getInstance();
         FileSystemExplorer explorer = new FileSystemExplorer();
         try {
-            explorer.generateStructure(path);
+            structure.setStructure(explorer.generateStructure(path));
         }
         catch(InvalidProjectPathException e){
             System.out.println(e.getMessage());

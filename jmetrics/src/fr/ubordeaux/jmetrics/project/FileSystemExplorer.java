@@ -15,8 +15,9 @@ public class FileSystemExplorer {
         if (!isValidPath(path)) {
             throw new InvalidProjectPathException("Path does not exist or does not lead to a directory.");
         }
-        PackageDirectory project = new PackageDirectory(new File(path));
-        project.setContent(getRecursiveStructure(new File(path), new ArrayList<>()));
+        File rootFile = new File(path);
+        PackageDirectory project = new PackageDirectory(rootFile);
+        project.setContent(getRecursiveStructure(rootFile, new ArrayList<>()));
         return project;
     }
 
