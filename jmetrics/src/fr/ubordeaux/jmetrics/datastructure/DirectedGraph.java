@@ -84,11 +84,10 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
      * @return A {@link List} containing all the edges coming from the provided node.
      */
     public List<E> getOutcomingEdgeList(N source){
-        List<E> edges = adjacencyLists.get(source);
         if(hasNode(source)){
             return new ArrayList<>(adjacencyLists.get(source));
         }
-        return null;
+        return new ArrayList<>();
     }
 
     /**

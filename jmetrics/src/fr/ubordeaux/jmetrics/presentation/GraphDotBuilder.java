@@ -3,6 +3,7 @@ package fr.ubordeaux.jmetrics.presentation;
 import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
 import fr.ubordeaux.jmetrics.metrics.ClassCategory;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,12 +23,13 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     private int nodeNumber = 0;
 
     public GraphDotBuilder(){
-        strBuilder = new StringBuilder();
+        createNewGraph();
     }
 
     @Override
     public void createNewGraph(){
         strBuilder = new StringBuilder();
+        mapping = new HashMap<>();
         nodeNumber = 0;
         strBuilder.append(BEGINNING_TOKEN);
     }

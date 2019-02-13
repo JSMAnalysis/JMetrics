@@ -1,13 +1,12 @@
 package fr.ubordeaux.jmetrics;
 
 import fr.ubordeaux.jmetrics.analysis.*;
-import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
-import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
-import fr.ubordeaux.jmetrics.datastructure.DirectedGraph;
-import fr.ubordeaux.jmetrics.datastructure.GraphConstructor;
+import fr.ubordeaux.jmetrics.datastructure.*;
 import fr.ubordeaux.jmetrics.metrics.ClassCategory;
 import fr.ubordeaux.jmetrics.metrics.ElementaryCategory;
 import fr.ubordeaux.jmetrics.metrics.components.*;
+import fr.ubordeaux.jmetrics.presentation.GraphDotBuilder;
+import fr.ubordeaux.jmetrics.presentation.GraphPresentationBuilder;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
 import fr.ubordeaux.jmetrics.project.InvalidProjectPathException;
@@ -79,6 +78,20 @@ public class Main {
             System.out.println("I : " + I.getValue());
             //System.out.println("Dn : " + Dn.getValue()); TODO
         }
+
+        //graph's DOT representation building
+        GraphPresentationBuilder gBuilder = new GraphDotBuilder();
+        gBuilder.createNewGraph();
+        for (ClassCategory node : graph.getNodeSet()) {
+            gBuilder.addNode(node);
+        }
+        for (ClassCategory node : graph.getNodeSet()) {
+            for (DependencyEdge edge : graph.getOutcomingEdgeList(node)) {
+                gBuilder.addEdge(edge);
+            }
+        }
+        gBuilder.endGraph();
+        System.out.println(gBuilder.getGraphPresentation());
 
         System.out.println("The full execution pipeline is not currently implemented");
     }

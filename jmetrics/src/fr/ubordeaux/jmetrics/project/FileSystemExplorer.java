@@ -13,7 +13,7 @@ public class FileSystemExplorer {
 
     public ProjectComponent generateStructure(String path) {
         if (!isValidPath(path)) {
-            throw new InvalidProjectPathException("Path does not exist or does not lead to a directory.");
+            throw new InvalidProjectPathException("Path \"" + path + "\" does not exist or does not lead to a directory.");
         }
         File rootFile = new File(path);
         PackageDirectory project = new PackageDirectory(rootFile);
