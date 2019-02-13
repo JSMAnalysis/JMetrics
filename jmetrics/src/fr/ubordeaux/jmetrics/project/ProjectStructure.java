@@ -49,6 +49,13 @@ public class ProjectStructure {
     }
 
     /**
+     * Delete the cache classes.
+     */
+    public void cacheClear() {
+        this.cacheClasses = null;
+    }
+
+    /**
      * Enumerate recursively classes inside the project.
      * @param tree The root of the explored sub-tree (initial call: the root component of the ProjectStructure).
      * @param accumulator The accumulator (initial call: Empty List).

@@ -23,7 +23,7 @@ class IntrospectionAbstractnessParserTest {
     private GroundTruthManager GT;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         GT = new GroundTruthManager();
         parser = new IntrospectionAbstractnessParser();
     }
@@ -42,8 +42,10 @@ class IntrospectionAbstractnessParserTest {
                 for (ClassFile GTFile: GTClasses.keySet()) {
                     if (PSFile.getName().equals(GTFile.getName())) {
                         ClassInformation GTInfo = GTClasses.get(GTFile);
-                        assertEquals(numberOfMethodsCalculated, GTInfo.getNumberOfMethod());
-                        assertEquals(numberOfAbstractMethodsCalculated, GTInfo.getNumberOfAbstractMethod());
+                        assertEquals(numberOfMethodsCalculated, GTInfo.getNumberOfMethod(),
+                                "Fail nbMethod Project" + projectNumber);
+                        assertEquals(numberOfAbstractMethodsCalculated, GTInfo.getNumberOfAbstractMethod(),
+                                "Fail nbAbstractMethod Project" + projectNumber);
                     }
                 }
             }

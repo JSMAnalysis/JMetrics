@@ -36,8 +36,6 @@ public class Project {
         this.dependencies = new ArrayList<>();
     }
 
-    public String getDirectory() { return directory; }
-
     public int getNumberOfClasses() { return this.numberOfClasses; }
 
     public int getNumberOfPackages() { return this.numberOfPackages; }
