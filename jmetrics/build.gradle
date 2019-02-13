@@ -3,6 +3,10 @@ apply plugin: 'application'
 
 defaultTasks 'compileJava', 'compileTestJava'
 
+
+
+mainClassName = 'fr.ubordeaux.jmetrics.Main'
+
 repositories {
     mavenCentral()
     jcenter()
@@ -40,4 +44,12 @@ run{
 
 test{
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
 }
