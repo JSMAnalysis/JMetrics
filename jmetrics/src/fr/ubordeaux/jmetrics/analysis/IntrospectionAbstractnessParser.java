@@ -13,15 +13,15 @@ public class IntrospectionAbstractnessParser extends IntrospectionParser impleme
 
     @Override
     public AbstractnessData getAbstractnessData(ClassFile file) {
-        Class c = getClassFromFile(file);
+        Class<?> c = getClassFromFile(file);
         return new AbstractnessData(getNumberOfMethods(c),getNumberOfAbstractMethods(c));
     }
 
-    private int getNumberOfMethods(Class c) {
+    private int getNumberOfMethods(Class<?> c) {
         return c.getDeclaredMethods().length;
     }
 
-    private int getNumberOfAbstractMethods(Class c) {
+    private int getNumberOfAbstractMethods(Class<?> c) {
         int abstractCount = 0;
         for(Method method : c.getDeclaredMethods()){
             if(Modifier.isAbstract(method.getModifiers())){

@@ -13,10 +13,10 @@ import java.util.Map;
  */
 public abstract class IntrospectionParser {
 
-    private Map<ClassFile, SoftReference<Class>> cache = new HashMap<>();
+    private Map<ClassFile, SoftReference<Class<?>>> cache = new HashMap<>();
 
-    public Class getClassFromFile(ClassFile file){
-        Class c = cache.containsKey(file) ? cache.get(file).get() : null;
+    public Class<?> getClassFromFile(ClassFile file){
+        Class<?> c = cache.containsKey(file) ? cache.get(file).get() : null;
         if(c != null){
             return c;
         }
@@ -41,7 +41,7 @@ public abstract class IntrospectionParser {
      * A class loader that is able to create a class object from an array of bytes.
      */
     private class ByteCodeClassLoader extends ClassLoader{
-        public Class getClassFromByteCode(byte[] bytes){
+        public Class<?> getClassFromByteCode(byte[] bytes){
             return defineClass(null, bytes, 0, bytes.length);
         }
     }

@@ -18,11 +18,11 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
 
     @Override
     public List<Dependency> getInheritanceDependencies(ClassFile srcFile) {
-        Class srcClass = getClassFromFile(srcFile);
-        Class   superClass = srcClass.getSuperclass();
-        Class[] interfaces = srcClass.getInterfaces();
+        Class<?> srcClass = getClassFromFile(srcFile);
+        Class<?>   superClass = srcClass.getSuperclass();
+        Class<?>[] interfaces = srcClass.getInterfaces();
 
-        ArrayList<Class> efferentDependencies = new ArrayList<>(Arrays.asList(interfaces));
+        ArrayList<Class<?>> efferentDependencies = new ArrayList<>(Arrays.asList(interfaces));
         if(superClass != null) {
             efferentDependencies.add(superClass);
         }
@@ -34,11 +34,11 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
 
     @Override
     public List<Dependency> getAggregationDependencies(ClassFile srcFile) {
-        Class srcClass = getClassFromFile(srcFile);
+        Class<?> srcClass = getClassFromFile(srcFile);
 
-        ArrayList<Class> efferentDependencies = new ArrayList<>();
+        ArrayList<Class<?>> efferentDependencies = new ArrayList<>();
         for (Field field: srcClass.getDeclaredFields()) {
-            Class type = field.getType();
+            Class<?> type = field.getType();
             if (!type.isPrimitive() && !efferentDependencies.contains(type) && srcClass != type) {
                 efferentDependencies.add(type);
             }
@@ -51,21 +51,21 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
 
     @Override
     public List<Dependency> getSignatureDependencies(ClassFile srcFile) {
-        Class srcClass = getClassFromFile(srcFile);
+        Class<?> srcClass = getClassFromFile(srcFile);
 
-        ArrayList<Class> efferentDependencies = new ArrayList<>();
-        ArrayList<Class> methodDependencies = new ArrayList<>();
+        ArrayList<Class<?>> efferentDependencies = new ArrayList<>();
+        ArrayList<Class<?>> methodDependencies = new ArrayList<>();
         for (Method method: srcClass.getDeclaredMethods()) {
-            Class[] exceptions = method.getExceptionTypes();
-            Class[] parameters = method.getParameterTypes();
-            Class returnType = method.getReturnType();
+            Class<?>[] exceptions = method.getExceptionTypes();
+            Class<?>[] parameters = method.getParameterTypes();
+            Class<?> returnType = method.getReturnType();
 
             methodDependencies.addAll(Arrays.asList(exceptions));
             methodDependencies.addAll(Arrays.asList(parameters));
             methodDependencies.add(returnType);
         }
 
-        for (Class dep: methodDependencies) {
+        for (Class<?> dep: methodDependencies) {
             if (!dep.isPrimitive() && !efferentDependencies.contains(dep) && srcClass != dep) {
                 efferentDependencies.add(dep);
             }
@@ -90,12 +90,12 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
      * @param projectClasses List of all class files in the project.
      * @return List of ClassCategory (Elementary) such as efferent dependencies is in the project.
      */
-    private List<ClassCategory> findEfferentDependenciesInProject(List<Class> efferentDependencies,
+    private List<ClassCategory> findEfferentDependenciesInProject(List<Class<?>> efferentDependencies,
                                                                   List<ClassFile> projectClasses) {
         List<ClassCategory> matchDependencies = new ArrayList<>();
-        for (Class classEff: efferentDependencies) {
+        for (Class<?> classEff: efferentDependencies) {
             for (ClassFile dstFile: projectClasses) {
-                Class dstClass = getClassFromFile(dstFile);
+                Class<?> dstClass = getClassFromFile(dstFile);
                 if (dstClass.getName().equals(classEff.getName())) {
                     ClassCategory dst = new ElementaryCategory(dstFile);
                     matchDependencies.add(dst);

@@ -1,7 +1,6 @@
 package fr.ubordeaux.jmetrics.metrics;
 
 import fr.ubordeaux.jmetrics.metrics.components.MetricsComponent;
-import fr.ubordeaux.jmetrics.project.ProjectComponent;
 
 import java.util.HashSet;
 import java.util.Objects;
