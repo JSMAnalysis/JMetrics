@@ -84,4 +84,8 @@ public class ProjectStructure {
         return null;
     }
 
+    public String getrootPath(){
+        return structure != null ? structure.getPath() : "";
+    }
+
 }
