@@ -5,7 +5,6 @@ import fr.ubordeaux.jmetrics.metrics.GranularityScale;
 
 /**
  * Exposes an interface to build the representation of a graph as a String.
- * TODO: Documentation method
  */
 public interface GraphPresentationBuilder {
 
