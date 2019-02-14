@@ -69,6 +69,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
                 break;
             case Internal:
                 strBuilder.append(INHERITANCE_COLOR);
+                break;
             default:
                 strBuilder.append("black");
                 break;
