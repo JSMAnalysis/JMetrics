@@ -26,7 +26,9 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
 
     private StringBuilder strBuilder;
     private Map<GranularityScale, Integer> mapping;
-    private int nodeNumber = 0;
+    private int nodeNumber;
+    private boolean canAddNode;
+    private boolean terminated;
 
     public GraphDotBuilder(){
         createNewGraph();
@@ -37,12 +39,17 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         strBuilder = new StringBuilder();
         mapping = new HashMap<>();
         nodeNumber = 0;
+        canAddNode = true;
+        terminated = false;
         strBuilder.append(BEGINNING_TOKEN);
         buildLegend();
     }
 
     @Override
     public void addNode(GranularityScale node){
+        if(!canAddNode || terminated){
+            return;
+        }
         mapping.putIfAbsent(node, ++nodeNumber);
         strBuilder.append(nodeNumber);
         strBuilder.append(LABEL_BEGIN);
@@ -53,6 +60,9 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
 
     @Override
     public void addEdge(DependencyEdge edge){
+        if(terminated){
+            return;
+        }
         strBuilder.append(mapping.get(edge.getSource()));
         strBuilder.append(EDGE_TOKEN);
         strBuilder.append(mapping.get(edge.getTarget()));
@@ -76,16 +86,24 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         }
         strBuilder.append("\"]");
         strBuilder.append(LINE_END_TOKEN);
+        canAddNode = false;
     }
 
     @Override
     public void endGraph(){
+        if(terminated){
+            return;
+        }
         strBuilder.append(ENDING_TOKEN);
+        terminated = true;
     }
 
     @Override
     public String getGraphPresentation(){
-        return strBuilder.toString();
+        if(terminated) {
+            return strBuilder.toString();
+        }
+        return "";
     }
 
     private void buildLegend(){
