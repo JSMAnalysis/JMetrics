@@ -10,7 +10,7 @@ public abstract class MetricsComponent {
 
     public MetricsComponent(double value) throws BadMetricsValueException {
         if(!isValid(value)) {
-            throw new BadMetricsValueException("Given value does not satisfy constraint.");
+            throw new BadMetricsValueException("The given value (" + value + ") does not satisfy constraint.");
         }
         this.value = value;
     }
@@ -33,4 +33,5 @@ public abstract class MetricsComponent {
     public int hashCode() {
         return Objects.hash(value);
     }
+
 }

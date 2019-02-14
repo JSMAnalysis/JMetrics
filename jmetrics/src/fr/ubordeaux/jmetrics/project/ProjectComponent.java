@@ -44,4 +44,5 @@ public abstract class ProjectComponent {
     public int hashCode() {
         return Objects.hash(name, file, path);
     }
+
 }

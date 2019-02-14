@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Represents a .class File (containing a Java class' ByteCode).
+ * Represents a .class File (containing a Java class ByteCode).
  */
 public class ClassFile extends ProjectComponent {
 
@@ -22,8 +22,7 @@ public class ClassFile extends ProjectComponent {
     public InputStream getInputStream(){
         try {
             return new FileInputStream(getFile());
-        }
-        catch(IOException e){
+        } catch(IOException e){
             return null;
         }
     }

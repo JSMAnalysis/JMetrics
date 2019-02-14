@@ -19,7 +19,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
     @Override
     public List<Dependency> getInheritanceDependencies(ClassFile srcFile) {
         Class<?> srcClass = getClassFromFile(srcFile);
-        Class<?>   superClass = srcClass.getSuperclass();
+        Class<?> superClass = srcClass.getSuperclass();
         Class<?>[] interfaces = srcClass.getInterfaces();
 
         ArrayList<Class<?>> efferentDependencies = new ArrayList<>(Arrays.asList(interfaces));
@@ -115,10 +115,8 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
     private List<Dependency> generateDependenciesList(GranularityScale src, DependencyType type,
                                                       List<GranularityScale> dstList) {
         List<Dependency> dependencies = new ArrayList<>();
-        if (dstList != null) {
-            for (GranularityScale dst: dstList) {
-                dependencies.add(new Dependency(src, dst, type));
-            }
+        for (GranularityScale dst: dstList) {
+            dependencies.add(new Dependency(src, dst, type));
         }
         return dependencies;
     }

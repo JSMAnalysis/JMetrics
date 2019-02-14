@@ -22,6 +22,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     private static final String AGGREGATION_COLOR = "blue";
     private static final String SIGNATURE_COLOR = "green";
     private static final String INTERNAL_COLOR = "grey";
+    private static final String DEFAULT_COLOR = "black";
 
     private StringBuilder strBuilder;
     private Map<GranularityScale, Integer> mapping;
@@ -41,11 +42,11 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     }
 
     @Override
-    public void addNode(GranularityScale category){
-        mapping.putIfAbsent(category, ++nodeNumber);
+    public void addNode(GranularityScale node){
+        mapping.putIfAbsent(node, ++nodeNumber);
         strBuilder.append(nodeNumber);
         strBuilder.append(LABEL_BEGIN);
-        strBuilder.append(category.getName());
+        strBuilder.append(node.getName());
         strBuilder.append(LABEL_END);
         strBuilder.append(LINE_END_TOKEN);
     }
@@ -56,7 +57,6 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         strBuilder.append(EDGE_TOKEN);
         strBuilder.append(mapping.get(edge.getTarget()));
         strBuilder.append(" [color=\"");
-        //FIXME I don't like switches, but I do not have a better idea right now
         switch (edge.getType()){
             case Inheritance:
                 strBuilder.append(INHERITANCE_COLOR);
@@ -71,7 +71,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
                 strBuilder.append(INHERITANCE_COLOR);
                 break;
             default:
-                strBuilder.append("black");
+                strBuilder.append(DEFAULT_COLOR);
                 break;
         }
         strBuilder.append("\"]");

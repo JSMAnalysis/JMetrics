@@ -10,11 +10,11 @@ import java.util.Set;
  */
 public class GraphConstructor {
 
-    public DirectedGraph<GranularityScale, DependencyEdge> constructGraph(Set<GranularityScale> categories, Set<Dependency> dependencies) {
+    public DirectedGraph<GranularityScale, DependencyEdge> constructGraph(Set<GranularityScale> nodes, Set<Dependency> dependencies) {
         DirectedGraph<GranularityScale, DependencyEdge> graph = new DirectedGraph<>();
 
-        for (GranularityScale category : categories) {
-            graph.addNode(category);
+        for (GranularityScale node : nodes) {
+            graph.addNode(node);
         }
 
         for(Dependency dependency : dependencies) {

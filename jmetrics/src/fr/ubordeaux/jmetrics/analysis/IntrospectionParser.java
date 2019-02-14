@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A base class for parser using introspection. Provides a method to convert get a Class object from a ClassFile.
+ * A base class for parser using introspection. Provides a method to get a Class object from a ClassFile.
  */
 public abstract class IntrospectionParser {
 
@@ -37,11 +37,10 @@ public abstract class IntrospectionParser {
                     + " does not seem to exist or is temporarily unavailable.");
         }
         ByteCodeClassLoader loader;
-        try{
-            URL projectRoot = (new File(ProjectStructure.getInstance().getrootPath()).toURI().toURL());
+        try {
+            URL projectRoot = (new File(ProjectStructure.getInstance().getRootPath()).toURI().toURL());
             loader = new ByteCodeClassLoader(projectRoot);
-        }
-        catch (MalformedURLException e){
+        } catch (MalformedURLException e){
             loader = new ByteCodeClassLoader();
         }
         c = loader.getClassFromByteCode(byteCode);
@@ -65,6 +64,7 @@ public abstract class IntrospectionParser {
         public Class<?> getClassFromByteCode(byte[] bytes){
             return defineClass(null, bytes, 0, bytes.length);
         }
+
     }
 
 }

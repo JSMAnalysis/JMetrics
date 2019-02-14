@@ -31,4 +31,5 @@ public class DependencyEdge extends DirectedGraphEdge<GranularityScale> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), type);
     }
+
 }

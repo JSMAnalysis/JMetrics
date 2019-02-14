@@ -6,6 +6,7 @@ import java.util.*;
  * Defines a directed graph data structures with usual primitives.
  */
 public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
+
     private Map<N, List<E>> adjacencyLists;
 
     public DirectedGraph() {
@@ -17,7 +18,7 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
      * @param node The node to add.
      */
     public void addNode(N node){
-        this.adjacencyLists.putIfAbsent(node, new ArrayList<>());
+        adjacencyLists.putIfAbsent(node, new ArrayList<>());
     }
 
     /**
@@ -29,11 +30,11 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
         if(!hasNode(node)){
             return;
         }
-        //removes all edges which the node is targeted by
+        // Removes all edges which the node is targeted by
         for(Map.Entry<N, List<E>> adjacencyList : adjacencyLists.entrySet()){
             adjacencyList.getValue().removeAll(getIncomingEdgesList(node, adjacencyList.getKey()));
         }
-        //actually removes the node
+        // Actually removes the node
         adjacencyLists.remove(node);
     }
 
@@ -50,7 +51,7 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
     }
 
     /**
-     * Add an edge from the graph.
+     * Remove an edge from the graph.
      * @param edge The edge to remove.
      * @throws NodeNotFoundException if either the destination or the source of the edge is not part of the graph.
      */
@@ -79,7 +80,7 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
     }
 
     /**
-     * A getter to obtain all the edges which a node is the source of.
+     * A getter to obtain all edges which a node is the source of.
      * @param source The node that is the source of the edges.
      * @return A {@link List} containing all the edges coming from the provided node.
      */
@@ -91,10 +92,10 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
     }
 
     /**
-     * A getter to obtain all the edges which a node is the destination of, coming from another specific node.
+     * A getter to obtain all edges which a node is the destination of, coming from another specific node.
      * @param destination The node that is the destination of the edges.
      * @param source The node that is the source of the edges.
-     * @return A {@link List} containing all the edges coming from the provided source to the provided destination.
+     * @return A {@link List} containing all edges coming from the provided source to the provided destination.
      * @throws NodeNotFoundException if either the destination or the source is not part of the graph.
      */
     public List<E> getIncomingEdgesList(N destination, N source){
@@ -111,9 +112,9 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
     }
 
     /**
-     * A getter to obtain all the edges which a node is the destination of, coming from any node.
-     * @param destination The node that is the destination of the edges.
-     * @return A {@link List} containing all the edges arriving to the provided destination.
+     * A getter to obtain all edges which a node is the destination of, coming from any node.
+     * @param destination The node that is the destination of edges.
+     * @return A {@link List} containing all edges arriving to the provided destination.
      * @throws NodeNotFoundException if the destination is not part of the graph.
      */
     public List<E> getIncomingEdgesList(N destination){
@@ -139,4 +140,5 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
     public int hashCode() {
         return Objects.hash(adjacencyLists);
     }
+
 }

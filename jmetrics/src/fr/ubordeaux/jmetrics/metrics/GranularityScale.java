@@ -21,7 +21,7 @@ public abstract class GranularityScale {
     }
 
     public Set<MetricsComponent> getMetricsSet(){
-        return metricsSet;
+        return new HashSet<>(metricsSet);
     }
 
     public void addMetrics(MetricsComponent metrics){
@@ -41,4 +41,5 @@ public abstract class GranularityScale {
     public int hashCode() {
         return Objects.hash(name, metricsSet);
     }
+
 }

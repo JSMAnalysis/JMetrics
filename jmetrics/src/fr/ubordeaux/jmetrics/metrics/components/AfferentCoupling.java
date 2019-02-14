@@ -6,8 +6,8 @@ import fr.ubordeaux.jmetrics.metrics.GranularityScale;
 
 public class AfferentCoupling extends MetricsComponent {
 
-    public AfferentCoupling(DirectedGraph<GranularityScale, DependencyEdge> graph, GranularityScale category) {
-        super(graph.getIncomingEdgesList(category).size());
+    public AfferentCoupling(DirectedGraph<GranularityScale, DependencyEdge> graph, GranularityScale granule) {
+        super(graph.getIncomingEdgesList(granule).size());
     }
 
     @Override

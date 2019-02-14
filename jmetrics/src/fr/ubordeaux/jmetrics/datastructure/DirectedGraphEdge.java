@@ -36,4 +36,5 @@ public class DirectedGraphEdge<N> {
     public int hashCode() {
         return Objects.hash(source, target);
     }
+
 }

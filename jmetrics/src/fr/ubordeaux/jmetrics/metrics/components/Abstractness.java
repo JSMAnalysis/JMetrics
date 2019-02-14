@@ -12,4 +12,5 @@ public class Abstractness extends MetricsComponent {
     protected boolean isValid(double value) {
         return value >= 0 && value <= 1;
     }
+
 }

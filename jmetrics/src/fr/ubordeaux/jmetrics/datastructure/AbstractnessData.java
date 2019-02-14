@@ -8,7 +8,6 @@ public class AbstractnessData {
     private int numberOfAbstractMethods;
 
     public AbstractnessData(int numberOfMethods, int numberOfAbstractMethods){
-
         this.numberOfMethods = numberOfMethods;
         this.numberOfAbstractMethods = numberOfAbstractMethods;
     }
@@ -34,4 +33,5 @@ public class AbstractnessData {
     public int hashCode() {
         return Objects.hash(numberOfMethods, numberOfAbstractMethods);
     }
+
 }
