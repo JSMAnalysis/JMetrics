@@ -44,16 +44,16 @@ public class GroundTruthManager {
         Project p = getProject(projectNumber);
         ProjectComponent rootComponent = explorer.generateStructure(p.getPath());
         ProjectStructure PS = ProjectStructure.getInstance();
-        PS.cacheClear();
         PS.setStructure(rootComponent);
     }
 
     public Project getProject(int projectNumber) {
+        ProjectStructure.getInstance().cacheClear();
         return projects.get(projectNumber - 1);
     }
 
     private void setupExample1() {
-        Project Example1 = new Project("example1/", 6, 0);
+        Project Example1 = new Project("example1/", 6, 1);
 
         String CLASS_AIRPLANE = "Airplane.class";
         String CLASS_CAR = "Car.class";
@@ -92,7 +92,7 @@ public class GroundTruthManager {
     }
 
     private void setupExample2() {
-        Project Example2 = new Project("example2/", 11, 3);
+        Project Example2 = new Project("example2/", 11, 4);
 
         String CLASS_BASE_PIZZA = "kitchen/BasePizza.class";
         String CLASS_PASTA_TYPE = "kitchen/PastaType.class";

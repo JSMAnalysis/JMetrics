@@ -12,17 +12,22 @@ public class PackageDirectory extends ProjectComponent {
 
     private List<ProjectComponent> content;
 
-    public PackageDirectory(File file) {
+    private int depth;
+
+    public PackageDirectory(File file, int depth) {
         super(file);
         content = new ArrayList<>();
+        this.depth = depth;
     }
 
     public List<ProjectComponent> getContent() {
         return new ArrayList<>(content);
     }
 
-    public void setContent(List<ProjectComponent> content) {
-        this.content = content;
+    public void addContent(ProjectComponent content) { this.content.add(content); }
+
+    public int getDepth() {
+        return depth;
     }
 
     @Override
@@ -38,4 +43,5 @@ public class PackageDirectory extends ProjectComponent {
     public int hashCode() {
         return Objects.hash(super.hashCode(), content);
     }
+
 }

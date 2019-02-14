@@ -1,8 +1,8 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 /**
  * Service that traverses directories to generate Project Structure.
@@ -15,32 +15,34 @@ public class FileSystemExplorer {
         if (!isValidPath(path)) {
             throw new InvalidProjectPathException("Path \"" + path + "\" does not exist or does not lead to a directory.");
         }
-        File rootFile = new File(path);
-        PackageDirectory project = new PackageDirectory(rootFile);
-        project.setContent(getRecursiveStructure(rootFile, new ArrayList<>()));
-        return project;
+        File rootDir = new File(path);
+        PackageDirectory project = new PackageDirectory(rootDir, 0);
+        setRecursiveStructure(rootDir, project, 0);
+        return project.getContent().get(0);
     }
 
     /**
-     * Explore a project's structure recursively.
+     * Explore recursively a project's structure from a given file node.
+     * Set the explored structure in the content of the given PackageDirectory.
      * @param node The {@link File} to explore.
-     * @param accumulator An accumulator representing the list built so far. Must be initialized as an empty list.
-     * @return The structure of the given node.
+     * @param parent The root node of the structure to explore
+     * @param depth The depth level of exploration.
      */
-    private List<ProjectComponent> getRecursiveStructure(File node, List<ProjectComponent> accumulator) {
-        List<ProjectComponent> components = new ArrayList<>(accumulator);
-        if(isClassFile(node)){
-            components.add(new ClassFile(node));
-        }
-        else if(node.isDirectory()) {
+    private void setRecursiveStructure(File node, PackageDirectory parent, int depth) {
+        if (isClassFile(node)) {
+            parent.addContent(new ClassFile(node));
+        } else if (node.isDirectory()) {
+            PackageDirectory dir = new PackageDirectory(node, depth++);
             File[] files = node.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    components = getRecursiveStructure(file, components);
-                }
+            if (files == null) {
+                throw new UncheckedIOException(new IOException("A problem has occurred while inspecting the given directory."));
             }
+            for (File file: files) {
+                if (isClassFile(file)) dir.addContent(new ClassFile(file));
+                else setRecursiveStructure(file, dir, depth++);
+            }
+            parent.addContent(dir);
         }
-        return components;
     }
 
     /**
