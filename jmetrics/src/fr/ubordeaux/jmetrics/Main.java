@@ -18,11 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        if(args.length != 1){
-            System.out.println("Invalid number of argument, one needed");
+        if(args.length < 1 || args.length > 2){
+            System.out.println("Invalid number of arguments");
+            System.out.println("Usage : <jmetrics_run_command> <path_to_analyzed_project> [--dot-only]");
             System.exit(1);
         }
         String path = args[0];
+        boolean dotOnly = args.length == 2 && args[1].equals("--dot-only");
 
         // Project's exploration
         ProjectStructure structure = ProjectStructure.getInstance();
@@ -56,27 +58,36 @@ public class Main {
 
         // Graph construction
         Set<GranularityScale> nodes = new HashSet<>();
+        //FIXME this is inevitable for the moment as no mapping between ClassFile and ClassGranularity is available, will be removed later when fixed
+        Map<GranularityScale, ClassFile> fileToNodeMapping = new HashMap<>();
         for (ClassFile c : classes) {
-            nodes.add(new ClassGranularity(c));
+            GranularityScale node = new ClassGranularity(c);
+            nodes.add(node);
+            fileToNodeMapping.put(node, c);
         }
         DirectedGraph<GranularityScale, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
 
         // Metrics computation
+        if(!dotOnly){
+            System.out.println("Metrics values by class :");
+        }
         MetricsComponent A, CA, CE, I, Dn;
         for (GranularityScale c : nodes) {
-            //A = new Abstractness()  TODO
+            A = new Abstractness(aData.get(fileToNodeMapping.get(c)));
             CA = new AfferentCoupling(graph, c);
             CE = new EfferentCoupling(graph, c);
             I = new Instability(CE.getValue(), CA.getValue());
-            //Dn = new NormalizedDistance() TODO
+            Dn = new NormalizedDistance(A.getValue(), I.getValue());
 
 
-            System.out.println(c.getName());
-            //System.out.println("A : "); TODO
-            System.out.println("Ca : " + CA.getValue());
-            System.out.println("Ce : " + CE.getValue());
-            System.out.println("I : " + I.getValue());
-            //System.out.println("Dn : " + Dn.getValue()); TODO
+            if(!dotOnly) {
+                System.out.println(c.getName());
+                System.out.println("\tA : " + A.getValue());
+                System.out.println("\tCa : " + CA.getValue());
+                System.out.println("\tCe : " + CE.getValue());
+                System.out.println("\tI : " + I.getValue());
+                System.out.println("\tDn : " + Dn.getValue());
+            }
         }
 
         //graph's DOT representation building
@@ -91,9 +102,11 @@ public class Main {
             }
         }
         gBuilder.endGraph();
+        if(!dotOnly){
+            System.out.println();
+            System.out.println("DOT-formatted dependency graph :");
+        }
         System.out.println(gBuilder.getGraphPresentation());
-
-        System.out.println("The full execution pipeline is not currently implemented");
     }
 
 }

@@ -3,13 +3,14 @@
 ## Build instructions :
 
 This project uses **Gradle** as a build tool. To ensure Gradle's version compatibility, a wrapper 
-is provided.
+is provided. To use it, please run the wrapper script corresponding to your operating system :
 
-For Windows, please use the **gradlew.bat** script.
+ - **gradlew.bat** for Windows.
 
-For Linux and MacOS, please use the **gradlew** script.
+ - **gradlew** for Linux, MacOS or other Unix-like systems.
 
-To compile and test, you can use the following commands :
+The following example assume that you're using an Unix-like system ; you will have to replace the *./gradlew* by 
+*.\gradlew.bat* for it to work on Windows. To compile and test, you can use the following commands :
 
 - to compile the project : 
 
@@ -48,18 +49,42 @@ The jar is located in **out/jar/**
 
 ## Run instructions :
 
-To run you can use the following commands :
-
-- to run the application with Gradle: 
+For now, jmetrics allows to display metrics values for all classes of a compiled Java project, as well as getting a
+DOT-formatted dependency graph. The software detects dependencies in :
+ 
+- inheritance and implementation
+- attributes
+- methods parameters, return type and thrown exceptions
+ 
+You can run the application using the following command (using the jar compiled in out/jar/) :
 
 ```
-./gradlew run --args="<PATH>"
+java -jar jmetrics.jar <args...>
 ```
 
-- to run the application from the binary jar :
+Alternatively, you can run jmetrics using gradle :
 
 ```
-java -jar jmetrics.jar <PATH>
+./gradlew run --args="<args...>"
 ```
 
-Where `PATH` is the path to the location of the project you want to analyze.
+The command-line application takes up to 2 arguments, one mandatory and one optional. These arguments must come in
+ the following order :
+
+ - The path to the root of a compiled Java project (containing .class files). This is the project you want to analyze.
+  This cannot be omitted.
+  
+ - A `--dot-only` flag. If this flag is passed to the application, it will only input a dependency graph encoded in the
+ .DOT format. It is useful the redirect the program's output to a .dot file. This is optional.
+ 
+For example, to analyze a project located in **out/bin/** and get **metrics values + DOT graph**, you can use :
+
+```
+java -jar jmetrics.jar out/bin/
+```
+
+To get a .dot file containing the dependency graph of the same project, you can use :
+
+```
+java -jar jmetrics.jar out/bin/ --dot-only > myfile.dot
+```
