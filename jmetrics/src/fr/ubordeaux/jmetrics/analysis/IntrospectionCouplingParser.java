@@ -1,7 +1,7 @@
 package fr.ubordeaux.jmetrics.analysis;
 
-import fr.ubordeaux.jmetrics.metrics.ClassCategory;
-import fr.ubordeaux.jmetrics.metrics.ElementaryCategory;
+import fr.ubordeaux.jmetrics.metrics.GranularityScale;
+import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
@@ -28,8 +28,8 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         }
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<ClassCategory> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ElementaryCategory(srcFile), DependencyType.Inheritance, dstClasses);
+        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
+        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Inheritance, dstClasses);
     }
 
     @Override
@@ -45,8 +45,8 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         }
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<ClassCategory> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ElementaryCategory(srcFile), DependencyType.Aggregation, dstClasses);
+        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
+        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Aggregation, dstClasses);
     }
 
     @Override
@@ -72,8 +72,8 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         }
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<ClassCategory> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ElementaryCategory(srcFile), DependencyType.Signature, dstClasses);
+        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
+        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Signature, dstClasses);
     }
 
     @Override
@@ -88,16 +88,16 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
      * Determine the list of efferent dependencies class that is present in project classes.
      * @param efferentDependencies List of class where the analyzed class depend upon.
      * @param projectClasses List of all class files in the project.
-     * @return List of ClassCategory (Elementary) such as efferent dependencies is in the project.
+     * @return List of GranularityScale (Elementary) such as efferent dependencies is in the project.
      */
-    private List<ClassCategory> findEfferentDependenciesInProject(List<Class<?>> efferentDependencies,
-                                                                  List<ClassFile> projectClasses) {
-        List<ClassCategory> matchDependencies = new ArrayList<>();
+    private List<GranularityScale> findEfferentDependenciesInProject(List<Class<?>> efferentDependencies,
+                                                                     List<ClassFile> projectClasses) {
+        List<GranularityScale> matchDependencies = new ArrayList<>();
         for (Class<?> classEff: efferentDependencies) {
             for (ClassFile dstFile: projectClasses) {
                 Class<?> dstClass = getClassFromFile(dstFile);
                 if (dstClass.getName().equals(classEff.getName())) {
-                    ClassCategory dst = new ElementaryCategory(dstFile);
+                    GranularityScale dst = new ClassGranularity(dstFile);
                     matchDependencies.add(dst);
                 }
             }
@@ -112,11 +112,11 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
      * @param dstList The list of destination class categories.
      * @return The list of generated dependencies.
      */
-    private List<Dependency> generateDependenciesList(ClassCategory src, DependencyType type,
-                                                      List<ClassCategory> dstList) {
+    private List<Dependency> generateDependenciesList(GranularityScale src, DependencyType type,
+                                                      List<GranularityScale> dstList) {
         List<Dependency> dependencies = new ArrayList<>();
         if (dstList != null) {
-            for (ClassCategory dst: dstList) {
+            for (GranularityScale dst: dstList) {
                 dependencies.add(new Dependency(src, dst, type));
             }
         }

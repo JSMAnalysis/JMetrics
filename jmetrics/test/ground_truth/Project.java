@@ -2,8 +2,8 @@ package ground_truth;
 
 import fr.ubordeaux.jmetrics.analysis.Dependency;
 import fr.ubordeaux.jmetrics.analysis.DependencyType;
-import fr.ubordeaux.jmetrics.metrics.ClassCategory;
-import fr.ubordeaux.jmetrics.metrics.ElementaryCategory;
+import fr.ubordeaux.jmetrics.metrics.GranularityScale;
+import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 
 import java.io.File;
@@ -74,8 +74,8 @@ public class Project {
         return new ClassFile(new File(path));
     }
 
-    public ClassCategory getClassCategory(String className) {
-        return new ElementaryCategory(getClassFile(className));
+    public GranularityScale getClassCategory(String className) {
+        return new ClassGranularity(getClassFile(className));
     }
 
 }

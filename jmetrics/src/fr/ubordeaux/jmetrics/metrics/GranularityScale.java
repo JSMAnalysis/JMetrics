@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class ClassCategory {
+public abstract class GranularityScale {
 
     private String name;
     private Set<MetricsComponent> metricsSet;
 
-    public ClassCategory(String name){
+    public GranularityScale(String name){
         this.name = name;
         this.metricsSet = new HashSet<>();
     }
@@ -32,7 +32,7 @@ public abstract class ClassCategory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClassCategory that = (ClassCategory) o;
+        GranularityScale that = (GranularityScale) o;
         return name.equals(that.name) &&
                 metricsSet.equals(that.metricsSet);
     }

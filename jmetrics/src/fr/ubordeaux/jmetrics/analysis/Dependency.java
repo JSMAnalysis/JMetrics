@@ -1,6 +1,6 @@
 package fr.ubordeaux.jmetrics.analysis;
 
-import fr.ubordeaux.jmetrics.metrics.ClassCategory;
+import fr.ubordeaux.jmetrics.metrics.GranularityScale;
 
 import java.util.Objects;
 
@@ -9,21 +9,21 @@ import java.util.Objects;
  */
 public class Dependency {
 
-    private ClassCategory source;
-    private ClassCategory destination;
+    private GranularityScale source;
+    private GranularityScale destination;
     private DependencyType type;
 
-    public Dependency(ClassCategory source, ClassCategory destination, DependencyType type) {
+    public Dependency(GranularityScale source, GranularityScale destination, DependencyType type) {
         this.source = source;
         this.destination = destination;
         this.type = type;
     }
 
-    public ClassCategory getSource() {
+    public GranularityScale getSource() {
         return source;
     }
 
-    public ClassCategory getDestination() {
+    public GranularityScale getDestination() {
         return destination;
     }
 

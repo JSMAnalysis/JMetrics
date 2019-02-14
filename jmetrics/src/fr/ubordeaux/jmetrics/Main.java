@@ -2,8 +2,8 @@ package fr.ubordeaux.jmetrics;
 
 import fr.ubordeaux.jmetrics.analysis.*;
 import fr.ubordeaux.jmetrics.datastructure.*;
-import fr.ubordeaux.jmetrics.metrics.ClassCategory;
-import fr.ubordeaux.jmetrics.metrics.ElementaryCategory;
+import fr.ubordeaux.jmetrics.metrics.GranularityScale;
+import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
 import fr.ubordeaux.jmetrics.metrics.components.*;
 import fr.ubordeaux.jmetrics.presentation.GraphDotBuilder;
 import fr.ubordeaux.jmetrics.presentation.GraphPresentationBuilder;
@@ -55,15 +55,15 @@ public class Main {
         }
 
         // Graph construction
-        Set<ClassCategory> nodes = new HashSet<>();
+        Set<GranularityScale> nodes = new HashSet<>();
         for (ClassFile c : classes) {
-            nodes.add(new ElementaryCategory(c));
+            nodes.add(new ClassGranularity(c));
         }
-        DirectedGraph<ClassCategory, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
+        DirectedGraph<GranularityScale, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
 
         // Metrics computation
         MetricsComponent A, CA, CE, I, Dn;
-        for (ClassCategory c : nodes) {
+        for (GranularityScale c : nodes) {
             //A = new Abstractness()  TODO
             CA = new AfferentCoupling(graph, c);
             CE = new EfferentCoupling(graph, c);
@@ -82,10 +82,10 @@ public class Main {
         //graph's DOT representation building
         GraphPresentationBuilder gBuilder = new GraphDotBuilder();
         gBuilder.createNewGraph();
-        for (ClassCategory node : graph.getNodeSet()) {
+        for (GranularityScale node : graph.getNodeSet()) {
             gBuilder.addNode(node);
         }
-        for (ClassCategory node : graph.getNodeSet()) {
+        for (GranularityScale node : graph.getNodeSet()) {
             for (DependencyEdge edge : graph.getOutcomingEdgeList(node)) {
                 gBuilder.addEdge(edge);
             }

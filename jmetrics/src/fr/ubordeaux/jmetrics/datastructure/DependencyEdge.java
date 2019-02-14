@@ -1,15 +1,15 @@
 package fr.ubordeaux.jmetrics.datastructure;
 
 import fr.ubordeaux.jmetrics.analysis.DependencyType;
-import fr.ubordeaux.jmetrics.metrics.ClassCategory;
+import fr.ubordeaux.jmetrics.metrics.GranularityScale;
 
 import java.util.Objects;
 
-public class DependencyEdge extends DirectedGraphEdge<ClassCategory> {
+public class DependencyEdge extends DirectedGraphEdge<GranularityScale> {
 
     private DependencyType type;
 
-    public DependencyEdge(ClassCategory source, ClassCategory target, DependencyType type) {
+    public DependencyEdge(GranularityScale source, GranularityScale target, DependencyType type) {
         super(source, target);
         this.type = type;
     }
