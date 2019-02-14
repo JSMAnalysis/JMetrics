@@ -58,8 +58,12 @@ public class Main {
 
         // Graph construction
         Set<GranularityScale> nodes = new HashSet<>();
+        //FIXME this is inevitable for the moment as no mapping between ClassFile and ClassGranularity is available, will be removed later when fixed
+        Map<GranularityScale, ClassFile> fileToNodeMapping = new HashMap<>();
         for (ClassFile c : classes) {
-            nodes.add(new ClassGranularity(c));
+            GranularityScale node = new ClassGranularity(c);
+            nodes.add(node);
+            fileToNodeMapping.put(node, c);
         }
         DirectedGraph<GranularityScale, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
 
@@ -69,20 +73,20 @@ public class Main {
         }
         MetricsComponent A, CA, CE, I, Dn;
         for (GranularityScale c : nodes) {
-            //A = new Abstractness()  TODO
+            A = new Abstractness(aData.get(fileToNodeMapping.get(c)));
             CA = new AfferentCoupling(graph, c);
             CE = new EfferentCoupling(graph, c);
             I = new Instability(CE.getValue(), CA.getValue());
-            //Dn = new NormalizedDistance() TODO
+            Dn = new NormalizedDistance(A.getValue(), I.getValue());
 
 
             if(!dotOnly) {
                 System.out.println(c.getName());
-                //System.out.println("A : "); TODO
+                System.out.println("\tA : " + A.getValue());
                 System.out.println("\tCa : " + CA.getValue());
                 System.out.println("\tCe : " + CE.getValue());
                 System.out.println("\tI : " + I.getValue());
-                //System.out.println("Dn : " + Dn.getValue()); TODO
+                System.out.println("\tDn : " + Dn.getValue());
             }
         }
 
