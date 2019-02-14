@@ -18,11 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        if(args.length != 1){
-            System.out.println("Invalid number of argument, one needed");
+        if(args.length < 1 || args.length > 2){
+            System.out.println("Invalid number of arguments");
+            System.out.println("Usage : <jmetrics_run_command> <path_to_analyzed_project> [--dot-only]");
             System.exit(1);
         }
         String path = args[0];
+        boolean dotOnly = args.length == 2 && args[1].equals("--dot-only");
 
         // Project's exploration
         ProjectStructure structure = ProjectStructure.getInstance();
@@ -62,6 +64,9 @@ public class Main {
         DirectedGraph<GranularityScale, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
 
         // Metrics computation
+        if(!dotOnly){
+            System.out.println("Metrics values by class :");
+        }
         MetricsComponent A, CA, CE, I, Dn;
         for (GranularityScale c : nodes) {
             //A = new Abstractness()  TODO
@@ -71,12 +76,14 @@ public class Main {
             //Dn = new NormalizedDistance() TODO
 
 
-            System.out.println(c.getName());
-            //System.out.println("A : "); TODO
-            System.out.println("Ca : " + CA.getValue());
-            System.out.println("Ce : " + CE.getValue());
-            System.out.println("I : " + I.getValue());
-            //System.out.println("Dn : " + Dn.getValue()); TODO
+            if(!dotOnly) {
+                System.out.println(c.getName());
+                //System.out.println("A : "); TODO
+                System.out.println("\tCa : " + CA.getValue());
+                System.out.println("\tCe : " + CE.getValue());
+                System.out.println("\tI : " + I.getValue());
+                //System.out.println("Dn : " + Dn.getValue()); TODO
+            }
         }
 
         //graph's DOT representation building
@@ -91,9 +98,11 @@ public class Main {
             }
         }
         gBuilder.endGraph();
+        if(!dotOnly){
+            System.out.println();
+            System.out.println("DOT-formatted dependency graph :");
+        }
         System.out.println(gBuilder.getGraphPresentation());
-
-        System.out.println("The full execution pipeline is not currently implemented");
     }
 
 }
