@@ -1,11 +1,12 @@
 package ground_truth.example2.store;
 
-import ground_truth.example2.domain.kitchen.Pizza;
+import ground_truth.example2.kitchen.Pizza;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
+
     private String name;
     private List<Pizza> pizzas;
 
@@ -17,4 +18,5 @@ public class Customer {
     public void addPizzaToOrder(Pizza p) {
         pizzas.add(p);
     }
+
 }

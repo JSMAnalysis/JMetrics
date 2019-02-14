@@ -1,6 +1,6 @@
-package ground_truth.example2.domain.kitchen;
+package ground_truth.example2.kitchen;
 
-import ground_truth.example2.domain.kitchen.ingredients.Ingredient;
+import ground_truth.example2.kitchen.ingredients.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,4 +48,5 @@ public class Pizza {
     public void setPastaType(PastaType pastaType) {
         this.pastaType = pastaType;
     }
+
 }

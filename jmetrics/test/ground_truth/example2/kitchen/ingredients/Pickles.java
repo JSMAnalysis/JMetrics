@@ -1,6 +1,7 @@
-package ground_truth.example2.domain.kitchen.ingredients;
+package ground_truth.example2.kitchen.ingredients;
 
 public class Pickles extends Ingredient {
+
     public Pickles(String name) {
         super(name);
     }
@@ -9,4 +10,5 @@ public class Pickles extends Ingredient {
     public boolean isAvailable() {
         return false;
     }
+
 }

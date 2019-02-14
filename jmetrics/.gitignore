@@ -4,3 +4,4 @@ out/
 classes/
 build/
 .gradle/
+.DS_Store

@@ -92,16 +92,16 @@ public class GroundTruthManager {
     }
 
     private void setupExample2() {
-        Project Example2 = new Project("example2/", 11, 2);
+        Project Example2 = new Project("example2/", 11, 3);
 
-        String CLASS_BASE_PIZZA = "domain/kitchen/BasePizza.class";
-        String CLASS_PASTA_TYPE = "domain/kitchen/PastaType.class";
-        String CLASS_PIZZA_SIZE = "domain/kitchen/PizzaSize.class";
-        String CLASS_PIZZA = "domain/kitchen/Pizza.class";
+        String CLASS_BASE_PIZZA = "kitchen/BasePizza.class";
+        String CLASS_PASTA_TYPE = "kitchen/PastaType.class";
+        String CLASS_PIZZA_SIZE = "kitchen/PizzaSize.class";
+        String CLASS_PIZZA = "kitchen/Pizza.class";
         String CLASS_MAIN = "Main.class";
-        String CLASS_INGREDIENT = "domain/kitchen/ingredients/Ingredient.class";
-        String CLASS_TOMATO = "domain/kitchen/ingredients/Tomato.class";
-        String CLASS_PICKLES = "domain/kitchen/ingredients/Pickles.class";
+        String CLASS_INGREDIENT = "kitchen/ingredients/Ingredient.class";
+        String CLASS_TOMATO = "kitchen/ingredients/Tomato.class";
+        String CLASS_PICKLES = "kitchen/ingredients/Pickles.class";
         String CLASS_CUSTOMER = "store/Customer.class";
         String CLASS_PIZZAIOLO = "store/Pizzaiolo.class";
         String CLASS_PIZZERIA = "store/Pizzeria.class";
@@ -144,20 +144,19 @@ public class GroundTruthManager {
         Example2.addDependency(CLASS_PICKLES,       CLASS_INGREDIENT,       DependencyType.Inheritance);
         Example2.addDependency(CLASS_PIZZA,         CLASS_INGREDIENT,       DependencyType.Signature);
         Example2.addDependency(CLASS_CUSTOMER,      CLASS_PIZZA,            DependencyType.Signature);
-        Example2.addDependency(CLASS_PIZZAIOLO,     CLASS_PIZZA,           DependencyType.Signature);
+        Example2.addDependency(CLASS_PIZZAIOLO,     CLASS_PIZZA,            DependencyType.Signature);
         Example2.addDependency(CLASS_PIZZA,         CLASS_BASE_PIZZA,       DependencyType.Signature);
         Example2.addDependency(CLASS_PIZZA,         CLASS_BASE_PIZZA,       DependencyType.Aggregation);
         Example2.addDependency(CLASS_PIZZA,         CLASS_PASTA_TYPE,       DependencyType.Signature);
         Example2.addDependency(CLASS_PIZZA,         CLASS_PASTA_TYPE,       DependencyType.Aggregation);
         Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZA_SIZE,       DependencyType.Signature);
         Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZA_SIZE,       DependencyType.Aggregation);
-        //Example2.addDependency(CLASS_PIZZA,         CLASS_CUSTOMER,         DependencyType.Aggregation);
-        //Example2.addDependency(CLASS_PIZZA,         CLASS_CUSTOMER,         DependencyType.Signature);
-        //Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZAIOLO,        DependencyType.Aggregation);
-        //Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZAIOLO,        DependencyType.Signature);
-        //Example2.addDependency(CLASS_PIZZERIA,      CLASS_PIZZAIOLO,        DependencyType.Aggregation);
-        //Example2.addDependency(CLASS_PIZZERIA,      CLASS_CUSTOMER,         DependencyType.Aggregation);
-        //Example2.addDependency(CLASS_INGREDIENT,    CLASS_PIZZA,            DependencyType.Aggregation);
+        // TODO: Dependency (through Generic Types) to add :
+        //  (CLASS_PIZZAIOLO,   CLASS_PIZZA,        DependencyType.Aggregation)
+        //  (CLASS_PIZZA,       CLASS_INGREDIENT,   DependencyType.Aggregation)
+        //  (CLASS_CUSTOMER,    CLASS_PIZZA,        DependencyType.Aggregation)
+        //  (CLASS_PIZZERIA,    CLASS_CUSTOMER,     DependencyType.Aggregation)
+        //  (CLASS_PIZZERIA,    CLASS_PIZZAIOLO,    DependencyType.Aggregation)
 
         projects.add(Example2);
     }

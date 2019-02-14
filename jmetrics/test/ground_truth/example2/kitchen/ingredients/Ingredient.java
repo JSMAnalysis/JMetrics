@@ -1,6 +1,7 @@
-package ground_truth.example2.domain.kitchen.ingredients;
+package ground_truth.example2.kitchen.ingredients;
 
 public abstract class Ingredient {
+
     private String name;
 
     public Ingredient(String name) {
@@ -8,6 +9,5 @@ public abstract class Ingredient {
     }
 
     public abstract boolean isAvailable();
-
 
 }
