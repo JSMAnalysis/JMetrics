@@ -72,16 +72,15 @@ class BytecodeFileSystemExplorerTest {
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
         directory = PS.getPackageDirectory("store");
-        classesContent.clear(); packagesContent.clear();
         classesContent = new ArrayList<String>() {{ add("Customer.class"); add("Pizzaiolo.class"); add("Pizzeria.class"); }};
+        packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
         directory = PS.getPackageDirectory("ingredients");
-        classesContent.clear(); packagesContent.clear();
         classesContent = new ArrayList<String>() {{ add("Ingredient.class"); add("Pickles.class"); add("Tomato.class"); }};
+        packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        classesContent.clear(); packagesContent.clear();
         directory = PS.getPackageDirectory("kitchen");
         packagesContent = new ArrayList<String>() {{ add("ingredients"); }};
         classesContent = new ArrayList<String>() {{ add("BasePizza.class"); add("PastaType.class"); add("Pizza.class"); add("PizzaSize.class"); }};
