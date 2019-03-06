@@ -6,7 +6,7 @@ import fr.ubordeaux.jmetrics.datastructure.GraphConstructor;
 import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
 import fr.ubordeaux.jmetrics.metrics.GranularityScale;
 import fr.ubordeaux.jmetrics.project.ClassFile;
-import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
+import fr.ubordeaux.jmetrics.project.BytecodeFileSystemExplorer;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
 import ground_truth.GroundTruthManager;
@@ -24,7 +24,7 @@ class DirectedGraphTest {
     @BeforeEach
     void setUp() {
         ProjectStructure structure = ProjectStructure.getInstance();
-        FileSystemExplorer explorer = new FileSystemExplorer();
+        BytecodeFileSystemExplorer explorer = new BytecodeFileSystemExplorer();
         GroundTruthManager GT = new GroundTruthManager();
         String path = GT.getProject(1).getPath();
         structure.setStructure(explorer.generateStructure(path));

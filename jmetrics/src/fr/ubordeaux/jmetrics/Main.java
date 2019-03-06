@@ -7,10 +7,7 @@ import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
 import fr.ubordeaux.jmetrics.metrics.components.*;
 import fr.ubordeaux.jmetrics.presentation.GraphDotBuilder;
 import fr.ubordeaux.jmetrics.presentation.GraphPresentationBuilder;
-import fr.ubordeaux.jmetrics.project.ClassFile;
-import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
-import fr.ubordeaux.jmetrics.project.InvalidProjectPathException;
-import fr.ubordeaux.jmetrics.project.ProjectStructure;
+import fr.ubordeaux.jmetrics.project.*;
 
 import java.util.*;
 
@@ -28,7 +25,7 @@ public class Main {
 
         // Project's exploration
         ProjectStructure structure = ProjectStructure.getInstance();
-        FileSystemExplorer explorer = new FileSystemExplorer();
+        FileSystemExplorer explorer = new BytecodeFileSystemExplorer();
         try {
             structure.setStructure(explorer.generateStructure(path));
         }

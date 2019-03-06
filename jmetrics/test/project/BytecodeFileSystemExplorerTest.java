@@ -12,14 +12,14 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileSystemExplorerTest {
+class BytecodeFileSystemExplorerTest {
 
-    private FileSystemExplorer explorer;
+    private BytecodeFileSystemExplorer explorer;
     private GroundTruthManager GT;
 
     @BeforeEach
     void setUp() {
-        explorer = new FileSystemExplorer();
+        explorer = new BytecodeFileSystemExplorer();
         GT = new GroundTruthManager();
     }
 
