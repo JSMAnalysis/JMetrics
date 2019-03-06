@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
+/**
+ * An abstraction to factorize code used by {@link FileSystemExplorer} implementations.
+ */
 public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
 
     private final String CODE_FILE_EXTENSION;
