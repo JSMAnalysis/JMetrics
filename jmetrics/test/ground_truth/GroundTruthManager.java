@@ -1,7 +1,7 @@
 package ground_truth;
 
 import fr.ubordeaux.jmetrics.analysis.DependencyType;
-import fr.ubordeaux.jmetrics.project.FileSystemExplorer;
+import fr.ubordeaux.jmetrics.project.BytecodeFileSystemExplorer;
 import fr.ubordeaux.jmetrics.project.ProjectComponent;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
@@ -40,7 +40,7 @@ public class GroundTruthManager {
      * @param projectNumber The id of the project to load.
      */
     public void loadExample(int projectNumber) {
-        FileSystemExplorer explorer = new FileSystemExplorer();
+        BytecodeFileSystemExplorer explorer = new BytecodeFileSystemExplorer();
         Project p = getProject(projectNumber);
         ProjectComponent rootComponent = explorer.generateStructure(p.getPath());
         ProjectStructure PS = ProjectStructure.getInstance();
