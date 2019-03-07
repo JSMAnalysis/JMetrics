@@ -47,10 +47,7 @@ public class Main {
         List<Dependency> dependencies = new ArrayList<>();
         CouplingParser cParser = new IntrospectionCouplingParser();
         for (ClassFile c: classes) {
-            dependencies.addAll(cParser.getInheritanceDependencies(c));
-            dependencies.addAll(cParser.getAggregationDependencies(c));
-            dependencies.addAll(cParser.getSignatureDependencies(c));
-            dependencies.addAll(cParser.getInternalDependencies(c));
+            dependencies.addAll(cParser.getDependencies(c));
         }
 
         // Graph construction

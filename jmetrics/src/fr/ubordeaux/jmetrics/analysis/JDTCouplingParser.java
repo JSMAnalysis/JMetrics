@@ -18,39 +18,11 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     private List<String> internalDependencies = new ArrayList<>();
 
     @Override
-    public List<Dependency> getInheritanceDependencies(ClassFile srcFile) {
-
+    public List<Dependency> getDependencies(ClassFile srcFile) {
         inheritanceDependencies = new ArrayList<>();
-
-        char[] sourceCode = getSourceCodeFromFile(srcFile);
-
-        CompilationUnit comUnit = createAST(sourceCode, srcFile);
-
-        comUnit.accept(this);
-
-        List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(inheritanceDependencies, projectClasses);
-        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Inheritance, dstClasses);
-    }
-
-    @Override
-    public List<Dependency> getAggregationDependencies(ClassFile srcFile) {
         aggregationDependancies = new ArrayList<>();
-
-        char[] sourceCode = getSourceCodeFromFile(srcFile);
-
-        CompilationUnit comUnit = createAST(sourceCode, srcFile);
-
-        comUnit.accept(this);
-
-        List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(aggregationDependancies, projectClasses);
-        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Aggregation, dstClasses);
-    }
-
-    @Override
-    public List<Dependency> getSignatureDependencies(ClassFile srcFile) {
         signatureDependencies = new ArrayList<>();
+        internalDependencies = new ArrayList<>();
 
         char[] sourceCode = getSourceCodeFromFile(srcFile);
 
@@ -59,15 +31,19 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         comUnit.accept(this);
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(signatureDependencies, projectClasses);
-        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Signature, dstClasses);
-    }
+        List<Dependency> dependencies = new ArrayList<>();
 
-    @Override
-    public List<Dependency> getInternalDependencies(ClassFile srcFile) {
-        return new ArrayList<>();
-    }
+        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Inheritance,
+                inheritanceDependencies, projectClasses));
+        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Aggregation,
+                aggregationDependancies, projectClasses));
+        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Signature,
+                signatureDependencies, projectClasses));
+        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Internal,
+                internalDependencies, projectClasses));
 
+        return dependencies;
+    }
 
     /**
      * Determine the list of efferent dependencies class that is present in project classes.
@@ -93,12 +69,14 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
      * Generate a list of dependencies from a source category, a dependency type and a list of destination categories.
      * @param src The source category of the dependencies.
      * @param type The type of the dependencies.
-     * @param dstList The list of destination class categories.
+     * @param dependencyList The list of destination class categories.
      * @return The list of generated dependencies.
      */
     private List<Dependency> generateDependenciesList(GranularityScale src, DependencyType type,
-                                                      List<GranularityScale> dstList) {
+                                                      List<String> dependencyList, List<ClassFile> projectClasses) {
         List<Dependency> dependencies = new ArrayList<>();
+        List<GranularityScale> dstList = new ArrayList<>();
+        findEfferentDependenciesInProject(dependencyList, projectClasses);
         for (GranularityScale dst: dstList) {
             dependencies.add(new Dependency(src, dst, type));
         }

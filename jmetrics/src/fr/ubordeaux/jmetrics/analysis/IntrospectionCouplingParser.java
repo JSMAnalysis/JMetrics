@@ -16,9 +16,14 @@ import java.util.List;
  */
 public class IntrospectionCouplingParser extends IntrospectionParser implements CouplingParser {
 
-    @Override
-    public List<Dependency> getInheritanceDependencies(ClassFile srcFile) {
+    /**
+     * Retrieve efferent dependencies of type Inheritance of a given class.
+     * @param srcFile The file to analyze.
+     * @return The list of Inheritance dependencies.
+     */
+    private List<Dependency> getInheritanceDependencies(ClassFile srcFile) {
         Class<?> srcClass = getClassFromFile(srcFile);
+
         Class<?> superClass = srcClass.getSuperclass();
         Class<?>[] interfaces = srcClass.getInterfaces();
 
@@ -32,8 +37,12 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Inheritance, dstClasses);
     }
 
-    @Override
-    public List<Dependency> getAggregationDependencies(ClassFile srcFile) {
+    /**
+     * Retrieve efferent dependencies of type Aggregation of a given class.
+     * @param srcFile The file to analyze.
+     * @return The list of Aggregation dependencies.
+     */
+    private List<Dependency> getAggregationDependencies(ClassFile srcFile) {
         Class<?> srcClass = getClassFromFile(srcFile);
 
         ArrayList<Class<?>> efferentDependencies = new ArrayList<>();
@@ -49,8 +58,12 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Aggregation, dstClasses);
     }
 
-    @Override
-    public List<Dependency> getSignatureDependencies(ClassFile srcFile) {
+    /**
+     * Retrieve efferent dependencies of type Signature of a given class.
+     * @param srcFile The file to analyze.
+     * @return The list of Signature dependencies.
+     */
+    private List<Dependency> getSignatureDependencies(ClassFile srcFile) {
         Class<?> srcClass = getClassFromFile(srcFile);
 
         ArrayList<Class<?>> efferentDependencies = new ArrayList<>();
@@ -77,12 +90,16 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
     }
 
     @Override
-    public List<Dependency> getInternalDependencies(ClassFile srcFile) {
-        // Internal dependencies is not accessible through the reflect standard library.
-        return new ArrayList<>();
+    public List<Dependency> getDependencies(ClassFile srcFile) {
+        Class<?> srcClass = getClassFromFile(srcFile);
+
+        List<Dependency> dependencies = new ArrayList();
+        dependencies.addAll(getAggregationDependencies(srcFile));
+        dependencies.addAll(getInheritanceDependencies(srcFile));
+        dependencies.addAll(getSignatureDependencies(srcFile));
+        return dependencies;
+
     }
-
-
 
     /**
      * Determine the list of efferent dependencies class that is present in project classes.
