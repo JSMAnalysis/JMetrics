@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * Provides utils function to manage and access the Ground Truth repository.
- * RQ : JavaCompiler generate automatically 2 methods for Enum : values and valueOf
  */
 public class GroundTruthManager {
 
@@ -25,7 +24,7 @@ public class GroundTruthManager {
     public static final int groundTruthSize = 2;
 
     /**
-     * List of the project inside the GroundTruth.
+     * List of projects in the GroundTruth.
      */
     private List<Project> projects;
 

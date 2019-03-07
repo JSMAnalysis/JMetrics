@@ -58,23 +58,23 @@ public class Project {
 
 
 
-    public void addClass(String className, ClassInformation classInfo) {
+    void addClass(String className, ClassInformation classInfo) {
         ClassFile file = getClassFile(className);
         classes.put(file, classInfo);
     }
 
-    public void addDependency(String srcName, String dstName, DependencyType type) {
+    void addDependency(String srcName, String dstName, DependencyType type) {
         dependencies.add(new Dependency(getClassCategory(srcName), getClassCategory(dstName), type));
     }
 
 
 
-    public ClassFile getClassFile(String name) {
+    private ClassFile getClassFile(String name) {
         String path = getPath() + directory + name;
         return new ClassFile(new File(path));
     }
 
-    public GranularityScale getClassCategory(String className) {
+    private GranularityScale getClassCategory(String className) {
         return new ClassGranularity(getClassFile(className));
     }
 
