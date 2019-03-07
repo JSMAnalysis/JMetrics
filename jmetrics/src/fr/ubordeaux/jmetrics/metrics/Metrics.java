@@ -4,6 +4,7 @@ import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
 import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
 import fr.ubordeaux.jmetrics.datastructure.DirectedGraph;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 public class Metrics {
@@ -72,4 +73,20 @@ public class Metrics {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Metrics metrics = (Metrics) o;
+        return Double.compare(metrics.abstractness, abstractness) == 0 &&
+                afferentCoupling == metrics.afferentCoupling &&
+                efferentCoupling == metrics.efferentCoupling &&
+                Double.compare(metrics.instability, instability) == 0 &&
+                Double.compare(metrics.normalizedDistance, normalizedDistance) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(abstractness, afferentCoupling, efferentCoupling, instability, normalizedDistance);
+    }
 }

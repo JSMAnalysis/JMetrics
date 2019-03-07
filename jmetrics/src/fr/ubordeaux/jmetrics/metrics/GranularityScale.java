@@ -28,13 +28,14 @@ public abstract class GranularityScale {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GranularityScale that = (GranularityScale) o;
-        return name.equals(that.name) &&
-                metrics.equals(that.metrics);
+        //TODO I think the metrics attributes is not part of the identity of the GranularityScale. Moreover, it causes some problems
+        //because it does change the hash after adding metrics, which prevents the object from being retrieved in a HashMap.
+        //This comment will be deleted when this question will have been properly discussed.
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, metrics);
+        return Objects.hash(name);
     }
-
 }

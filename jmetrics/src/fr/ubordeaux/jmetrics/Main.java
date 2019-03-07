@@ -66,13 +66,14 @@ public class Main {
             System.out.println("Metrics values by class :");
         }
         for (GranularityScale c : nodes) {
+            AbstractnessData abstractnessData = aData.get(fileToNodeMapping.get(c));
             Metrics metrics = new Metrics();
-            c.setMetrics(metrics);
-            metrics.setAbstractness(aData.get(fileToNodeMapping.get(c)));
+            metrics.setAbstractness(abstractnessData);
             metrics.setAfferentCoupling(graph, c);
             metrics.setEfferentCoupling(graph, c);
             metrics.setInstability(metrics.getAfferentCoupling(), metrics.getEfferentCoupling());
             metrics.setNormalizedDistance(metrics.getAbstractness(), metrics.getInstability());
+            c.setMetrics(metrics);
 
             if(!dotOnly) {
                 System.out.println(c.getName());
