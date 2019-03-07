@@ -1,31 +1,26 @@
 package fr.ubordeaux.jmetrics.metrics;
 
-import fr.ubordeaux.jmetrics.metrics.components.MetricsComponent;
-
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public abstract class GranularityScale {
 
     private String name;
-    private Set<MetricsComponent> metricsSet;
+    private Metrics metrics;
 
-    public GranularityScale(String name){
+    public GranularityScale(String name) {
         this.name = name;
-        this.metricsSet = new HashSet<>();
     }
 
     public String getName() {
         return name;
     }
 
-    public Set<MetricsComponent> getMetricsSet(){
-        return new HashSet<>(metricsSet);
+    public Metrics getMetrics() {
+        return metrics;
     }
 
-    public void addMetrics(MetricsComponent metrics){
-        this.metricsSet.add(metrics);
+    public void setMetrics(Metrics metrics) {
+        this.metrics = metrics;
     }
 
     @Override
@@ -34,12 +29,12 @@ public abstract class GranularityScale {
         if (o == null || getClass() != o.getClass()) return false;
         GranularityScale that = (GranularityScale) o;
         return name.equals(that.name) &&
-                metricsSet.equals(that.metricsSet);
+                metrics.equals(that.metrics);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, metricsSet);
+        return Objects.hash(name, metrics);
     }
 
 }

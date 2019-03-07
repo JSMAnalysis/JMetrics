@@ -9,8 +9,8 @@ public class ClassInformation {
     private int numberOfAbstractMethod;
     private Map<String, Double> metrics;
 
-    public ClassInformation(int numberOfMethod, int numberOfAbstractMethod,
-                            double Ca, double Ce, double I, double A, double Dn) {
+    ClassInformation(int numberOfMethod, int numberOfAbstractMethod,
+                     double Ca, double Ce, double I, double A, double Dn) {
         this.numberOfMethod = numberOfMethod;
         this.numberOfAbstractMethod = numberOfAbstractMethod;
         this.metrics = new HashMap<>();
