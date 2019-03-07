@@ -14,15 +14,13 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
 
     private List<String> inheritanceDependencies = new ArrayList<>();
     private List<String> aggregationDependancies = new ArrayList<>();
-    private List<String> signatureDependencies = new ArrayList<>();
-    private List<String> internalDependencies = new ArrayList<>();
+    private List<String> useLinkDependencies = new ArrayList<>();
 
     @Override
     public List<Dependency> getDependencies(ClassFile srcFile) {
         inheritanceDependencies = new ArrayList<>();
         aggregationDependancies = new ArrayList<>();
-        signatureDependencies = new ArrayList<>();
-        internalDependencies = new ArrayList<>();
+        useLinkDependencies = new ArrayList<>();
 
         char[] sourceCode = getSourceCodeFromFile(srcFile);
 
@@ -37,10 +35,8 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
                 inheritanceDependencies, projectClasses));
         dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Aggregation,
                 aggregationDependancies, projectClasses));
-        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Signature,
-                signatureDependencies, projectClasses));
-        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Internal,
-                internalDependencies, projectClasses));
+        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.UseLink,
+                useLinkDependencies, projectClasses));
 
         return dependencies;
     }
@@ -75,8 +71,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     private List<Dependency> generateDependenciesList(GranularityScale src, DependencyType type,
                                                       List<String> dependencyList, List<ClassFile> projectClasses) {
         List<Dependency> dependencies = new ArrayList<>();
-        List<GranularityScale> dstList = new ArrayList<>();
-        findEfferentDependenciesInProject(dependencyList, projectClasses);
+        List<GranularityScale> dstList = findEfferentDependenciesInProject(dependencyList, projectClasses);
         for (GranularityScale dst: dstList) {
             dependencies.add(new Dependency(src, dst, type));
         }
@@ -117,7 +112,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         bindings.add(methodBinding.getReturnType());
 
         for(ITypeBinding binding : bindings){
-            signatureDependencies.add(binding.getQualifiedName());
+            useLinkDependencies.add(binding.getQualifiedName());
         }
 
         return true;

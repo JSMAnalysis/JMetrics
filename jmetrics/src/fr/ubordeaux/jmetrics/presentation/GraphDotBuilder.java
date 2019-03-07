@@ -20,8 +20,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
 
     private static final String INHERITANCE_COLOR = "red";
     private static final String AGGREGATION_COLOR = "blue";
-    private static final String SIGNATURE_COLOR = "green";
-    private static final String INTERNAL_COLOR = "grey";
+    private static final String USELINK_COLOR = "green";
     private static final String DEFAULT_COLOR = "black";
 
     private StringBuilder strBuilder;
@@ -74,11 +73,8 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
             case Aggregation:
                 strBuilder.append(AGGREGATION_COLOR);
                 break;
-            case Signature:
-                strBuilder.append(SIGNATURE_COLOR);
-                break;
-            case Internal:
-                strBuilder.append(INHERITANCE_COLOR);
+            case UseLink:
+                strBuilder.append(USELINK_COLOR);
                 break;
             default:
                 strBuilder.append(DEFAULT_COLOR);
@@ -117,12 +113,9 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         strBuilder.append("d [style=invis];");
         strBuilder.append("e [style=invis];");
         strBuilder.append("f [style=invis];");
-        strBuilder.append("g [style=invis];");
-        strBuilder.append("h [style=invis];");
-        strBuilder.append("g -> h [label=\"Inheritance\", color=\"" + INHERITANCE_COLOR + "\"];");
-        strBuilder.append("e -> f [label=\"Aggregation\", color=\"" + AGGREGATION_COLOR + "\"];");
-        strBuilder.append("c -> d [label=\"Signature\", color=\"" + SIGNATURE_COLOR + "\"];");
-        strBuilder.append("a -> b [label=\"Internal\", color=\"" + INTERNAL_COLOR + "\"];");
+        strBuilder.append("e -> f [label=\"Inheritance\", color=\"" + INHERITANCE_COLOR + "\"];");
+        strBuilder.append("c -> d [label=\"Aggregation\", color=\"" + AGGREGATION_COLOR + "\"];");
+        strBuilder.append("a -> b [label=\"UseLink\", color=\"" + USELINK_COLOR + "\"];");
         strBuilder.append("}");
     }
 

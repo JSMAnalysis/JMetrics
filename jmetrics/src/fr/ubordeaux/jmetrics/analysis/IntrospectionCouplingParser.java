@@ -59,11 +59,11 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
     }
 
     /**
-     * Retrieve efferent dependencies of type Signature of a given class.
+     * Retrieve efferent dependencies of type UseLink of a given class.
      * @param srcFile The file to analyze.
-     * @return The list of Signature dependencies.
+     * @return The list of UseLink dependencies.
      */
-    private List<Dependency> getSignatureDependencies(ClassFile srcFile) {
+    private List<Dependency> getUseLinkdependencies(ClassFile srcFile) {
         Class<?> srcClass = getClassFromFile(srcFile);
 
         ArrayList<Class<?>> efferentDependencies = new ArrayList<>();
@@ -86,17 +86,15 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
         List<GranularityScale> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Signature, dstClasses);
+        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.UseLink, dstClasses);
     }
 
     @Override
     public List<Dependency> getDependencies(ClassFile srcFile) {
-        Class<?> srcClass = getClassFromFile(srcFile);
-
-        List<Dependency> dependencies = new ArrayList();
+        List<Dependency> dependencies = new ArrayList<>();
         dependencies.addAll(getAggregationDependencies(srcFile));
         dependencies.addAll(getInheritanceDependencies(srcFile));
-        dependencies.addAll(getSignatureDependencies(srcFile));
+        dependencies.addAll(getUseLinkdependencies(srcFile));
         return dependencies;
 
     }
