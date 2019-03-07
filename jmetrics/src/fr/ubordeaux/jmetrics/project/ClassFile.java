@@ -10,8 +10,8 @@ import java.io.InputStream;
  */
 public class ClassFile extends ProjectComponent {
 
-    public ClassFile(File file){
-        super(file);
+    public ClassFile(File file, String name){
+        super(file, name);
     }
 
     /**

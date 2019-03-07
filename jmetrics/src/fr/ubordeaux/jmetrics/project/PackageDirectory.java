@@ -14,8 +14,8 @@ public class PackageDirectory extends ProjectComponent {
 
     private int depth;
 
-    public PackageDirectory(File file, int depth) {
-        super(file);
+    public PackageDirectory(File file, String name, int depth) {
+        super(file, name);
         content = new ArrayList<>();
         this.depth = depth;
     }

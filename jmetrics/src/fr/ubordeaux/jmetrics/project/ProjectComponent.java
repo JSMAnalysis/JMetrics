@@ -12,10 +12,10 @@ public abstract class ProjectComponent {
     private File file;
     private String path;
 
-    public ProjectComponent(File file) {
+    public ProjectComponent(File file, String name) {
         this.file = file;
         this.path = file.getPath();
-        this.name = file.getName();
+        this.name = name;
     }
 
     public String getName() {

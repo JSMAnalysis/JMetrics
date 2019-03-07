@@ -24,8 +24,8 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
             throw new InvalidProjectPathException("Path \"" + path + "\" does not exist or does not lead to a directory.");
         }
         File rootDir = new File(path);
-        PackageDirectory project = new PackageDirectory(rootDir, 0);
-        setRecursiveStructure(rootDir, project, 0);
+        PackageDirectory project = new PackageDirectory(rootDir, "", 0);
+        setRecursiveStructure(rootDir, project, 0, "");
         return project.getContent().get(0);
     }
 
@@ -33,21 +33,22 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      * Explore recursively a project's structure from a given file node.
      * Set the explored structure in the content of the given PackageDirectory.
      * @param node The {@link File} to explore.
-     * @param parent The root node of the structure to explore
+     * @param parent The root node of the structure to explore.
      * @param depth The depth level of exploration.
+     * @param currentName The name of the package currently explored.
      */
-    private void setRecursiveStructure(File node, PackageDirectory parent, int depth) {
+    private void setRecursiveStructure(File node, PackageDirectory parent, int depth, String currentName) {
         if (isCodeFile(node)) {
-            parent.addContent(new ClassFile(node));
+            parent.addContent(new ClassFile(node, generateComponentName(currentName, filterExtension(node.getName()), depth)));
         } else if (node.isDirectory()) {
-            PackageDirectory dir = new PackageDirectory(node, depth++);
+            String packageName = generateComponentName(currentName, node.getName(), depth);
+            PackageDirectory dir = new PackageDirectory(node, packageName, depth++);
             File[] files = node.listFiles();
             if (files == null) {
                 throw new UncheckedIOException(new IOException("A problem has occurred while inspecting the given directory."));
             }
             for (File file: files) {
-                if (isCodeFile(file)) dir.addContent(new ClassFile(file));
-                else setRecursiveStructure(file, dir, depth++);
+                setRecursiveStructure(file, dir, depth++, packageName);
             }
             parent.addContent(dir);
         }
@@ -70,6 +71,32 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     private boolean isValidPath(String path) {
         File file = new File(path);
         return file.exists() && file.isDirectory();
+    }
+
+    /**
+     * Filters a file name to remove the file extension.
+     * @param filename The name to filter.
+     * @return The file name without its extension or filename if the extension was not found.
+     */
+    private String filterExtension(String filename){
+        int extensionIndex = filename.indexOf(CODE_FILE_EXTENSION);
+        if(extensionIndex != -1) {
+            return filename.substring(0, extensionIndex);
+        }
+        return filename;
+    }
+
+
+    private String generateComponentName(String currentName, String fileName, int depth){
+        if(depth == 0){
+            return "";
+        }
+        else{
+            if(currentName.isEmpty()){
+                return fileName;
+            }
+        }
+        return currentName + "." + fileName;
     }
 
 }
