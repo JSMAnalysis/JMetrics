@@ -5,10 +5,7 @@ import fr.ubordeaux.jmetrics.project.ClassFile;
 import org.eclipse.jdt.core.dom.*;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-
-public class JDTAbstractnessParser extends ASTVisitor implements AbstractnessParser {
+public class JDTAbstractnessParser extends JDTParser implements AbstractnessParser {
 
     private int abstractMethodsNumber;
     private int methodsNumber;
@@ -19,21 +16,8 @@ public class JDTAbstractnessParser extends ASTVisitor implements AbstractnessPar
         abstractMethodsNumber = 0;
         methodsNumber = 0;
 
-        byte[] sourceCode;
-        try {
-            InputStream stream = file.getInputStream();
-            sourceCode = new byte[stream.available()];
-            file.getInputStream().read(sourceCode);
-            stream.close();
-        } catch (IOException e) {
-            throw new ClassFileNotFoundException("The file associated with the class "
-                    + file.getName()
-                    + " does not seem to exist or is temporarily unavailable.");
-        }
-
-        ASTParser parser = ASTParser.newParser(8);
-        parser.setSource((new String(sourceCode)).toCharArray());
-        CompilationUnit comUnit = (CompilationUnit) parser.createAST(null);
+        char[] sourceCode = getSourceCodeFromFile(file);
+        CompilationUnit comUnit = createAST(sourceCode, file);
 
         comUnit.accept(this);
 
