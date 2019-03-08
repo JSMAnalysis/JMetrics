@@ -2,8 +2,8 @@ package fr.ubordeaux.jmetrics;
 
 import fr.ubordeaux.jmetrics.analysis.*;
 import fr.ubordeaux.jmetrics.datastructure.*;
-import fr.ubordeaux.jmetrics.metrics.GranularityScale;
-import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
+import fr.ubordeaux.jmetrics.metrics.Granule;
+import fr.ubordeaux.jmetrics.metrics.ClassGranule;
 import fr.ubordeaux.jmetrics.metrics.Metrics;
 import fr.ubordeaux.jmetrics.presentation.GraphDotBuilder;
 import fr.ubordeaux.jmetrics.presentation.GraphPresentationBuilder;
@@ -51,21 +51,21 @@ public class Main {
         }
 
         // Graph construction
-        Set<GranularityScale> nodes = new HashSet<>();
-        //FIXME this is inevitable for the moment as no mapping between ClassFile and ClassGranularity is available, will be removed later when fixed
-        Map<GranularityScale, ClassFile> fileToNodeMapping = new HashMap<>();
+        Set<Granule> nodes = new HashSet<>();
+        //FIXME this is inevitable for the moment as no mapping between ClassFile and ClassGranule is available, will be removed later when fixed
+        Map<Granule, ClassFile> fileToNodeMapping = new HashMap<>();
         for (ClassFile c : classes) {
-            GranularityScale node = new ClassGranularity(c);
+            Granule node = new ClassGranule(c);
             nodes.add(node);
             fileToNodeMapping.put(node, c);
         }
-        DirectedGraph<GranularityScale, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
+        DirectedGraph<Granule, DependencyEdge> graph = (new GraphConstructor()).constructGraph(nodes, new HashSet<>(dependencies));
 
         // Metrics computation
         if(!dotOnly) {
             System.out.println("Metrics values by class :");
         }
-        for (GranularityScale c : nodes) {
+        for (Granule c : nodes) {
             AbstractnessData abstractnessData = aData.get(fileToNodeMapping.get(c));
             Metrics metrics = new Metrics();
             metrics.setAbstractness(abstractnessData);
@@ -88,10 +88,10 @@ public class Main {
         // Graph's DOT representation building
         GraphPresentationBuilder gBuilder = new GraphDotBuilder();
         gBuilder.createNewGraph();
-        for (GranularityScale node : graph.getNodeSet()) {
+        for (Granule node : graph.getNodeSet()) {
             gBuilder.addNode(node);
         }
-        for (GranularityScale node : graph.getNodeSet()) {
+        for (Granule node : graph.getNodeSet()) {
             for (DependencyEdge edge : graph.getOutcomingEdgeList(node)) {
                 gBuilder.addEdge(edge);
             }

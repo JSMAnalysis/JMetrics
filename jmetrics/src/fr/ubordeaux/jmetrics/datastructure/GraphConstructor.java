@@ -1,7 +1,7 @@
 package fr.ubordeaux.jmetrics.datastructure;
 
 import fr.ubordeaux.jmetrics.analysis.Dependency;
-import fr.ubordeaux.jmetrics.metrics.GranularityScale;
+import fr.ubordeaux.jmetrics.metrics.Granule;
 
 import java.util.Set;
 
@@ -10,10 +10,10 @@ import java.util.Set;
  */
 public class GraphConstructor {
 
-    public DirectedGraph<GranularityScale, DependencyEdge> constructGraph(Set<GranularityScale> nodes, Set<Dependency> dependencies) {
-        DirectedGraph<GranularityScale, DependencyEdge> graph = new DirectedGraph<>();
+    public DirectedGraph<Granule, DependencyEdge> constructGraph(Set<Granule> nodes, Set<Dependency> dependencies) {
+        DirectedGraph<Granule, DependencyEdge> graph = new DirectedGraph<>();
 
-        for (GranularityScale node : nodes) {
+        for (Granule node : nodes) {
             graph.addNode(node);
         }
 

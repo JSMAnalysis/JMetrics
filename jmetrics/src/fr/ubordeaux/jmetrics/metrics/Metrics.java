@@ -33,7 +33,7 @@ public class Metrics {
         return afferentCoupling;
     }
 
-    public void setAfferentCoupling(DirectedGraph<GranularityScale, DependencyEdge> graph, GranularityScale granule) {
+    public void setAfferentCoupling(DirectedGraph<Granule, DependencyEdge> graph, Granule granule) {
         afferentCoupling = graph.getIncomingEdgesList(granule).size();
         if (!isValidCoupling.apply(afferentCoupling)) {
             throw new BadMetricsValueException(BadMetricsValueException.DEFAULT_MESSAGE);
@@ -44,7 +44,7 @@ public class Metrics {
         return efferentCoupling;
     }
 
-    public void setEfferentCoupling(DirectedGraph<GranularityScale, DependencyEdge> graph, GranularityScale granule) {
+    public void setEfferentCoupling(DirectedGraph<Granule, DependencyEdge> graph, Granule granule) {
         efferentCoupling = graph.getOutcomingEdgeList(granule).size();
         if (!isValidCoupling.apply(efferentCoupling)) {
             throw new BadMetricsValueException(BadMetricsValueException.DEFAULT_MESSAGE);

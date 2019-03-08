@@ -4,13 +4,13 @@ import fr.ubordeaux.jmetrics.project.PackageDirectory;
 
 import java.util.List;
 
-public class PackageGranularity extends GranularityScale {
+public class PackageGranule extends Granule {
 
-    private List<ClassGranularity> content;
+    private List<ClassGranule> content;
 
     private int depth;
 
-    public PackageGranularity(PackageDirectory directory) {
+    public PackageGranule(PackageDirectory directory) {
         super(directory.getName());
         depth = directory.getDepth();
         // Manage content
@@ -20,7 +20,7 @@ public class PackageGranularity extends GranularityScale {
         return depth;
     }
 
-    public List<ClassGranularity> getContent() {
+    public List<ClassGranule> getContent() {
         return content;
     }
 

@@ -1,7 +1,7 @@
 package fr.ubordeaux.jmetrics.presentation;
 
 import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
-import fr.ubordeaux.jmetrics.metrics.GranularityScale;
+import fr.ubordeaux.jmetrics.metrics.Granule;
 
 /**
  * Exposes an interface to build the representation of a graph as a String.
@@ -19,7 +19,7 @@ public interface GraphPresentationBuilder {
      * subsequents calls to this method will do nothing.
      * @param node The node to add.
      */
-    void addNode(GranularityScale node);
+    void addNode(Granule node);
 
     /**
      * Adds a new edge to the graph. Source and destination nodes must have been previously added. If not, this method

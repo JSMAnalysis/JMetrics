@@ -1,7 +1,7 @@
 package fr.ubordeaux.jmetrics.presentation;
 
 import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
-import fr.ubordeaux.jmetrics.metrics.GranularityScale;
+import fr.ubordeaux.jmetrics.metrics.Granule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     private static final String DEFAULT_COLOR = "black";
 
     private StringBuilder strBuilder;
-    private Map<GranularityScale, Integer> mapping;
+    private Map<Granule, Integer> mapping;
     private int nodeNumber;
     private boolean canAddNode;
     private boolean terminated;
@@ -45,7 +45,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     }
 
     @Override
-    public void addNode(GranularityScale node){
+    public void addNode(Granule node){
         if(!canAddNode || terminated){
             return;
         }

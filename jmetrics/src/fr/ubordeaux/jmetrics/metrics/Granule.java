@@ -2,12 +2,12 @@ package fr.ubordeaux.jmetrics.metrics;
 
 import java.util.Objects;
 
-public abstract class GranularityScale {
+public abstract class Granule {
 
     private String name;
     private Metrics metrics;
 
-    public GranularityScale(String name) {
+    public Granule(String name) {
         this.name = name;
     }
 
@@ -27,8 +27,8 @@ public abstract class GranularityScale {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GranularityScale that = (GranularityScale) o;
-        //TODO I think the metrics attributes is not part of the identity of the GranularityScale. Moreover, it causes some problems
+        Granule that = (Granule) o;
+        //TODO I think the metrics attributes is not part of the identity of the Granule. Moreover, it causes some problems
         //because it does change the hash after adding metrics, which prevents the object from being retrieved in a HashMap.
         //This comment will be deleted when this question will have been properly discussed.
         return Objects.equals(name, that.name);

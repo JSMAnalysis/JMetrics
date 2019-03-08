@@ -1,7 +1,7 @@
 package fr.ubordeaux.jmetrics.analysis;
 
-import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
-import fr.ubordeaux.jmetrics.metrics.GranularityScale;
+import fr.ubordeaux.jmetrics.metrics.ClassGranule;
+import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 import org.eclipse.jdt.core.dom.*;
@@ -31,11 +31,11 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
         List<Dependency> dependencies = new ArrayList<>();
 
-        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Inheritance,
+        dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.Inheritance,
                 inheritanceDependencies, projectClasses));
-        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Aggregation,
+        dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.Aggregation,
                 aggregationDependancies, projectClasses));
-        dependencies.addAll(generateDependenciesList(new ClassGranularity(srcFile), DependencyType.UseLink,
+        dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.UseLink,
                 useLinkDependencies, projectClasses));
 
         return dependencies;
@@ -45,15 +45,15 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
      * Determine the list of efferent dependencies class that is present in project classes.
      * @param efferentDependencies List of class where the analyzed class depend upon.
      * @param projectClasses List of all class files in the project.
-     * @return List of GranularityScale (Elementary) such as efferent dependencies is in the project.
+     * @return List of Granule (Elementary) such as efferent dependencies is in the project.
      */
-    private List<GranularityScale> findEfferentDependenciesInProject(List<String> efferentDependencies,
-                                                                     List<ClassFile> projectClasses) {
-        List<GranularityScale> matchDependencies = new ArrayList<>();
+    private List<Granule> findEfferentDependenciesInProject(List<String> efferentDependencies,
+                                                            List<ClassFile> projectClasses) {
+        List<Granule> matchDependencies = new ArrayList<>();
         for (String classEff: efferentDependencies) {
             for (ClassFile dstFile: projectClasses) {
                 if (dstFile.getName().equals(classEff)) {
-                    GranularityScale dst = new ClassGranularity(dstFile);
+                    Granule dst = new ClassGranule(dstFile);
                     matchDependencies.add(dst);
                 }
             }
@@ -68,11 +68,11 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
      * @param dependencyList The list of destination class categories.
      * @return The list of generated dependencies.
      */
-    private List<Dependency> generateDependenciesList(GranularityScale src, DependencyType type,
+    private List<Dependency> generateDependenciesList(Granule src, DependencyType type,
                                                       List<String> dependencyList, List<ClassFile> projectClasses) {
         List<Dependency> dependencies = new ArrayList<>();
-        List<GranularityScale> dstList = findEfferentDependenciesInProject(dependencyList, projectClasses);
-        for (GranularityScale dst: dstList) {
+        List<Granule> dstList = findEfferentDependenciesInProject(dependencyList, projectClasses);
+        for (Granule dst: dstList) {
             dependencies.add(new Dependency(src, dst, type));
         }
         return dependencies;

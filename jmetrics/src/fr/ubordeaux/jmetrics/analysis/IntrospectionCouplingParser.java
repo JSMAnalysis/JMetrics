@@ -1,7 +1,7 @@
 package fr.ubordeaux.jmetrics.analysis;
 
-import fr.ubordeaux.jmetrics.metrics.GranularityScale;
-import fr.ubordeaux.jmetrics.metrics.ClassGranularity;
+import fr.ubordeaux.jmetrics.metrics.ClassGranule;
+import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
@@ -33,8 +33,8 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         }
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Inheritance, dstClasses);
+        List<Granule> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
+        return generateDependenciesList(new ClassGranule(srcFile), DependencyType.Inheritance, dstClasses);
     }
 
     /**
@@ -54,8 +54,8 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         }
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.Aggregation, dstClasses);
+        List<Granule> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
+        return generateDependenciesList(new ClassGranule(srcFile), DependencyType.Aggregation, dstClasses);
     }
 
     /**
@@ -85,8 +85,8 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         }
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
-        List<GranularityScale> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ClassGranularity(srcFile), DependencyType.UseLink, dstClasses);
+        List<Granule> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
+        return generateDependenciesList(new ClassGranule(srcFile), DependencyType.UseLink, dstClasses);
     }
 
     @Override
@@ -103,16 +103,16 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
      * Determine the list of efferent dependencies class that is present in project classes.
      * @param efferentDependencies List of class where the analyzed class depend upon.
      * @param projectClasses List of all class files in the project.
-     * @return List of GranularityScale (Elementary) such as efferent dependencies is in the project.
+     * @return List of Granule (Elementary) such as efferent dependencies is in the project.
      */
-    private List<GranularityScale> findEfferentDependenciesInProject(List<Class<?>> efferentDependencies,
-                                                                     List<ClassFile> projectClasses) {
-        List<GranularityScale> matchDependencies = new ArrayList<>();
+    private List<Granule> findEfferentDependenciesInProject(List<Class<?>> efferentDependencies,
+                                                            List<ClassFile> projectClasses) {
+        List<Granule> matchDependencies = new ArrayList<>();
         for (Class<?> classEff: efferentDependencies) {
             for (ClassFile dstFile: projectClasses) {
                 Class<?> dstClass = getClassFromFile(dstFile);
                 if (dstClass.getName().equals(classEff.getName())) {
-                    GranularityScale dst = new ClassGranularity(dstFile);
+                    Granule dst = new ClassGranule(dstFile);
                     matchDependencies.add(dst);
                 }
             }
@@ -127,10 +127,10 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
      * @param dstList The list of destination class categories.
      * @return The list of generated dependencies.
      */
-    private List<Dependency> generateDependenciesList(GranularityScale src, DependencyType type,
-                                                      List<GranularityScale> dstList) {
+    private List<Dependency> generateDependenciesList(Granule src, DependencyType type,
+                                                      List<Granule> dstList) {
         List<Dependency> dependencies = new ArrayList<>();
-        for (GranularityScale dst: dstList) {
+        for (Granule dst: dstList) {
             dependencies.add(new Dependency(src, dst, type));
         }
         return dependencies;

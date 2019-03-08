@@ -2,9 +2,9 @@ package fr.ubordeaux.jmetrics.metrics;
 
 import fr.ubordeaux.jmetrics.project.ClassFile;
 
-public class ClassGranularity extends GranularityScale {
+public class ClassGranule extends Granule {
 
-    public ClassGranularity(ClassFile file) {
+    public ClassGranule(ClassFile file) {
         super(file.getName());
     }
 
