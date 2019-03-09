@@ -9,6 +9,8 @@ import java.util.function.Function;
 
 public class Metrics {
 
+    private final static int PRECISION = 2;
+
     private Function<Integer, Boolean> isValidCoupling = value -> (value >= 0 && value == Math.floor(value));
     private Function<Double, Boolean> isValidComponents = value -> (value >= 0 && value <= 1);
 
@@ -18,12 +20,18 @@ public class Metrics {
     private double instability;
     private double normalizedDistance;
 
+    private double roundValue(double value) {
+        double shift = Math.pow(10, PRECISION);
+        return Math.round(value * shift) / shift;
+    }
+
     public double getAbstractness() {
         return abstractness;
     }
 
     public void setAbstractness(AbstractnessData data) {
         abstractness = data.getNumberOfMethods() == 0 ? 0 : (double)data.getNumberOfAbstractMethods() / (double)data.getNumberOfMethods();
+        abstractness = roundValue(abstractness);
         if (!isValidComponents.apply(abstractness)) {
             throw new BadMetricsValueException(BadMetricsValueException.DEFAULT_MESSAGE);
         }
@@ -57,6 +65,7 @@ public class Metrics {
 
     public void setInstability(double Ce, double Ca) {
         instability = (Ca + Ce) == 0 ? 0 : Ce / (Ca + Ce);
+        instability = roundValue(instability);
         if (!isValidComponents.apply(instability)) {
             throw new BadMetricsValueException(BadMetricsValueException.DEFAULT_MESSAGE);
         }
@@ -68,6 +77,7 @@ public class Metrics {
 
     public void setNormalizedDistance(double abstractness, double instability) {
         normalizedDistance = Math.abs(abstractness + instability - 1);
+        normalizedDistance = roundValue(normalizedDistance);
         if (!isValidComponents.apply(normalizedDistance)) {
             throw new BadMetricsValueException(BadMetricsValueException.DEFAULT_MESSAGE);
         }
