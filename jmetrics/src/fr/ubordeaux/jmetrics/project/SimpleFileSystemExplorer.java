@@ -88,14 +88,8 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
 
 
     private String generateComponentName(String currentName, String fileName, int depth){
-        if(depth == 0){
-            return "";
-        }
-        else{
-            if(currentName.isEmpty()){
-                return fileName;
-            }
-        }
+        if (depth == 0) return "";
+        if (currentName.isEmpty()) return fileName;
         return currentName + "." + fileName;
     }
 
