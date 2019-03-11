@@ -5,7 +5,8 @@ import fr.ubordeaux.jmetrics.project.ClassFile;
 public class ClassGranule extends Granule {
 
     public ClassGranule(ClassFile file) {
-        super(file.getName());
+        this.relatedComponent = file;
+        this.name = file.getName();
     }
 
 }

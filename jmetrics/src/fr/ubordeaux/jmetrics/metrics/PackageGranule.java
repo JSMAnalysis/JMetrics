@@ -2,25 +2,30 @@ package fr.ubordeaux.jmetrics.metrics;
 
 import fr.ubordeaux.jmetrics.project.PackageDirectory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PackageGranule extends Granule {
 
-    private List<ClassGranule> content;
-
+    private List<Granule> content;
     private int depth;
 
     public PackageGranule(PackageDirectory directory) {
-        super(directory.getName());
-        depth = directory.getDepth();
-        // Manage content
+        this.relatedComponent = directory;
+        this.name = directory.getName();
+        this.depth = directory.getDepth();
+        this.content = new ArrayList<>();
+    }
+
+    public void addContent(Granule granule) {
+        content.add(granule);
     }
 
     public int getDepth() {
         return depth;
     }
 
-    public List<ClassGranule> getContent() {
+    public List<Granule> getContent() {
         return content;
     }
 
