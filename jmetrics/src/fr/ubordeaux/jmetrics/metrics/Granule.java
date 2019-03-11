@@ -31,7 +31,7 @@ public abstract class Granule {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Granule that = (Granule)o;
-        return Objects.equals(name, that.name) && Objects.equals(metrics, that.metrics);
+        return Objects.equals(name, that.name);
     }
 
     @Override
