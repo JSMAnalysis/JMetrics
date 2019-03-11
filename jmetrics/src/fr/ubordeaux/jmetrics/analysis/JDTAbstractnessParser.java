@@ -4,7 +4,9 @@ import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import org.eclipse.jdt.core.dom.*;
 
-
+/**
+ * An implementation of the {@link AbstractnessParser} interface that uses JDT.
+ */
 public class JDTAbstractnessParser extends JDTParser implements AbstractnessParser {
 
     private int abstractMethodsNumber;
@@ -25,10 +27,17 @@ public class JDTAbstractnessParser extends JDTParser implements AbstractnessPars
     }
 
     @Override
-    public boolean visit(MethodDeclaration node) {
-        if(Modifier.isAbstract(node.getModifiers()) || node.getBody() == null)
-            abstractMethodsNumber++;
-        methodsNumber++;
+    public boolean visit(TypeDeclaration node) {
+        //Visits all method declarations and count it
+        for(MethodDeclaration methodDeclaration : node.getMethods()) {
+            if(!methodDeclaration.isConstructor()) {
+                if (Modifier.isAbstract(methodDeclaration.getModifiers()) || methodDeclaration.getBody() == null)
+                    abstractMethodsNumber++;
+                methodsNumber++;
+            }
+        }
+
+        //Since we ignore internal and anonymous classes, don't visit the AST further than the top level class.
         return false;
     }
 

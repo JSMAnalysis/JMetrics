@@ -7,21 +7,22 @@ import fr.ubordeaux.jmetrics.project.ProjectStructure;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * An implementation of the {@link CouplingParser} interface that uses JDT.
  */
 public class JDTCouplingParser extends JDTParser implements CouplingParser {
 
-    private Set<String> inheritanceDependencies = new HashSet<>();
-    private Set<String> aggregationDependencies = new HashSet<>();
-    private Set<String> useLinkDependencies = new HashSet<>();
+    private Set<String> rawInheritanceDependencies = new HashSet<>();
+    private Set<String> rawAggregationDependencies = new HashSet<>();
+    private Set<String> rawUseLinkDependencies = new HashSet<>();
 
     @Override
     public List<Dependency> getDependencies(ClassFile srcFile) {
-        inheritanceDependencies = new HashSet<>();
-        aggregationDependencies = new HashSet<>();
-        useLinkDependencies = new HashSet<>();
+        rawInheritanceDependencies = new HashSet<>();
+        rawAggregationDependencies = new HashSet<>();
+        rawUseLinkDependencies = new HashSet<>();
 
         char[] sourceCode = getSourceCodeFromFile(srcFile);
 
@@ -33,11 +34,11 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         List<Dependency> dependencies = new ArrayList<>();
 
         dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.Inheritance,
-                inheritanceDependencies, projectClasses));
+                rawInheritanceDependencies, projectClasses));
         dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.Aggregation,
-                aggregationDependencies, projectClasses));
+                rawAggregationDependencies, projectClasses));
         dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.UseLink,
-                useLinkDependencies, projectClasses));
+                rawUseLinkDependencies, projectClasses));
 
         return dependencies;
     }
@@ -72,6 +73,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     private List<Dependency> generateDependenciesList(Granule src, DependencyType type,
                                                       Set<String> dependencyList, List<ClassFile> projectClasses) {
         List<Dependency> dependencies = new ArrayList<>();
+        dependencyList = filterClassName(dependencyList);
         List<Granule> dstList = findEfferentDependenciesInProject(dependencyList, projectClasses);
         //removes the class itself from its dependencies
         dstList.remove(src);
@@ -81,17 +83,35 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         return dependencies;
     }
 
+    /**
+     * Filters a set of class names by removing pieces of information that does not belong to the actual name.
+     * This means the <...> genericity indicator and the [] array indicator.
+     * @param classNames The Set to filter.
+     * @return THe filtered Set
+     */
+    private Set<String> filterClassName(Set<String> classNames){
+        return classNames.stream()
+                .map( className -> className.replaceAll("(<.*>)|(\\[])", ""))
+                .collect(Collectors.toSet());
+    }
+
     @Override
     public boolean visit(TypeDeclaration node) {
         ITypeBinding typeBinding = node.resolveBinding();
 
+        //ignore internal and anonymous classes
+        if(typeBinding.isNested()){
+            return false;
+        }
+
+        //find dependencies from extends and implements declarations
         List<ITypeBinding> bindings = new ArrayList<>(Arrays.asList(typeBinding.getInterfaces()));
         if(typeBinding.getSuperclass() != null){
             bindings.add(typeBinding.getSuperclass());
         }
 
         for(ITypeBinding binding : bindings){
-            inheritanceDependencies.add(binding.getQualifiedName());
+            rawInheritanceDependencies.add(binding.getQualifiedName());
         }
 
         return true;
@@ -100,8 +120,8 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     @Override
     public boolean visit(FieldDeclaration node) {
         ITypeBinding typeBinding = node.getType().resolveBinding();
-
-        aggregationDependencies.add(typeBinding.getQualifiedName());
+        //find dependencies from fields declaration
+        rawAggregationDependencies.add(typeBinding.getQualifiedName());
 
         return true;
     }
@@ -110,12 +130,13 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     public boolean visit(MethodDeclaration node) {
         IMethodBinding methodBinding = node.resolveBinding();
         List<ITypeBinding> bindings = new ArrayList<>();
+        //find dependencies from parameters, return type and exceptions thrown by a method
         bindings.addAll(Arrays.asList(methodBinding.getParameterTypes()));
         bindings.addAll(Arrays.asList(methodBinding.getExceptionTypes()));
         bindings.add(methodBinding.getReturnType());
 
         for(ITypeBinding binding : bindings){
-            useLinkDependencies.add(binding.getQualifiedName());
+            rawUseLinkDependencies.add(binding.getQualifiedName());
         }
 
         return true;
@@ -123,29 +144,32 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
 
     @Override
     public boolean visit(ClassInstanceCreation node) {
+        //find dependencies from a class instance creation
         ITypeBinding typeBinding = node.resolveTypeBinding();
 
-        useLinkDependencies.add(typeBinding.getQualifiedName());
+        rawUseLinkDependencies.add(typeBinding.getQualifiedName());
 
-        return super.visit(node);
+        return true;
     }
 
     @Override
     public boolean visit(VariableDeclarationStatement node) {
+        //find dependencies from a variable declaration
         ITypeBinding typeBinding = node.getType().resolveBinding();
 
-        useLinkDependencies.add(typeBinding.getQualifiedName());
+        rawUseLinkDependencies.add(typeBinding.getQualifiedName());
 
-        return super.visit(node);
+        return true;
     }
 
     @Override
     public boolean visit(ParameterizedType node) {
 
+        //find dependencies contained in a generic type instance creation
         for(ITypeBinding binding : node.resolveBinding().getTypeArguments()){
-            useLinkDependencies.add(binding.getQualifiedName());
+            rawUseLinkDependencies.add(binding.getQualifiedName());
         }
 
-        return super.visit(node);
+        return true;
     }
 }
