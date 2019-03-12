@@ -54,6 +54,7 @@ class IntrospectionCouplingParserTest {
                     if (find = sameSrc && sameDst && sameType) break;
                 }
                 if (!find) {
+                    System.out.println(find);
                     fail("Project" + projectNumber + ": A dependency in the Ground Truth is not present in the result of analyze.\n" +
                             "Concerned dependency: (" + GTDependency.getType() + "): " +
                             GTDependency.getSource() + " -> " + GTDependency.getDestination());

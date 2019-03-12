@@ -54,12 +54,12 @@ public class GroundTruthManager {
     private void setupExample1() {
         Project Example1 = new Project("example1/", 6, 1);
 
-        String CLASS_AIRPLANE = "Airplane.class";
-        String CLASS_CAR = "Car.class";
-        String CLASS_MAIN = "Main.class";
-        String CLASS_MATERIAL = "Material.class";
-        String CLASS_VEHICLE = "Vehicle.class";
-        String CLASS_WHEEL = "Wheel.class";
+        String CLASS_AIRPLANE = "example1.Airplane";
+        String CLASS_CAR = "example1.Car";
+        String CLASS_MAIN = "example1.Main";
+        String CLASS_MATERIAL = "example1.Material";
+        String CLASS_VEHICLE = "example1.Vehicle";
+        String CLASS_WHEEL = "example1.Wheel";
 
         Example1.addClass(CLASS_AIRPLANE,
                 new ClassInformation(1, 0, 0, 1, 1, 0, 0)
@@ -93,17 +93,17 @@ public class GroundTruthManager {
     private void setupExample2() {
         Project Example2 = new Project("example2/", 11, 4);
 
-        String CLASS_BASE_PIZZA = "kitchen/BasePizza.class";
-        String CLASS_PASTA_TYPE = "kitchen/PastaType.class";
-        String CLASS_PIZZA_SIZE = "kitchen/PizzaSize.class";
-        String CLASS_PIZZA = "kitchen/Pizza.class";
-        String CLASS_MAIN = "Main.class";
-        String CLASS_INGREDIENT = "kitchen/ingredients/Ingredient.class";
-        String CLASS_TOMATO = "kitchen/ingredients/Tomato.class";
-        String CLASS_PICKLES = "kitchen/ingredients/Pickles.class";
-        String CLASS_CUSTOMER = "store/Customer.class";
-        String CLASS_PIZZAIOLO = "store/Pizzaiolo.class";
-        String CLASS_PIZZERIA = "store/Pizzeria.class";
+        String CLASS_BASE_PIZZA = "example2.kitchen.BasePizza";
+        String CLASS_PASTA_TYPE = "example2.kitchen.PastaType";
+        String CLASS_PIZZA_SIZE = "example2.kitchen.PizzaSize";
+        String CLASS_PIZZA = "example2.kitchen.Pizza";
+        String CLASS_MAIN = "example2.Main";
+        String CLASS_INGREDIENT = "example2.kitchen.ingredients.Ingredient";
+        String CLASS_TOMATO = "example2.kitchen.ingredients.Tomato";
+        String CLASS_PICKLES = "example2.kitchen.ingredients.Pickles";
+        String CLASS_CUSTOMER = "example2.store.Customer";
+        String CLASS_PIZZAIOLO = "example2.store.Pizzaiolo";
+        String CLASS_PIZZERIA = "example2.store.Pizzeria";
 
         Example2.addClass(CLASS_BASE_PIZZA,
                 new ClassInformation(2, 0, 1, 0, 0, 0, 1)

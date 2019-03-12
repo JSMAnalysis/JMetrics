@@ -67,23 +67,29 @@ class BytecodeFileSystemExplorerTest {
         PackageDirectory directory;
 
         directory = PS.getPackageDirectory("example2");
-        classesContent = new ArrayList<String>() {{ add("Main.class"); }};
-        packagesContent = new ArrayList<String>() {{ add("kitchen"); add("store"); }};
+        classesContent = new ArrayList<String>() {{ add("example2.Main"); }};
+        packagesContent = new ArrayList<String>() {{ add("example2.kitchen"); add("example2.store"); }};
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = PS.getPackageDirectory("store");
-        classesContent = new ArrayList<String>() {{ add("Customer.class"); add("Pizzaiolo.class"); add("Pizzeria.class"); }};
+        directory = PS.getPackageDirectory("example2.store");
+        classesContent = new ArrayList<String>() {{
+            add("example2.store.Customer"); add("example2.store.Pizzaiolo"); add("example2.store.Pizzeria");
+        }};
         packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = PS.getPackageDirectory("ingredients");
-        classesContent = new ArrayList<String>() {{ add("Ingredient.class"); add("Pickles.class"); add("Tomato.class"); }};
+        directory = PS.getPackageDirectory("example2.kitchen.ingredients");
+        classesContent = new ArrayList<String>() {{
+            add("example2.kitchen.ingredients.Ingredient"); add("example2.kitchen.ingredients.Pickles"); add("example2.kitchen.ingredients.Tomato");
+        }};
         packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = PS.getPackageDirectory("kitchen");
-        packagesContent = new ArrayList<String>() {{ add("ingredients"); }};
-        classesContent = new ArrayList<String>() {{ add("BasePizza.class"); add("PastaType.class"); add("Pizza.class"); add("PizzaSize.class"); }};
+        directory = PS.getPackageDirectory("example2.kitchen");
+        packagesContent = new ArrayList<String>() {{ add("example2.kitchen.ingredients"); }};
+        classesContent = new ArrayList<String>() {{
+            add("example2.kitchen.BasePizza"); add("example2.kitchen.PastaType"); add("example2.kitchen.Pizza"); add("example2.kitchen.PizzaSize");
+        }};
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
     }
 

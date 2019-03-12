@@ -7,6 +7,7 @@ import fr.ubordeaux.jmetrics.metrics.ClassGranule;
 import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.BytecodeFileSystemExplorer;
+import fr.ubordeaux.jmetrics.project.ProjectComponent;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
 import ground_truth.GroundTruthManager;

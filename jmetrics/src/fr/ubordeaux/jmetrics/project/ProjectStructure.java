@@ -27,7 +27,7 @@ public class ProjectStructure {
 
     public void setStructure(ProjectComponent rootComponent) {
         structure = rootComponent;
-        pruneStructure();
+       // pruneStructure();
     }
 
     /**
