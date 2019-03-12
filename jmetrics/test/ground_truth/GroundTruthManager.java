@@ -82,7 +82,7 @@ public class GroundTruthManager {
 
         Example1.addDependency(CLASS_AIRPLANE,    CLASS_VEHICLE,    DependencyType.Inheritance);
         Example1.addDependency(CLASS_CAR,         CLASS_VEHICLE,    DependencyType.Inheritance);
-        Example1.addDependency(CLASS_WHEEL,       CLASS_MATERIAL,   DependencyType.Signature);
+        Example1.addDependency(CLASS_WHEEL,       CLASS_MATERIAL,   DependencyType.UseLink);
         Example1.addDependency(CLASS_WHEEL,       CLASS_MATERIAL,   DependencyType.Aggregation);
         // TODO: Dependency (through Generic Types) to add :
         //  (CLASS_VEHICLE, CLASS_WHEEL, DependencyType.Aggregation)
@@ -141,14 +141,14 @@ public class GroundTruthManager {
 
         Example2.addDependency(CLASS_TOMATO,        CLASS_INGREDIENT,       DependencyType.Inheritance);
         Example2.addDependency(CLASS_PICKLES,       CLASS_INGREDIENT,       DependencyType.Inheritance);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_INGREDIENT,       DependencyType.Signature);
-        Example2.addDependency(CLASS_CUSTOMER,      CLASS_PIZZA,            DependencyType.Signature);
-        Example2.addDependency(CLASS_PIZZAIOLO,     CLASS_PIZZA,            DependencyType.Signature);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_BASE_PIZZA,       DependencyType.Signature);
+        Example2.addDependency(CLASS_PIZZA,         CLASS_INGREDIENT,       DependencyType.UseLink);
+        Example2.addDependency(CLASS_CUSTOMER,      CLASS_PIZZA,            DependencyType.UseLink);
+        Example2.addDependency(CLASS_PIZZAIOLO,     CLASS_PIZZA,            DependencyType.UseLink);
+        Example2.addDependency(CLASS_PIZZA,         CLASS_BASE_PIZZA,       DependencyType.UseLink);
         Example2.addDependency(CLASS_PIZZA,         CLASS_BASE_PIZZA,       DependencyType.Aggregation);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_PASTA_TYPE,       DependencyType.Signature);
+        Example2.addDependency(CLASS_PIZZA,         CLASS_PASTA_TYPE,       DependencyType.UseLink);
         Example2.addDependency(CLASS_PIZZA,         CLASS_PASTA_TYPE,       DependencyType.Aggregation);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZA_SIZE,       DependencyType.Signature);
+        Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZA_SIZE,       DependencyType.UseLink);
         Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZA_SIZE,       DependencyType.Aggregation);
         // TODO: Dependency (through Generic Types) to add :
         //  (CLASS_PIZZAIOLO,   CLASS_PIZZA,        DependencyType.Aggregation)
