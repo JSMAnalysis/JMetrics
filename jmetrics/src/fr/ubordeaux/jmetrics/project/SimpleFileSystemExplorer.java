@@ -11,7 +11,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
 
     private final String CODE_FILE_EXTENSION;
 
-    public SimpleFileSystemExplorer(String codeFileExtension) {
+    SimpleFileSystemExplorer(String codeFileExtension) {
         CODE_FILE_EXTENSION = codeFileExtension;
     }
 
@@ -39,16 +39,16 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      */
     private void setRecursiveStructure(File node, PackageDirectory parent, int depth, String currentName) {
         if (isCodeFile(node)) {
-            parent.addContent(new ClassFile(node, generateComponentName(currentName, filterExtension(node.getName()), depth)));
+            parent.addContent(new ClassFile(node, generateComponentName(currentName, removeFileExtension(node.getName()))));
         } else if (node.isDirectory()) {
-            String packageName = generateComponentName(currentName, node.getName(), depth);
+            String packageName = generateComponentName(currentName, node.getName());
             PackageDirectory dir = new PackageDirectory(node, packageName, depth++);
             File[] files = node.listFiles();
             if (files == null) {
                 throw new UncheckedIOException(new IOException("A problem has occurred while inspecting the given directory."));
             }
             for (File file: files) {
-                setRecursiveStructure(file, dir, depth++, packageName);
+                setRecursiveStructure(file, dir, depth, packageName);
             }
             parent.addContent(dir);
         }
@@ -74,11 +74,11 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     }
 
     /**
-     * Filters a file name to remove the file extension.
-     * @param filename The name to filter.
+     * Remove file extension of a filename.
+     * @param filename The filename on which remove extension.
      * @return The file name without its extension or filename if the extension was not found.
      */
-    private String filterExtension(String filename){
+    private String removeFileExtension(String filename) {
         int extensionIndex = filename.indexOf(CODE_FILE_EXTENSION);
         if(extensionIndex != -1) {
             return filename.substring(0, extensionIndex);
@@ -86,9 +86,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
         return filename;
     }
 
-
-    private String generateComponentName(String currentName, String fileName, int depth){
-        if (depth == 0) return "";
+    private String generateComponentName(String currentName, String fileName){
         if (currentName.isEmpty()) return fileName;
         return currentName + "." + fileName;
     }

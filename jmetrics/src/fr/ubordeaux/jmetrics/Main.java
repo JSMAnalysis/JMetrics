@@ -22,11 +22,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Check Arguments
-        // TODO: Add an optional command : [--scale=class|package]
         parseCommandLine(args);
-
-
 
         // Execute Pipeline
         projectExploration(path);
@@ -63,16 +59,12 @@ public class Main {
         System.out.println(GraphConstructor.getDOTRepresentation(classGraph));
         System.out.println("DOT dependency graph (Package scale):");
         System.out.println(GraphConstructor.getDOTRepresentation(packageGraph));
+
     }
 
 
 
     private static void projectExploration(String path) {
-        // TODO 1: Determine whether the given project is composed by SourceCode or ByteCode.
-        //  => (Setup analysis environment) Instantiate corresponding FileSystemExplorer / analysis classes.
-        // TODO 2: The useless package should be removed.
-        //  In class graph, each node is a used class.
-        //  It's not the case in package graph: a node can be a useless directory.
         try {
             ProjectStructure.getInstance().setStructure(explorer.generateStructure(path));
         } catch(InvalidProjectPathException e){
@@ -150,24 +142,9 @@ public class Main {
     private static Options buildOptions(){
         Options options = new Options();
 
-        Option dotonly =  Option.builder()
-                                .longOpt(DOTONLY_OPTION)
-                                .hasArg(false)
-                                .build();
-
-
-        Option path = Option.builder(PATH_OPTION)
-                            .required()
-                            .longOpt(PATH_OPTION_LONG)
-                            .numberOfArgs(1)
-                            .build();
-
-        Option parsingType =  Option.builder()
-                                    .required()
-                                    .longOpt(TYPE_OPTION)
-                                    .numberOfArgs(1)
-                                    .build();
-
+        Option path = Option.builder(PATH_OPTION).required().longOpt(PATH_OPTION_LONG).numberOfArgs(1).build();
+        Option dotonly =  Option.builder().longOpt(DOTONLY_OPTION).hasArg(false).build();
+        Option parsingType =  Option.builder().required().longOpt(TYPE_OPTION).numberOfArgs(1).build();
 
         options.addOption(dotonly);
         options.addOption(path);

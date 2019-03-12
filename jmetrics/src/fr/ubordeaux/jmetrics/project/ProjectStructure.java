@@ -1,7 +1,13 @@
 package fr.ubordeaux.jmetrics.project;
 
+import fr.ubordeaux.jmetrics.metrics.Granule;
+import fr.ubordeaux.jmetrics.metrics.PackageGranule;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Provides structure (as Singleton) to represent a Java Project.
@@ -23,7 +29,8 @@ public class ProjectStructure {
     private ProjectStructure() {  }
 
     public void setStructure(ProjectComponent rootComponent) {
-        this.structure = rootComponent;
+        structure = rootComponent;
+        pruneStructure();
     }
 
     /**
@@ -58,8 +65,8 @@ public class ProjectStructure {
      * Delete the cache attributes.
      */
     public void cacheClear() {
-        this.cacheClasses = null;
-        this.cachePackages = null;
+        cacheClasses = null;
+        cachePackages = null;
     }
 
     /**
@@ -67,9 +74,9 @@ public class ProjectStructure {
      * @return List of class files that compose the project.
      */
     public List<ClassFile> getClasses() {
-        if (this.cacheClasses == null)
-            this.cacheClasses = recursiveEnumerateClasses(structure, new ArrayList<>());
-        return this.cacheClasses;
+        if (cacheClasses == null)
+            cacheClasses = recursiveEnumerateClasses(structure, new ArrayList<>());
+        return cacheClasses;
     }
 
     /**
@@ -96,9 +103,9 @@ public class ProjectStructure {
      * @return List of package directory that compose the project.
      */
     public List<PackageDirectory> getPackages() {
-        if (this.cachePackages == null)
-            this.cachePackages = recursiveEnumeratePackages(structure, new ArrayList<>());
-        return this.cachePackages;
+        if (cachePackages == null)
+            cachePackages = recursiveEnumeratePackages(structure, new ArrayList<>());
+        return cachePackages;
     }
 
     private List<PackageDirectory> recursiveEnumeratePackages(ProjectComponent tree, List<PackageDirectory> accumulator) {
@@ -114,6 +121,75 @@ public class ProjectStructure {
 
     public String getRootPath(){
         return (structure != null) ? structure.getPath() : "";
+    }
+
+    /**
+     * Prune the ProjectStructure from superfluous packages and reduce components name.
+     */
+    private void pruneStructure() {
+
+        // Remove empty packages (packageList is sorted by depth desc)
+        List<PackageDirectory> packageList = recursiveEnumeratePackages(structure, new ArrayList<>());
+        packageList = packageList.stream()
+                .sorted(Comparator.comparing(PackageDirectory::getDepth).reversed())
+                .collect(Collectors.toList());
+        for (PackageDirectory dir: packageList) {
+            if (dir.getContent().isEmpty()) {
+                PackageDirectory parent = getParentComponent(packageList, dir);
+                if (parent != null) { parent.removeContent(dir); }
+            }
+        }
+
+        // Remove top tree useless directories (packageList is now sorted by depth asc)
+        Collections.reverse(packageList);
+        int removedDepth = 0;
+        ProjectComponent newRootComponent = null;
+        List<ProjectComponent> content;
+        for (PackageDirectory dir: packageList) {
+            content = dir.getContent();
+            if (content.size() == 1 && content.get(0) instanceof PackageDirectory) {
+                removedDepth++;
+                newRootComponent = content.get(0);
+            }
+        }
+        if (newRootComponent != null) {
+            structure = newRootComponent;
+            for (PackageDirectory dir: packageList) {
+                dir.setDepth(dir.getDepth() - removedDepth);
+            }
+        }
+
+        // Rename Components
+        List<ClassFile> classes = recursiveEnumerateClasses(structure, new ArrayList<>());
+        List<PackageDirectory> packages = recursiveEnumeratePackages(structure, new ArrayList<>());
+        ArrayList<ProjectComponent> componentsList = new ArrayList<>(classes);
+        componentsList.addAll(packages);
+        ArrayList<String> componentNames = componentsList.stream()
+                .map(ProjectComponent::getName)
+                .collect(Collectors.toCollection(ArrayList::new));
+        String first = componentNames.get(0);
+        String[] splitFirst = first.split("\\.");
+        StringBuilder prefixBuild = new StringBuilder();
+        for (int i = 0; i < removedDepth; i++) {
+            prefixBuild.append(splitFirst[i]);
+            prefixBuild.append(".");
+        }
+        String prefix = prefixBuild.toString();
+        for (ProjectComponent c: componentsList) {
+            c.setName(c.getName().split(prefix)[1]);
+        }
+
+    }
+
+    private PackageDirectory getParentComponent(List<PackageDirectory> packages, ProjectComponent comp) {
+        for (PackageDirectory packageG: packages) {
+            for (ProjectComponent innerG: packageG.getContent()) {
+                if (innerG.equals(comp)) {
+                    return packageG;
+                }
+            }
+        }
+        return null;
     }
 
 }

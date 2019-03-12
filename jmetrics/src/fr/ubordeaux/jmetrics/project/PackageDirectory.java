@@ -24,10 +24,20 @@ public class PackageDirectory extends ProjectComponent {
         return new ArrayList<>(content);
     }
 
-    public void addContent(ProjectComponent content) { this.content.add(content); }
+    public void addContent(ProjectComponent content) {
+        this.content.add(content);
+    }
+
+    public void removeContent(ProjectComponent content) {
+        this.content.remove(content);
+    }
 
     public int getDepth() {
         return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 
     @Override

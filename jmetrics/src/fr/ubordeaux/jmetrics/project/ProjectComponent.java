@@ -22,6 +22,10 @@ public abstract class ProjectComponent {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public File getFile() {
         return file;
     }
