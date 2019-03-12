@@ -66,26 +66,26 @@ class BytecodeFileSystemExplorerTest {
         List<String> classesContent, packagesContent;
         PackageDirectory directory;
 
-        directory = PS.getPackageDirectory("example2");
+        directory = getPackageDirectory("example2");
         classesContent = new ArrayList<String>() {{ add("example2.Main"); }};
         packagesContent = new ArrayList<String>() {{ add("example2.kitchen"); add("example2.store"); }};
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = PS.getPackageDirectory("example2.store");
+        directory = getPackageDirectory("example2.store");
         classesContent = new ArrayList<String>() {{
             add("example2.store.Customer"); add("example2.store.Pizzaiolo"); add("example2.store.Pizzeria");
         }};
         packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = PS.getPackageDirectory("example2.kitchen.ingredients");
+        directory = getPackageDirectory("example2.kitchen.ingredients");
         classesContent = new ArrayList<String>() {{
             add("example2.kitchen.ingredients.Ingredient"); add("example2.kitchen.ingredients.Pickles"); add("example2.kitchen.ingredients.Tomato");
         }};
         packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = PS.getPackageDirectory("example2.kitchen");
+        directory = getPackageDirectory("example2.kitchen");
         packagesContent = new ArrayList<String>() {{ add("example2.kitchen.ingredients"); }};
         classesContent = new ArrayList<String>() {{
             add("example2.kitchen.BasePizza"); add("example2.kitchen.PastaType"); add("example2.kitchen.Pizza"); add("example2.kitchen.PizzaSize");
@@ -113,6 +113,20 @@ class BytecodeFileSystemExplorerTest {
         }
 
         return validComponent == numberOfProjectComponent;
+    }
+
+    /**
+     * Get Package Directory by name.
+     * @param name The name of the searched PackageDirectory.
+     * @return The searched Package Directory if exists, null otherwise.
+     */
+    public PackageDirectory getPackageDirectory(String name) {
+        for (PackageDirectory directory: ProjectStructure.getInstance().getPackages()) {
+            if (directory.getName().equals(name)) {
+                return directory;
+            }
+        }
+        return null;
     }
 
 }

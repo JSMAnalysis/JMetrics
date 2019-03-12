@@ -27,35 +27,7 @@ public class ProjectStructure {
 
     public void setStructure(ProjectComponent rootComponent) {
         structure = rootComponent;
-       // pruneStructure();
-    }
-
-    /**
-     * Get Class File by name.
-     * @param name The name of the searched ClassFile.
-     * @return The searched Class File if exists, null otherwise.
-     */
-    public ClassFile getClassFile(String name) {
-        for (ClassFile file: getClasses()) {
-            if (file.getName().equals(name)) {
-                return file;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get Package Directory by name.
-     * @param name The name of the searched PackageDirectory.
-     * @return The searched Package Directory if exists, null otherwise.
-     */
-    public PackageDirectory getPackageDirectory(String name) {
-        for (PackageDirectory directory: getPackages()) {
-            if (directory.getName().equals(name)) {
-                return directory;
-            }
-        }
-        return null;
+        pruneStructure();
     }
 
     /**
@@ -172,8 +144,10 @@ public class ProjectStructure {
             prefixBuild.append(".");
         }
         String prefix = prefixBuild.toString();
-        for (ProjectComponent c: componentsList) {
-            c.setName(c.getName().split(prefix)[1]);
+        if (!prefix.equals("")) {
+            for (ProjectComponent c: componentsList) {
+                c.setName(c.getName().split(prefix)[1]);
+            }
         }
 
     }

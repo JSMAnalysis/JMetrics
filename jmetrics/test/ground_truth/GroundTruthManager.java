@@ -42,8 +42,7 @@ public class GroundTruthManager {
         BytecodeFileSystemExplorer explorer = new BytecodeFileSystemExplorer();
         Project p = getProject(projectNumber);
         ProjectComponent rootComponent = explorer.generateStructure(p.getPath());
-        ProjectStructure PS = ProjectStructure.getInstance();
-        PS.setStructure(rootComponent);
+        ProjectStructure.getInstance().setStructure(rootComponent);
     }
 
     public Project getProject(int projectNumber) {

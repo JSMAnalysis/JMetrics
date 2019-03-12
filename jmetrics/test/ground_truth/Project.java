@@ -56,8 +56,6 @@ public class Project {
         return new HashMap<>(classes);
     }
 
-
-
     void addClass(String className, ClassInformation classInfo) {
         ClassFile file = getClassFile(className);
         classes.put(file, classInfo);
@@ -66,8 +64,6 @@ public class Project {
     void addDependency(String srcName, String dstName, DependencyType type) {
         dependencies.add(new Dependency(getClassCategory(srcName), getClassCategory(dstName), type));
     }
-
-
 
     private ClassFile getClassFile(String name) {
         String path = getPath() + directory + name;

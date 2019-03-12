@@ -54,26 +54,11 @@ class IntrospectionCouplingParserTest {
                     if (find = sameSrc && sameDst && sameType) break;
                 }
                 if (!find) {
-                    System.out.println(find);
                     fail("Project" + projectNumber + ": A dependency in the Ground Truth is not present in the result of analyze.\n" +
                             "Concerned dependency: (" + GTDependency.getType() + "): " +
-                            GTDependency.getSource() + " -> " + GTDependency.getDestination());
+                            GTDependency.getSource().getName() + " -> " + GTDependency.getDestination().getName());
                 }
             }
-        }
-    }
-
-    /**
-     * Debug purpose function.
-     */
-    void printDependencies(List<Dependency> list) {
-        int i = 0;
-        for (Dependency dependency: list) {
-            i++;
-            System.out.println(
-                   "Dependency " + i + " (" + dependency.getType() + ") : " +
-                    dependency.getSource().getName() + " -> " + dependency.getDestination().getName()
-            );
         }
     }
 
