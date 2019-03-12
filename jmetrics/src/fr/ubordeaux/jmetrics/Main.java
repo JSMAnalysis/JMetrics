@@ -4,22 +4,22 @@ import fr.ubordeaux.jmetrics.analysis.*;
 import fr.ubordeaux.jmetrics.datastructure.*;
 import fr.ubordeaux.jmetrics.metrics.*;
 import fr.ubordeaux.jmetrics.project.*;
+import org.apache.commons.cli.*;
 
 import java.util.*;
 
 public class Main {
 
+    private static String path;
+    private static boolean dotonly;
+
     public static void main(String[] args) {
 
         // Check Arguments
-        if (args.length < 1 || args.length > 2) {
-            System.out.println("Invalid number of arguments");
-            System.out.println("Usage : <jmetrics_run_command> <path_to_analyzed_project> [--dot-only]");
-            // TODO: Add an optional command : [--scale=class|package]
-            System.exit(1);
-        }
-        String path = args[0];
-        boolean dotOnly = args.length == 2 && args[1].equals("--dot-only");
+        // TODO: Add an optional command : [--scale=class|package]
+        parseCommandLine(args);
+
+
 
         // Execute Pipeline
         projectExploration(path);
@@ -46,7 +46,7 @@ public class Main {
             Metrics.computePackageMetrics(g, packageGraph);
         }
 
-        if (!dotOnly) {
+        if (!dotonly) {
             System.out.println("Metrics values by class :");
             for (Granule g: classNodes) displayMetrics(g);
             System.out.println("Metrics values by packages :");
@@ -115,6 +115,53 @@ public class Main {
         System.out.println("\tCe : "    + metrics.getEfferentCoupling());
         System.out.println("\tI : "     + metrics.getInstability());
         System.out.println("\tDn : "    + metrics.getNormalizedDistance());
+    }
+
+    private static void parseCommandLine(String[] args){
+        CommandLineParser parser = new DefaultParser();
+        CommandLine line = null;
+        try{
+            line = parser.parse(buildOptions(), args);
+        }
+        catch(ParseException e){
+            System.out.println("Parsing failed : " + e.getMessage());
+            System.exit(1);
+        }
+
+        dotonly = line.hasOption("dotonly");
+        path = line.getOptionValue("p");
+    }
+
+    private static Options buildOptions(){
+        Options options = new Options();
+        Option dotonly = new Option("dotonly", "dotonly", false
+                , "outputs only the dot formated graph");
+        Option path = Option.builder("p")
+                            .required()
+                            .longOpt("path")
+                            .numberOfArgs(1)
+                            .build();
+
+        /*Option = new Option().;
+        Option = new Option();
+        Option = new Option();
+        Option = new Option();
+        Option = new Option();
+        Option = new Option()*/
+
+
+
+
+
+
+
+
+
+
+
+        options.addOption(dotonly);
+        options.addOption(path);
+        return options;
     }
 
 }
