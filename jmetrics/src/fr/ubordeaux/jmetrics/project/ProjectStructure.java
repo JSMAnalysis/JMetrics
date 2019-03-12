@@ -1,8 +1,5 @@
 package fr.ubordeaux.jmetrics.project;
 
-import fr.ubordeaux.jmetrics.metrics.Granule;
-import fr.ubordeaux.jmetrics.metrics.PackageGranule;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

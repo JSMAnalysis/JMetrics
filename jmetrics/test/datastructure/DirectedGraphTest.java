@@ -31,18 +31,22 @@ class DirectedGraphTest {
     }
 
     private DirectedGraph<Granule, DependencyEdge> initGraph() {
-        Set<Granule> nodes = new HashSet<>();
         List<ClassFile> classes = ProjectStructure.getInstance().getClasses();
-
-        for (ClassFile c : classes) {
+        Set<Granule> nodes = new HashSet<>();
+        for (ClassFile c: classes) {
+            System.out.println(c.getName());
             nodes.add(new ClassGranule(c));
         }
-        return (new GraphConstructor()).constructGraph(nodes, new HashSet<>());
+        for (Granule g: nodes) {
+            System.out.println(g.getName());
+        }
+        return GraphConstructor.constructGraph(nodes, new HashSet<>());
     }
 
     @Test
     void testCorrectSizeOfGraph() {
         DirectedGraph<Granule, DependencyEdge> graph = initGraph();
+        System.out.println("nbClasses : " + ProjectStructure.getInstance().getClasses().size());
         assertEquals(ProjectStructure.getInstance().getClasses().size(), graph.getNodeSet().size());
 
         graph.removeNode(graph.getNodeSet().iterator().next());
@@ -60,8 +64,8 @@ class DirectedGraphTest {
         DirectedGraph<Granule, DependencyEdge> graph = initGraph();
         DirectedGraph<Granule, DependencyEdge> graphBis = new DirectedGraph<>();
 
-        for (Granule gScale : graph.getNodeSet()) {
-            graphBis.addNode(gScale);
+        for (Granule g: graph.getNodeSet()) {
+            graphBis.addNode(g);
         }
 
         assertEquals(graph.getNodeSet().size(), graphBis.getNodeSet().size());

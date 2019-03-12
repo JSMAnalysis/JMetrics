@@ -71,7 +71,7 @@ public class Project {
 
     private ClassFile getClassFile(String name) {
         String path = getPath() + directory + name;
-        return new ClassFile(new File(path));
+        return new ClassFile(new File(path), name);
     }
 
     private Granule getClassCategory(String className) {

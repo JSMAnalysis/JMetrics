@@ -39,7 +39,8 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      */
     private void setRecursiveStructure(File node, PackageDirectory parent, int depth, String currentName) {
         if (isCodeFile(node)) {
-            parent.addContent(new ClassFile(node, generateComponentName(currentName, removeFileExtension(node.getName()))));
+            String className = generateComponentName(currentName, removeFileExtension(node.getName()));
+            parent.addContent(new ClassFile(node, className));
         } else if (node.isDirectory()) {
             String packageName = generateComponentName(currentName, node.getName());
             PackageDirectory dir = new PackageDirectory(node, packageName, depth++);

@@ -60,7 +60,7 @@ public class Metrics {
         return abstractness;
     }
 
-    public void setAbstractness(AbstractnessData data) {
+    private void setAbstractness(AbstractnessData data) {
         abstractness = data.getNumberOfMethods() == 0 ? 0 : (double)data.getNumberOfAbstractMethods() / (double)data.getNumberOfMethods();
         abstractness = roundValue(abstractness);
         if (!isValidComponents.apply(abstractness)) {
