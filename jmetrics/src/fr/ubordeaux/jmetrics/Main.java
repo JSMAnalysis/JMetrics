@@ -10,8 +10,15 @@ import java.util.*;
 
 public class Main {
 
+    private static final String DOTONLY_OPTION = "dotonly";
+    private static final String PATH_OPTION = "p";
+    private static final String PATH_OPTION_LONG = "path";
+    private static final String TYPE_OPTION = "type";
+
     private static String path;
     private static boolean dotonly;
+    private static FileSystemExplorer explorer;
+    private static ParserFactory parserFactory;
 
     public static void main(String[] args) {
 
@@ -66,7 +73,6 @@ public class Main {
         // TODO 2: The useless package should be removed.
         //  In class graph, each node is a used class.
         //  It's not the case in package graph: a node can be a useless directory.
-        FileSystemExplorer explorer = new BytecodeFileSystemExplorer();
         try {
             ProjectStructure.getInstance().setStructure(explorer.generateStructure(path));
         } catch(InvalidProjectPathException e){
@@ -77,7 +83,7 @@ public class Main {
 
     private static Map<ClassFile, AbstractnessData> abstractnessAnalysis(List<ClassFile> classes) {
         Map<ClassFile, AbstractnessData> aData = new HashMap<>();
-        AbstractnessParser aParser = new IntrospectionAbstractnessParser();
+        AbstractnessParser aParser = parserFactory.getAbstractnessParser();
         for (ClassFile c : classes) {
             aData.put(c, aParser.getAbstractnessData(c));
         }
@@ -88,7 +94,7 @@ public class Main {
         // TODO: (Refactor) Coupling analysis should return Set (instead of List).
         //  (Or rather) Shouldn't if we consider multiple dependencies (which is not actually the case).
         List<Dependency> dependencies = new ArrayList<>();
-        CouplingParser cParser = new IntrospectionCouplingParser();
+        CouplingParser cParser = parserFactory.getCouplingParser();
         for (ClassFile c: classes) {
             dependencies.addAll(cParser.getDependencies(c));
         }
@@ -117,50 +123,55 @@ public class Main {
         System.out.println("\tDn : "    + metrics.getNormalizedDistance());
     }
 
-    private static void parseCommandLine(String[] args){
+    private static void parseCommandLine(String[] args) {
         CommandLineParser parser = new DefaultParser();
         CommandLine line = null;
-        try{
+        try {
             line = parser.parse(buildOptions(), args);
-        }
-        catch(ParseException e){
+        } catch (ParseException e) {
             System.out.println("Parsing failed : " + e.getMessage());
             System.exit(1);
         }
 
-        dotonly = line.hasOption("dotonly");
-        path = line.getOptionValue("p");
+        dotonly = line.hasOption(DOTONLY_OPTION);
+        path = line.getOptionValue(PATH_OPTION);
+        if (line.getOptionValue(TYPE_OPTION).equals("source")) {
+            explorer = new SourceFileSystemExplorer();
+            parserFactory = new JDTParserFactory();
+        } else if (line.getOptionValue(TYPE_OPTION).equals("bytecode")) {
+            explorer = new BytecodeFileSystemExplorer();
+            parserFactory = new IntrospectionParserFactory();
+        } else{
+            System.out.println("Type option can only be either source or bytecode");
+            System.exit(1);
+        }
     }
 
     private static Options buildOptions(){
         Options options = new Options();
-        Option dotonly = new Option("dotonly", "dotonly", false
-                , "outputs only the dot formated graph");
-        Option path = Option.builder("p")
+
+        Option dotonly =  Option.builder()
+                                .longOpt(DOTONLY_OPTION)
+                                .hasArg(false)
+                                .build();
+
+
+        Option path = Option.builder(PATH_OPTION)
                             .required()
-                            .longOpt("path")
+                            .longOpt(PATH_OPTION_LONG)
                             .numberOfArgs(1)
                             .build();
 
-        /*Option = new Option().;
-        Option = new Option();
-        Option = new Option();
-        Option = new Option();
-        Option = new Option();
-        Option = new Option()*/
-
-
-
-
-
-
-
-
-
+        Option parsingType =  Option.builder()
+                                    .required()
+                                    .longOpt(TYPE_OPTION)
+                                    .numberOfArgs(1)
+                                    .build();
 
 
         options.addOption(dotonly);
         options.addOption(path);
+        options.addOption(parsingType);
         return options;
     }
 
