@@ -129,7 +129,7 @@ public class ProjectStructure {
         }
 
         // Rename Components
-        List<ClassFile> classes = recursiveEnumerateClasses(structure, new ArrayList<>());
+        /*List<ClassFile> classes = recursiveEnumerateClasses(structure, new ArrayList<>());
         List<PackageDirectory> packages = recursiveEnumeratePackages(structure, new ArrayList<>());
         ArrayList<ProjectComponent> componentsList = new ArrayList<>(classes);
         componentsList.addAll(packages);
@@ -148,7 +148,7 @@ public class ProjectStructure {
             for (ProjectComponent c: componentsList) {
                 c.setName(c.getName().split(prefix)[1]);
             }
-        }
+        }*/
 
     }
 

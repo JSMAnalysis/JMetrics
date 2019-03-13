@@ -39,10 +39,10 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      */
     private void setRecursiveStructure(File node, PackageDirectory parent, int depth, String currentName) {
         if (isCodeFile(node)) {
-            String className = generateComponentName(currentName, removeFileExtension(node.getName()));
+            String className = generateComponentName(currentName, removeFileExtension(node.getName()), depth);
             parent.addContent(new ClassFile(node, className));
         } else if (node.isDirectory()) {
-            String packageName = generateComponentName(currentName, node.getName());
+            String packageName = generateComponentName(currentName, node.getName(), depth);
             PackageDirectory dir = new PackageDirectory(node, packageName, depth++);
             File[] files = node.listFiles();
             if (files == null) {
@@ -87,7 +87,8 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
         return filename;
     }
 
-    private String generateComponentName(String currentName, String fileName){
+    private String generateComponentName(String currentName, String fileName, int depth){
+        if(depth == 0) return "";
         if (currentName.isEmpty()) return fileName;
         return currentName + "." + fileName;
     }
