@@ -11,9 +11,18 @@ import java.util.*;
 public class Main {
 
     private static final String DOTONLY_OPTION = "dotonly";
+    private static final String DOTONLY_DESC = "Only prints the dot-formated graphs";
     private static final String PATH_OPTION = "p";
     private static final String PATH_OPTION_LONG = "path";
-    private static final String TYPE_OPTION = "type";
+    private static final String PATH_DESC = "Specifies the root of the project to analyze";
+    private static final String TYPE_OPTION = "t";
+    private static final String TYPE_OPTION_LONG = "type";
+    private static final String TYPE_DESC = "Indicates whether the program should perform a bytecode or source analysis";
+    private static final String HELP_OPTION = "h";
+    private static final String HELP_OPTION_LONG = "help";
+    private static final String HELP_DESC = "Prints help";
+
+    private static final String PROGRAM_USAGE = "jmetrics -t <source|bytecode> -p <project_root> [OPTIONS]";
 
     private static String path;
     private static boolean dotonly;
@@ -117,14 +126,19 @@ public class Main {
 
     private static void parseCommandLine(String[] args) {
         CommandLineParser parser = new DefaultParser();
+        Options options = buildOptions();
         CommandLine line = null;
         try {
-            line = parser.parse(buildOptions(), args);
-        } catch (ParseException e) {
+            line = parser.parse(options, args);
+        }
+        catch (ParseException e) {
             System.out.println("Parsing failed : " + e.getMessage());
-            System.exit(1);
+            printHelpAndExit(options, 1);
         }
 
+        if(line.hasOption(HELP_OPTION)){
+            printHelpAndExit(options, 0);
+        }
         dotonly = line.hasOption(DOTONLY_OPTION);
         path = line.getOptionValue(PATH_OPTION);
         if (line.getOptionValue(TYPE_OPTION).equals("source")) {
@@ -139,16 +153,24 @@ public class Main {
         }
     }
 
+    private static void printHelpAndExit(Options options, int status){
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(PROGRAM_USAGE, options);
+        System.exit(status);
+    }
+
     private static Options buildOptions(){
         Options options = new Options();
 
-        Option path = Option.builder(PATH_OPTION).required().longOpt(PATH_OPTION_LONG).numberOfArgs(1).build();
-        Option dotonly =  Option.builder().longOpt(DOTONLY_OPTION).hasArg(false).build();
-        Option parsingType =  Option.builder().required().longOpt(TYPE_OPTION).numberOfArgs(1).build();
+        Option path = Option.builder(PATH_OPTION).required().longOpt(PATH_OPTION_LONG).numberOfArgs(1).desc(PATH_DESC).build();
+        Option dotonly =  Option.builder().longOpt(DOTONLY_OPTION).hasArg(false).desc(DOTONLY_DESC).build();
+        Option parsingType =  Option.builder(TYPE_OPTION).required().longOpt(TYPE_OPTION_LONG).numberOfArgs(1).desc(TYPE_DESC).build();
+        Option help = Option.builder(HELP_OPTION).longOpt(HELP_OPTION_LONG).hasArg(false).desc(HELP_DESC).build();
 
         options.addOption(dotonly);
         options.addOption(path);
         options.addOption(parsingType);
+        options.addOption(help);
         return options;
     }
 
