@@ -8,22 +8,29 @@ import java.util.Objects;
  */
 public abstract class ProjectComponent {
 
-    private String name;
+    private String fullyQualifiedName;
+    private String displayName;
     private File file;
     private String path;
 
-    public ProjectComponent(File file, String name) {
+    public ProjectComponent(File file, String fullyQualifiedName) {
         this.file = file;
         this.path = file.getPath();
-        this.name = name;
+        this.fullyQualifiedName = fullyQualifiedName;
+        this.displayName = fullyQualifiedName;
     }
 
-    public String getName() {
-        return name;
+    public String getFullyQualifiedName() {
+        return fullyQualifiedName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullyQualifiedName(String fullyQualifiedName) {
+        this.fullyQualifiedName = fullyQualifiedName;
+    }
+
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public File getFile() {
@@ -34,19 +41,23 @@ public abstract class ProjectComponent {
         return path;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectComponent that = (ProjectComponent) o;
-        return name.equals(that.name) &&
+        return fullyQualifiedName.equals(that.fullyQualifiedName) &&
                 file.equals(that.file) &&
                 path.equals(that.path);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, file, path);
+        return Objects.hash(fullyQualifiedName, file, path);
     }
 
 }

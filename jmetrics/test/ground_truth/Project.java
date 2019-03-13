@@ -41,7 +41,7 @@ public class Project {
     public int getNumberOfPackages() { return this.numberOfPackages; }
 
     /**
-     * Get the relative path to the project (concatenate groundTruthPath with the directory name).
+     * Get the relative path to the project (concatenate groundTruthPath with the directory fullyQualifiedName).
      * @return The path to the project.
      */
     public String getPath() {

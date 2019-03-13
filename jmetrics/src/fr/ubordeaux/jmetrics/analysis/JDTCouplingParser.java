@@ -54,7 +54,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         List<Granule> matchDependencies = new ArrayList<>();
         for (String classEff: efferentDependencies) {
             for (ClassFile dstFile: projectClasses) {
-                if (dstFile.getName().equals(classEff)) {
+                if (dstFile.getFullyQualifiedName().equals(classEff)) {
                     Granule dst = new ClassGranule(dstFile);
                     matchDependencies.add(dst);
                 }
@@ -84,7 +84,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     }
 
     /**
-     * Filters a set of class names by removing pieces of information that does not belong to the actual name.
+     * Filters a set of class names by removing pieces of information that does not belong to the actual fullyQualifiedName.
      * This means the <...> genericity indicator and the [] array indicator.
      * @param classNames The Set to filter.
      * @return THe filtered Set

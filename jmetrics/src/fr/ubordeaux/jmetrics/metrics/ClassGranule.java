@@ -6,7 +6,8 @@ public class ClassGranule extends Granule {
 
     public ClassGranule(ClassFile file) {
         this.relatedComponent = file;
-        this.name = file.getName();
+        this.fullyQualifiedName = file.getFullyQualifiedName();
+        this.displayName = file.getDisplayName();
     }
 
 }

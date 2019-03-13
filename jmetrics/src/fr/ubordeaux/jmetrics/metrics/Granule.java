@@ -7,15 +7,20 @@ import java.util.Objects;
 public abstract class Granule {
 
     protected ProjectComponent relatedComponent;
-    protected String name;
+    protected String fullyQualifiedName;
+    protected String displayName;
     protected Metrics metrics;
 
-    public String getName() {
-        return name;
+    public String getFullyQualifiedName() {
+        return fullyQualifiedName;
     }
 
     public Metrics getMetrics() {
         return metrics;
+    }
+
+    public String getDisplayName(){
+        return displayName;
     }
 
     public void setMetrics(Metrics metrics) {
@@ -31,12 +36,12 @@ public abstract class Granule {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Granule that = (Granule)o;
-        return Objects.equals(name, that.name);
+        return Objects.equals(fullyQualifiedName, that.fullyQualifiedName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(fullyQualifiedName);
     }
 
 }

@@ -40,7 +40,7 @@ class IntrospectionAbstractnessParserTest {
                 int numberOfAbstractMethodsCalculated = data.getNumberOfAbstractMethods();
 
                 for (ClassFile GTFile: GTClasses.keySet()) {
-                    if (PSFile.getName().equals(GTFile.getName())) {
+                    if (PSFile.getFullyQualifiedName().equals(GTFile.getFullyQualifiedName())) {
                         ClassInformation GTInfo = GTClasses.get(GTFile);
                         assertEquals(numberOfMethodsCalculated, GTInfo.getNumberOfMethod(),
                                 "Fail nbMethod Project" + projectNumber);

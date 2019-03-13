@@ -29,7 +29,7 @@ class DirectedGraphTest {
         classes = ProjectStructure.getInstance().getClasses();
         Set<Granule> nodes = new HashSet<>();
         for (ClassFile c: classes) {
-            System.out.println(c.getName());
+            System.out.println(c.getFullyQualifiedName());
             nodes.add(new ClassGranule(c));
         }
         graph = GraphConstructor.constructGraph(nodes, new HashSet<>());

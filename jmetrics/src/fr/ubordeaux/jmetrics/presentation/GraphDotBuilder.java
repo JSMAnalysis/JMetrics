@@ -52,7 +52,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         mapping.putIfAbsent(node, ++nodeNumber);
         strBuilder.append(nodeNumber);
         strBuilder.append(LABEL_BEGIN);
-        strBuilder.append(node.getName());
+        strBuilder.append(node.getDisplayName());
         strBuilder.append(LABEL_END);
         strBuilder.append(LINE_END_TOKEN);
     }

@@ -35,7 +35,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      * @param node The {@link File} to explore.
      * @param parent The root node of the structure to explore.
      * @param depth The depth level of exploration.
-     * @param currentName The name of the package currently explored.
+     * @param currentName The fullyQualifiedName of the package currently explored.
      */
     private void setRecursiveStructure(File node, PackageDirectory parent, int depth, String currentName) {
         if (isCodeFile(node)) {
@@ -77,7 +77,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     /**
      * Remove file extension of a filename.
      * @param filename The filename on which remove extension.
-     * @return The file name without its extension or filename if the extension was not found.
+     * @return The file fullyQualifiedName without its extension or filename if the extension was not found.
      */
     private String removeFileExtension(String filename) {
         int extensionIndex = filename.indexOf(CODE_FILE_EXTENSION);

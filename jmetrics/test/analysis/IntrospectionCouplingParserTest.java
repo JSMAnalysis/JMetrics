@@ -48,15 +48,15 @@ class IntrospectionCouplingParserTest {
             for (Dependency GTDependency: GTDependencies) {
                 find = false;
                 for (Dependency PSDependency: PSDependencies) {
-                    sameSrc = GTDependency.getSource().getName().equals(PSDependency.getSource().getName());
-                    sameDst = GTDependency.getDestination().getName().equals(PSDependency.getDestination().getName());
+                    sameSrc = GTDependency.getSource().getFullyQualifiedName().equals(PSDependency.getSource().getFullyQualifiedName());
+                    sameDst = GTDependency.getDestination().getFullyQualifiedName().equals(PSDependency.getDestination().getFullyQualifiedName());
                     sameType = GTDependency.getType().equals(PSDependency.getType());
                     if (find = sameSrc && sameDst && sameType) break;
                 }
                 if (!find) {
                     fail("Project" + projectNumber + ": A dependency in the Ground Truth is not present in the result of analyze.\n" +
                             "Concerned dependency: (" + GTDependency.getType() + "): " +
-                            GTDependency.getSource().getName() + " -> " + GTDependency.getDestination().getName());
+                            GTDependency.getSource().getFullyQualifiedName() + " -> " + GTDependency.getDestination().getFullyQualifiedName());
                 }
             }
         }

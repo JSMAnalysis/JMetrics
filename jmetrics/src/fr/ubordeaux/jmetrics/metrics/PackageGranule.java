@@ -12,7 +12,8 @@ public class PackageGranule extends Granule {
 
     public PackageGranule(PackageDirectory directory) {
         this.relatedComponent = directory;
-        this.name = directory.getName();
+        this.fullyQualifiedName = directory.getFullyQualifiedName();
+        this.displayName = directory.getDisplayName();
         this.depth = directory.getDepth();
         this.content = new ArrayList<>();
     }

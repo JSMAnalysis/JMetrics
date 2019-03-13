@@ -33,7 +33,7 @@ public abstract class IntrospectionParser {
             stream.close();
         } catch (IOException e) {
             throw new ClassFileNotFoundException("The file associated with the class "
-                    + file.getName()
+                    + file.getFullyQualifiedName()
                     + " does not seem to exist or is temporarily unavailable.");
         }
         ByteCodeClassLoader loader;

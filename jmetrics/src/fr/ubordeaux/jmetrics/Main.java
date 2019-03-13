@@ -116,7 +116,7 @@ public class Main {
 
     private static void displayMetrics(Granule g) {
         Metrics metrics = g.getMetrics();
-        System.out.println(g.getName());
+        System.out.println(g.getDisplayName());
         System.out.println("\tA : "     + metrics.getAbstractness());
         System.out.println("\tCa : "    + metrics.getAfferentCoupling());
         System.out.println("\tCe : "    + metrics.getEfferentCoupling());

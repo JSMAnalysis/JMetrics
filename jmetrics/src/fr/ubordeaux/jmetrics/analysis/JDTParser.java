@@ -28,7 +28,7 @@ public abstract class JDTParser extends ASTVisitor{
             code = Files.readAllBytes(file.getFile().toPath());
         } catch (IOException e) {
             throw new ClassFileNotFoundException("The file associated with the class "
-                    + file.getName()
+                    + file.getFullyQualifiedName()
                     + " does not seem to exist or is temporarily unavailable.");
         }
 

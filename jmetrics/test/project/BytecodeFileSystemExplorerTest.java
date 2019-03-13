@@ -107,8 +107,8 @@ class BytecodeFileSystemExplorerTest {
 
         boolean valid;
         for (ProjectComponent component: directory.getContent()) {
-            valid = component instanceof ClassFile && files.contains(component.getName()) ||
-                    component instanceof PackageDirectory && packages.contains(component.getName());
+            valid = component instanceof ClassFile && files.contains(component.getFullyQualifiedName()) ||
+                    component instanceof PackageDirectory && packages.contains(component.getFullyQualifiedName());
             validComponent += (valid) ? 1 : 0;
         }
 
@@ -116,13 +116,13 @@ class BytecodeFileSystemExplorerTest {
     }
 
     /**
-     * Get Package Directory by name.
-     * @param name The name of the searched PackageDirectory.
+     * Get Package Directory by fullyQualifiedName.
+     * @param name The fullyQualifiedName of the searched PackageDirectory.
      * @return The searched Package Directory if exists, null otherwise.
      */
     public PackageDirectory getPackageDirectory(String name) {
         for (PackageDirectory directory: ProjectStructure.getInstance().getPackages()) {
-            if (directory.getName().equals(name)) {
+            if (directory.getFullyQualifiedName().equals(name)) {
                 return directory;
             }
         }
