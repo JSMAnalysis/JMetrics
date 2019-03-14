@@ -20,22 +20,87 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      */
     @Override
     public ProjectComponent generateStructure(String path) {
-        if (!isValidPath(path)) {
+        return generateStructure(path, path);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProjectComponent generateStructure(String path, String subdirPath) throws InvalidProjectPathException {
+        if (!isValidPath(path) || !isValidPath(subdirPath)) {
             throw new InvalidProjectPathException("Path \"" + path + "\" does not exist or does not lead to a directory.");
         }
+        File subdir = new File(subdirPath);
         File rootDir = new File(path);
+        if(!subdir.getAbsolutePath().startsWith(rootDir.getAbsolutePath())){
+            throw new InvalidProjectPathException(
+                    "The subdirectory \"" + subdirPath + "\" is not located inside \"" + path + "\""
+            );
+        }
         PackageDirectory project = new PackageDirectory(rootDir, "", 0);
-        setRecursiveStructure(rootDir, project, 0, "");
+        exploreToSubdir(rootDir, project, 0, "", subdir);
         return project.getContent().get(0);
     }
 
     /**
-     * Explore recursively a project's structure from a given file node.
+     * Explores recursively a project's structure to find a subdir from a given file node.
+     * This method is used to build package names from the project's root until it find the subdirectory
+     * we want to explore.
+     * When the targeted subdirectory is found, it performs the recursive exploration on its structure.
+     * @param node The {@link File} to explore.
+     * @param parent The current root node of the structure to explore.
+     * @param depth The depth level of exploration/
+     * @param currentName The fully qualified name of the package currently explored.
+     * @param targetSubdir The subdirectory to find.
+     */
+    private void exploreToSubdir(File node, PackageDirectory parent, int depth, String currentName, File targetSubdir){
+        if(node.isDirectory()){
+            if(node.equals(targetSubdir)){
+                setRecursiveStructure(node, parent, depth, currentName);
+            }
+            else {
+                String newFileName = nextStepToDirectory(node, targetSubdir);
+                File newNode = new File(node, newFileName);
+                String packageName = generateComponentName(currentName, node.getName(), depth);
+                PackageDirectory dir = new PackageDirectory(node, packageName, depth++);
+                parent.addContent(dir);
+                exploreToSubdir(newNode, dir, depth, packageName, targetSubdir);
+            }
+        }
+        else{
+            throw new InvalidProjectPathException(
+                    "The path " + node.getPath() + " leads to a file."
+            );
+        }
+    }
+
+    /**
+     * Retrieves the name of the directory to explore from the current directory.
+     * For example, if the current directory is foo and the target directory is foo/bar/foobar, it will return
+     * bar.
+     * @param currentDir The current directory.
+     * @param targetDir The target directory.
+     * @return The name of the directory to explore from the current directory to get to the target directory.
+     */
+    private String nextStepToDirectory(File currentDir, File targetDir){
+        String fileName = targetDir.getAbsolutePath();
+        //removes the current directory path from the target's path
+        fileName = fileName.replace(currentDir.getAbsolutePath() + File.separator, "");
+        if(fileName.contains(File.separator)) {
+            //keeps only the first directory's name in the path
+            fileName = fileName.substring(0, fileName.indexOf(File.separator));
+        }
+        return fileName;
+    }
+
+    /**
+     * Explores recursively a project's structure from a given file node.
      * Set the explored structure in the content of the given PackageDirectory.
      * @param node The {@link File} to explore.
      * @param parent The root node of the structure to explore.
      * @param depth The depth level of exploration.
-     * @param currentName The fullyQualifiedName of the package currently explored.
+     * @param currentName The fully qualified name of the package currently explored.
      */
     private void setRecursiveStructure(File node, PackageDirectory parent, int depth, String currentName) {
         if (isCodeFile(node)) {

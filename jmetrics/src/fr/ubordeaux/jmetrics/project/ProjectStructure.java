@@ -13,6 +13,8 @@ public class ProjectStructure {
 
     private ProjectComponent structure;
 
+    private String projectRootPath = "";
+
     private List<ClassFile> cacheClasses = null;
 
     private List<PackageDirectory> cachePackages = null;
@@ -27,6 +29,7 @@ public class ProjectStructure {
 
     public void setStructure(ProjectComponent rootComponent) {
         structure = rootComponent;
+        projectRootPath = rootComponent.getPath();
         pruneStructure();
     }
 
@@ -77,6 +80,12 @@ public class ProjectStructure {
         return cachePackages;
     }
 
+    /**
+     * Recursively builds a list of the {@link PackageDirectory} contained in the project.
+     * @param tree The current explored component.
+     * @param accumulator The list built by previous calls.
+     * @return A list containing all the package directories.
+     */
     private List<PackageDirectory> recursiveEnumeratePackages(ProjectComponent tree, List<PackageDirectory> accumulator) {
         if (tree instanceof PackageDirectory) {
             PackageDirectory dir = (PackageDirectory) tree;
@@ -88,8 +97,11 @@ public class ProjectStructure {
         return accumulator;
     }
 
+    /**
+     * @return The path to the project's root.
+     */
     public String getRootPath(){
-        return (structure != null) ? structure.getPath() : "";
+        return projectRootPath;
     }
 
     /**
