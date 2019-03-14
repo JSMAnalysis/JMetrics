@@ -23,10 +23,14 @@ public class Main {
     private static final String HELP_OPTION = "h";
     private static final String HELP_OPTION_LONG = "help";
     private static final String HELP_DESC = "Prints help";
+    private static final String SUBDIR_OPTION = "s";
+    private static final String SUBDIR_OPTION_LONG = "subdir";
+    private static final String SUBDIR_DESC = "Specifies a subdirectory to restrict the analyse";
 
     private static final String PROGRAM_USAGE = "jmetrics -t <source|bytecode> -p <project_root> [OPTIONS]";
 
     private static String path;
+    private static String subdirectory;
     private static boolean dotonly;
     private static FileSystemExplorer explorer;
     private static ParserFactory parserFactory;
@@ -36,7 +40,7 @@ public class Main {
         parseCommandLine(args);
 
         // Execute Pipeline
-        projectExploration(path);
+        projectExploration(path, subdirectory);
         ProjectStructure structure = ProjectStructure.getInstance();
         List<ClassFile> classes = structure.getClasses();
         List<PackageDirectory> packages = structure.getPackages();
@@ -72,9 +76,9 @@ public class Main {
 
 
 
-    private static void projectExploration(String path) {
+    private static void projectExploration(String path, String subdirectory) {
         try {
-            ProjectStructure.getInstance().setStructure(explorer.generateStructure(path));
+            ProjectStructure.getInstance().setStructure(explorer.generateStructure(path, subdirectory));
         } catch(InvalidProjectPathException e){
             System.out.println(e.getMessage());
             System.exit(1);
@@ -140,6 +144,7 @@ public class Main {
         }
         dotonly = line.hasOption(DOTONLY_OPTION);
         path = line.getOptionValue(PATH_OPTION);
+        subdirectory = line.hasOption(SUBDIR_OPTION) ? line.getOptionValue(SUBDIR_OPTION) : path;
         if (line.getOptionValue(TYPE_OPTION).equals("source")) {
             explorer = new SourceFileSystemExplorer();
             parserFactory = new JDTParserFactory();
@@ -165,11 +170,13 @@ public class Main {
         Option dotonly =  Option.builder().longOpt(DOTONLY_OPTION).hasArg(false).desc(DOTONLY_DESC).build();
         Option parsingType =  Option.builder(TYPE_OPTION).required().longOpt(TYPE_OPTION_LONG).numberOfArgs(1).desc(TYPE_DESC).build();
         Option help = Option.builder(HELP_OPTION).longOpt(HELP_OPTION_LONG).hasArg(false).desc(HELP_DESC).build();
+        Option subdir = Option.builder(SUBDIR_OPTION).longOpt(SUBDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(SUBDIR_DESC).build();
 
         options.addOption(dotonly);
         options.addOption(path);
         options.addOption(parsingType);
         options.addOption(help);
+        options.addOption(subdir);
         return options;
     }
 
