@@ -3,6 +3,8 @@ package fr.ubordeaux.jmetrics;
 import fr.ubordeaux.jmetrics.analysis.*;
 import fr.ubordeaux.jmetrics.datastructure.*;
 import fr.ubordeaux.jmetrics.metrics.*;
+import fr.ubordeaux.jmetrics.presentation.CSVGenerator;
+import fr.ubordeaux.jmetrics.presentation.CSVRepresentable;
 import fr.ubordeaux.jmetrics.project.*;
 import org.apache.commons.cli.*;
 
@@ -58,12 +60,9 @@ public class Main {
             Metrics.computePackageMetrics(g, packageGraph);
         }
 
-        if (!dotonly) {
-            System.out.println("Metrics values by class :");
-            for (Granule g: classNodes) displayMetrics(g);
-            System.out.println("Metrics values by packages :");
-            for (Granule g: packageNodes) displayMetrics(g);
-        }
+        CSVGenerator.generateCSVFile("ClassScale", new HashSet<>(classNodes));
+        CSVGenerator.generateCSVFile("PackageScale", new HashSet<>(packageNodes));
+
         System.out.println("DOT dependency graph (Class scale):");
         System.out.println(GraphConstructor.getDOTRepresentation(classGraph));
         System.out.println("DOT dependency graph (Package scale):");
