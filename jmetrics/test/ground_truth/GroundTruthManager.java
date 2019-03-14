@@ -3,7 +3,10 @@ package ground_truth;
 import fr.ubordeaux.jmetrics.analysis.DependencyType;
 import fr.ubordeaux.jmetrics.project.*;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -79,39 +82,76 @@ public class GroundTruthManager {
         return projects.get(projectNumber - 1);
     }
 
+    /**
+     * Reads the {@link ClassInfo} annotations on a test project and adds the corresponding data in the project object.
+     * @param classNames An array containing the name of all project's classes.
+     * @param project The project which the classes are located in.
+     */
+    private void readClassinfoAnnotations(String[] classNames, Project project){
+        for (String className : classNames) {
+            try {
+                Class<?> c = Class.forName(className);
+                ClassInfo info = c.getAnnotation(ClassInfo.class);
+                if(info != null) {
+                    project.addClass(className,
+                            new ClassInformation(info.numberOfMethod(), info.numberOfAbstractMethod(),
+                                    info.Ca(), info.Ce(), info.I(), info.A(), info.Dn())
+                    );
+                }
+            }
+            catch(ClassNotFoundException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
+    /**
+     * Reads the {@link Dependency} annotations on a test project and adds the corresponding data in the project object.
+     * @param classNames An array containing the name of all project's classes.
+     * @param project The project which the classes are located in.
+     */
+    private void readDependencyAnnotations(String[] classNames, Project project){
+        for (String className : classNames) {
+            try {
+                Class<?> c = Class.forName(className);
+                List<Dependency> annotations = new ArrayList<>(Arrays.asList(c.getAnnotationsByType(Dependency.class)));
+                //get all annotations on declared fields
+                for(Field f : c.getDeclaredFields()){
+                    annotations.addAll(Arrays.asList(f.getAnnotationsByType(Dependency.class)));
+                }
+                //get all annotations on declared methods
+                for(Method m : c.getDeclaredMethods()){
+                    annotations.addAll(Arrays.asList(m.getAnnotationsByType(Dependency.class)));
+                }
+                for (Dependency d : annotations) {
+                    project.addDependency(className, d.dependencyTo().getName(), d.type());
+                }
+            }
+            catch(ClassNotFoundException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
     private void setupExample1() {
         Project Example1 = new Project("example1/", 6, 1);
 
-        String CLASS_AIRPLANE = "ground_truth.example1.Airplane";
-        String CLASS_CAR = "ground_truth.example1.Car";
-        String CLASS_MAIN = "ground_truth.example1.Main";
-        String CLASS_MATERIAL = "ground_truth.example1.Material";
-        String CLASS_VEHICLE = "ground_truth.example1.Vehicle";
-        String CLASS_WHEEL = "ground_truth.example1.Wheel";
 
-        Example1.addClass(CLASS_AIRPLANE,
-                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
-        );
-        Example1.addClass(CLASS_CAR,
-                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
-        );
-        Example1.addClass(CLASS_MAIN,
-                new ClassInformation(1, 0, 0, 0, 0, 0, 1)
-        );
-        Example1.addClass(CLASS_MATERIAL,
-                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
-        );
-        Example1.addClass(CLASS_VEHICLE,
-                new ClassInformation(1, 1, 2, 1, 0.33, 0.33, 0.33)
-        );
-        Example1.addClass(CLASS_WHEEL,
-                new ClassInformation(2, 0, 1, 1, 0.5, 0, 0.5)
-        );
+        String[] classNames = new String[]{
+                "ground_truth.example1.Airplane",
+                "ground_truth.example1.Car",
+                "ground_truth.example1.Main",
+                "ground_truth.example1.Material",
+                "ground_truth.example1.Vehicle",
+                "ground_truth.example1.Wheel"
+        };
 
-        Example1.addDependency(CLASS_AIRPLANE,    CLASS_VEHICLE,    DependencyType.Inheritance);
-        Example1.addDependency(CLASS_CAR,         CLASS_VEHICLE,    DependencyType.Inheritance);
-        Example1.addDependency(CLASS_WHEEL,       CLASS_MATERIAL,   DependencyType.UseLink);
-        Example1.addDependency(CLASS_WHEEL,       CLASS_MATERIAL,   DependencyType.Aggregation);
+        readClassinfoAnnotations(classNames, Example1);
+        readDependencyAnnotations(classNames, Example1);
+
+
         // TODO: Dependency (through Generic Types) to add :
         //  (CLASS_VEHICLE, CLASS_WHEEL, DependencyType.Aggregation)
 
@@ -121,63 +161,24 @@ public class GroundTruthManager {
     private void setupExample2() {
         Project Example2 = new Project("example2/", 11, 4);
 
-        String CLASS_BASE_PIZZA = "ground_truth.example2.kitchen.BasePizza";
-        String CLASS_PASTA_TYPE = "ground_truth.example2.kitchen.PastaType";
-        String CLASS_PIZZA_SIZE = "ground_truth.example2.kitchen.PizzaSize";
-        String CLASS_PIZZA = "ground_truth.example2.kitchen.Pizza";
-        String CLASS_MAIN = "ground_truth.example2.Main";
-        String CLASS_INGREDIENT = "ground_truth.example2.kitchen.ingredients.Ingredient";
-        String CLASS_TOMATO = "ground_truth.example2.kitchen.ingredients.Tomato";
-        String CLASS_PICKLES = "ground_truth.example2.kitchen.ingredients.Pickles";
-        String CLASS_CUSTOMER = "ground_truth.example2.store.Customer";
-        String CLASS_PIZZAIOLO = "ground_truth.example2.store.Pizzaiolo";
-        String CLASS_PIZZERIA = "ground_truth.example2.store.Pizzeria";
+        String[] classNames = new String[]{
+                "ground_truth.example2.kitchen.BasePizza",
+                "ground_truth.example2.kitchen.PastaType",
+                "ground_truth.example2.kitchen.PizzaSize",
+                "ground_truth.example2.kitchen.Pizza",
+                "ground_truth.example2.Main",
+                "ground_truth.example2.kitchen.ingredients.Ingredient",
+                "ground_truth.example2.kitchen.ingredients.Tomato",
+                "ground_truth.example2.kitchen.ingredients.Pickles",
+                "ground_truth.example2.store.Customer",
+                "ground_truth.example2.store.Pizzaiolo",
+                "ground_truth.example2.store.Pizzeria"
+        };
 
-        Example2.addClass(CLASS_BASE_PIZZA,
-                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
-        );
-        Example2.addClass(CLASS_PASTA_TYPE,
-                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
-        );
-        Example2.addClass(CLASS_PIZZA_SIZE,
-                new ClassInformation(2, 0, 1, 0, 0, 0, 1)
-        );
-        Example2.addClass(CLASS_PIZZA,
-                new ClassInformation(7, 0, 1, 1, 0.5, 0, 0.5)
-        );
-        Example2.addClass(CLASS_MAIN,
-                new ClassInformation(1, 0, 0, 0, 0, 0, 1)
-        );
-        Example2.addClass(CLASS_INGREDIENT,
-                new ClassInformation(1, 1, 2, 1, 0.33, 0.33, 0.33)
-        );
-        Example2.addClass(CLASS_TOMATO,
-                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
-        );
-        Example2.addClass(CLASS_PICKLES,
-                new ClassInformation(1, 0, 0, 1, 1, 0, 0)
-        );
-        Example2.addClass(CLASS_CUSTOMER,
-                new ClassInformation(1, 0, 1, 1, 0.5, 0, 0.5)
-        );
-        Example2.addClass(CLASS_PIZZAIOLO,
-                new ClassInformation(1, 0, 1, 1, 0.5, 0, 0.5)
-        );
-        Example2.addClass(CLASS_PIZZERIA,
-                new ClassInformation(1, 0, 0, 2, 1, 0, 0)
-        );
 
-        Example2.addDependency(CLASS_TOMATO,        CLASS_INGREDIENT,       DependencyType.Inheritance);
-        Example2.addDependency(CLASS_PICKLES,       CLASS_INGREDIENT,       DependencyType.Inheritance);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_INGREDIENT,       DependencyType.UseLink);
-        Example2.addDependency(CLASS_CUSTOMER,      CLASS_PIZZA,            DependencyType.UseLink);
-        Example2.addDependency(CLASS_PIZZAIOLO,     CLASS_PIZZA,            DependencyType.UseLink);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_BASE_PIZZA,       DependencyType.UseLink);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_BASE_PIZZA,       DependencyType.Aggregation);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_PASTA_TYPE,       DependencyType.UseLink);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_PASTA_TYPE,       DependencyType.Aggregation);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZA_SIZE,       DependencyType.UseLink);
-        Example2.addDependency(CLASS_PIZZA,         CLASS_PIZZA_SIZE,       DependencyType.Aggregation);
+        readClassinfoAnnotations(classNames, Example2);
+        readDependencyAnnotations(classNames, Example2);
+
         // TODO: Dependency (through Generic Types) to add :
         //  (CLASS_PIZZAIOLO,   CLASS_PIZZA,        DependencyType.Aggregation)
         //  (CLASS_PIZZA,       CLASS_INGREDIENT,   DependencyType.Aggregation)
