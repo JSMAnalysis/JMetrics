@@ -31,7 +31,7 @@ class IntrospectionAbstractnessParserTest {
     @Test
     void countMethodTest() {
         for (int projectNumber = 1; projectNumber <= GroundTruthManager.groundTruthSize; projectNumber++) {
-            GT.loadExample(projectNumber);
+            GT.loadExampleBytecode(projectNumber);
             List<ClassFile> PSClasses = ProjectStructure.getInstance().getClasses();
             Map<ClassFile, ClassInformation> GTClasses = GT.getProject(projectNumber).getClasses();
             for (ClassFile PSFile: PSClasses) {

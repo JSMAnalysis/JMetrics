@@ -26,7 +26,7 @@ class BytecodeFileSystemExplorerTest {
     @Test
     void testImportProjectWithCorrectPath() {
         try {
-            String validProjectPath = GT.getProject(1).getPath();
+            String validProjectPath = GT.getProject(1).getBytecodePath();
             ProjectComponent rootComponent = explorer.generateStructure(validProjectPath);
         } catch(InvalidProjectPathException e) {
             fail("The given path lead to existing directory but InvalidProjectPathException have been thrown.");
@@ -44,7 +44,7 @@ class BytecodeFileSystemExplorerTest {
     @Test
     void testClassFileCount() {
         Project example1 = GT.getProject(1);
-        ProjectComponent rootComponent = explorer.generateStructure(example1.getPath());
+        ProjectComponent rootComponent = explorer.generateStructure(example1.getBytecodePath());
         ProjectStructure.getInstance().setStructure(rootComponent);
         int numberOfClassesInGeneratedStructure = ProjectStructure.getInstance().getClasses().size();
         assertEquals(example1.getNumberOfClasses(), numberOfClassesInGeneratedStructure);
@@ -53,7 +53,7 @@ class BytecodeFileSystemExplorerTest {
     @Test
     void testPackageDirectoryCount() {
         Project example2 = GT.getProject(2);
-        ProjectComponent rootComponent = explorer.generateStructure(example2.getPath());
+        ProjectComponent rootComponent = explorer.generateStructure(example2.getBytecodePath());
         ProjectStructure.getInstance().setStructure(rootComponent);
         int numberOfPackagesInGeneratedStructure = ProjectStructure.getInstance().getPackages().size();
         assertEquals(example2.getNumberOfPackages(), numberOfPackagesInGeneratedStructure);
@@ -61,34 +61,34 @@ class BytecodeFileSystemExplorerTest {
 
     @Test
     void testValidityOfProjectStructure() {
-        GT.loadExample(2);
+        GT.loadExampleBytecode(2);
         ProjectStructure PS = ProjectStructure.getInstance();
         List<String> classesContent, packagesContent;
         PackageDirectory directory;
 
-        directory = getPackageDirectory("example2");
-        classesContent = new ArrayList<String>() {{ add("example2.Main"); }};
-        packagesContent = new ArrayList<String>() {{ add("example2.kitchen"); add("example2.store"); }};
+        directory = getPackageDirectory("ground_truth.example2");
+        classesContent = new ArrayList<String>() {{ add("ground_truth.example2.Main"); }};
+        packagesContent = new ArrayList<String>() {{ add("ground_truth.example2.kitchen"); add("ground_truth.example2.store"); }};
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = getPackageDirectory("example2.store");
+        directory = getPackageDirectory("ground_truth.example2.store");
         classesContent = new ArrayList<String>() {{
-            add("example2.store.Customer"); add("example2.store.Pizzaiolo"); add("example2.store.Pizzeria");
+            add("ground_truth.example2.store.Customer"); add("ground_truth.example2.store.Pizzaiolo"); add("ground_truth.example2.store.Pizzeria");
         }};
         packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = getPackageDirectory("example2.kitchen.ingredients");
+        directory = getPackageDirectory("ground_truth.example2.kitchen.ingredients");
         classesContent = new ArrayList<String>() {{
-            add("example2.kitchen.ingredients.Ingredient"); add("example2.kitchen.ingredients.Pickles"); add("example2.kitchen.ingredients.Tomato");
+            add("ground_truth.example2.kitchen.ingredients.Ingredient"); add("ground_truth.example2.kitchen.ingredients.Pickles"); add("ground_truth.example2.kitchen.ingredients.Tomato");
         }};
         packagesContent = new ArrayList<>();
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
 
-        directory = getPackageDirectory("example2.kitchen");
-        packagesContent = new ArrayList<String>() {{ add("example2.kitchen.ingredients"); }};
+        directory = getPackageDirectory("ground_truth.example2.kitchen");
+        packagesContent = new ArrayList<String>() {{ add("ground_truth.example2.kitchen.ingredients"); }};
         classesContent = new ArrayList<String>() {{
-            add("example2.kitchen.BasePizza"); add("example2.kitchen.PastaType"); add("example2.kitchen.Pizza"); add("example2.kitchen.PizzaSize");
+            add("ground_truth.example2.kitchen.BasePizza"); add("ground_truth.example2.kitchen.PastaType"); add("ground_truth.example2.kitchen.Pizza"); add("ground_truth.example2.kitchen.PizzaSize");
         }};
         assertTrue(isInPackageDirectory(directory, classesContent, packagesContent));
     }

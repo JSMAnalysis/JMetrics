@@ -34,7 +34,7 @@ class IntrospectionCouplingParserTest {
         for (int projectNumber = 1; projectNumber <= GroundTruthManager.groundTruthSize; projectNumber++) {
 
             GTDependencies = GT.getProject(projectNumber).getDependencies();
-            GT.loadExample(projectNumber);
+            GT.loadExampleBytecode(projectNumber);
             PSDependencies = new ArrayList<>();
             for (ClassFile PSFile: ProjectStructure.getInstance().getClasses()) {
                 PSDependencies.addAll(parser.getDependencies(PSFile));

@@ -25,7 +25,7 @@ class DirectedGraphTest {
     @BeforeEach
     void setUp() {
         GroundTruthManager GT = new GroundTruthManager();
-        GT.loadExample(2);
+        GT.loadExampleBytecode(2);
         classes = ProjectStructure.getInstance().getClasses();
         Set<Granule> nodes = new HashSet<>();
         for (ClassFile c: classes) {

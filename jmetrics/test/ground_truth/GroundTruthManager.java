@@ -1,9 +1,7 @@
 package ground_truth;
 
 import fr.ubordeaux.jmetrics.analysis.DependencyType;
-import fr.ubordeaux.jmetrics.project.BytecodeFileSystemExplorer;
-import fr.ubordeaux.jmetrics.project.ProjectComponent;
-import fr.ubordeaux.jmetrics.project.ProjectStructure;
+import fr.ubordeaux.jmetrics.project.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,20 @@ public class GroundTruthManager {
     /**
      * Path to the compiled GroundTruth projects.
      */
-    static final String groundTruthPath = "out/test/ground_truth/";
+    static final String GROUND_TRUTH_BYTECODE_PATH = "out/test/ground_truth/";
+    /**
+     * Path to the GroundTruth projects sources.
+     */
+    static final String GROUND_TRUTH_SOURCE_PATH = "test/ground_truth/";
+
+    /**
+     * Path to the compiled tests root.
+     */
+    private static final String TEST_BYTECODE_PATH = "out/test";
+    /**
+     * Path to the tests sources root.
+     */
+    private static final String TEST_SOURCE_PATH = "test";
 
     /**
      * Number of projects in the Ground Truth.
@@ -35,14 +46,32 @@ public class GroundTruthManager {
     }
 
     /**
-     * Load given example project in the Project Structure.
+     * Load given example project in the Project Structure using a provided explorer, with a given rootPath.
      * @param projectNumber The id of the project to load.
      */
-    public void loadExample(int projectNumber) {
-        BytecodeFileSystemExplorer explorer = new BytecodeFileSystemExplorer();
+    private void loadExample(int projectNumber, FileSystemExplorer explorer, String rootPath) {
         Project p = getProject(projectNumber);
-        ProjectComponent rootComponent = explorer.generateStructure(p.getPath());
+        ProjectComponent rootComponent = explorer.generateStructure(
+                rootPath,
+                rootPath.equals(TEST_SOURCE_PATH) ? p.getSourcePath() : p.getBytecodePath()
+        );
         ProjectStructure.getInstance().setStructure(rootComponent);
+    }
+
+    /**
+     * Load given example project in the Project Structure from bytecode.
+     * @param projectNumber The id of the project to load.
+     */
+    public void loadExampleBytecode(int projectNumber) {
+        loadExample(projectNumber, new BytecodeFileSystemExplorer(), TEST_BYTECODE_PATH);
+    }
+
+    /**
+     * Load given example project in the Project Structure from source code.
+     * @param projectNumber The id of the project to load.
+     */
+    public void loadExampleSourcecode(int projectNumber) {
+        loadExample(projectNumber, new SourceFileSystemExplorer(), TEST_SOURCE_PATH);
     }
 
     public Project getProject(int projectNumber) {
@@ -53,12 +82,12 @@ public class GroundTruthManager {
     private void setupExample1() {
         Project Example1 = new Project("example1/", 6, 1);
 
-        String CLASS_AIRPLANE = "example1.Airplane";
-        String CLASS_CAR = "example1.Car";
-        String CLASS_MAIN = "example1.Main";
-        String CLASS_MATERIAL = "example1.Material";
-        String CLASS_VEHICLE = "example1.Vehicle";
-        String CLASS_WHEEL = "example1.Wheel";
+        String CLASS_AIRPLANE = "ground_truth.example1.Airplane";
+        String CLASS_CAR = "ground_truth.example1.Car";
+        String CLASS_MAIN = "ground_truth.example1.Main";
+        String CLASS_MATERIAL = "ground_truth.example1.Material";
+        String CLASS_VEHICLE = "ground_truth.example1.Vehicle";
+        String CLASS_WHEEL = "ground_truth.example1.Wheel";
 
         Example1.addClass(CLASS_AIRPLANE,
                 new ClassInformation(1, 0, 0, 1, 1, 0, 0)
@@ -92,17 +121,17 @@ public class GroundTruthManager {
     private void setupExample2() {
         Project Example2 = new Project("example2/", 11, 4);
 
-        String CLASS_BASE_PIZZA = "example2.kitchen.BasePizza";
-        String CLASS_PASTA_TYPE = "example2.kitchen.PastaType";
-        String CLASS_PIZZA_SIZE = "example2.kitchen.PizzaSize";
-        String CLASS_PIZZA = "example2.kitchen.Pizza";
-        String CLASS_MAIN = "example2.Main";
-        String CLASS_INGREDIENT = "example2.kitchen.ingredients.Ingredient";
-        String CLASS_TOMATO = "example2.kitchen.ingredients.Tomato";
-        String CLASS_PICKLES = "example2.kitchen.ingredients.Pickles";
-        String CLASS_CUSTOMER = "example2.store.Customer";
-        String CLASS_PIZZAIOLO = "example2.store.Pizzaiolo";
-        String CLASS_PIZZERIA = "example2.store.Pizzeria";
+        String CLASS_BASE_PIZZA = "ground_truth.example2.kitchen.BasePizza";
+        String CLASS_PASTA_TYPE = "ground_truth.example2.kitchen.PastaType";
+        String CLASS_PIZZA_SIZE = "ground_truth.example2.kitchen.PizzaSize";
+        String CLASS_PIZZA = "ground_truth.example2.kitchen.Pizza";
+        String CLASS_MAIN = "ground_truth.example2.Main";
+        String CLASS_INGREDIENT = "ground_truth.example2.kitchen.ingredients.Ingredient";
+        String CLASS_TOMATO = "ground_truth.example2.kitchen.ingredients.Tomato";
+        String CLASS_PICKLES = "ground_truth.example2.kitchen.ingredients.Pickles";
+        String CLASS_CUSTOMER = "ground_truth.example2.store.Customer";
+        String CLASS_PIZZAIOLO = "ground_truth.example2.store.Pizzaiolo";
+        String CLASS_PIZZERIA = "ground_truth.example2.store.Pizzeria";
 
         Example2.addClass(CLASS_BASE_PIZZA,
                 new ClassInformation(2, 0, 1, 0, 0, 0, 1)

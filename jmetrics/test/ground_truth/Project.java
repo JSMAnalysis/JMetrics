@@ -41,11 +41,19 @@ public class Project {
     public int getNumberOfPackages() { return this.numberOfPackages; }
 
     /**
-     * Get the relative path to the project (concatenate groundTruthPath with the directory fullyQualifiedName).
-     * @return The path to the project.
+     * Get the relative path to the project's source code (concatenate GROUND_TRUTH_SOURCE_PATH with the directory name).
+     * @return The path to the project' source code.
      */
-    public String getPath() {
-        return GroundTruthManager.groundTruthPath + directory;
+    public String getSourcePath(){
+        return GroundTruthManager.GROUND_TRUTH_SOURCE_PATH + directory;
+    }
+
+    /**
+     * Get the relative path to the project's bytecode (concatenate GROUND_TRUTH_BYTECODE_PATH with the directory name).
+     * @return The path to the project's bytecode.
+     */
+    public String getBytecodePath(){
+        return GroundTruthManager.GROUND_TRUTH_BYTECODE_PATH + directory;
     }
 
     public List<Dependency> getDependencies() {
@@ -66,7 +74,7 @@ public class Project {
     }
 
     private ClassFile getClassFile(String name) {
-        String path = getPath() + directory + name;
+        String path = getSourcePath() + directory + name;
         return new ClassFile(new File(path), name);
     }
 
