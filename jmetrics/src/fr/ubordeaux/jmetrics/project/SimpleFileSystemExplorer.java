@@ -3,6 +3,7 @@ package fr.ubordeaux.jmetrics.project;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 
 /**
  * An abstraction to factorize code used by {@link FileSystemExplorer} implementations.
@@ -10,6 +11,8 @@ import java.io.UncheckedIOException;
 public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
 
     private final String CODE_FILE_EXTENSION;
+
+    private final String[] IGNORE_FILE = new String[] { "package-info", "module-info" };
 
     SimpleFileSystemExplorer(String codeFileExtension) {
         CODE_FILE_EXTENSION = codeFileExtension;
@@ -101,6 +104,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     private void setRecursiveStructure(File node, PackageDirectory parent, int depth, String currentName) {
         if (isCodeFile(node)) {
             String className = generateComponentName(currentName, removeFileExtension(node.getName()), depth);
+            if (isIgnoredFile(className)) return;
             parent.addContent(new ClassFile(node, className));
         } else if (node.isDirectory()) {
             String packageName = generateComponentName(currentName, node.getName(), depth);
@@ -114,6 +118,11 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
             }
             parent.addContent(dir);
         }
+    }
+
+    private boolean isIgnoredFile(String className) {
+        String[] splitClassName = className.split("\\.");
+        return Arrays.asList(IGNORE_FILE).contains(splitClassName[splitClassName.length - 1]);
     }
 
     /**
