@@ -12,7 +12,7 @@ import java.util.ArrayList;
         Ca = 2,
         Ce = 1,
         I = 0.33,
-        A = 0.33,
+        A = 1,
         Dn = 0.33
 )
 public abstract class Vehicle {
