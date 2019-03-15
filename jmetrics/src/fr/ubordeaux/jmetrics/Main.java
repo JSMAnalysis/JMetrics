@@ -3,7 +3,7 @@ package fr.ubordeaux.jmetrics;
 import fr.ubordeaux.jmetrics.analysis.*;
 import fr.ubordeaux.jmetrics.datastructure.*;
 import fr.ubordeaux.jmetrics.metrics.*;
-import fr.ubordeaux.jmetrics.presentation.CSVGenerator;
+import fr.ubordeaux.jmetrics.presentation.FileGenerator;
 import fr.ubordeaux.jmetrics.project.*;
 import org.apache.commons.cli.*;
 
@@ -63,13 +63,10 @@ public class Main {
             Metrics.computePackageMetrics(g, packageGraph);
         }
 
-        CSVGenerator.generateCSVFile("ClassScale", new HashSet<>(classNodes));
-        CSVGenerator.generateCSVFile("PackageScale", new HashSet<>(packageNodes));
-
-        System.out.println("DOT dependency graph (Class scale):");
-        System.out.println(GraphConstructor.getDOTRepresentation(classGraph));
-        System.out.println("DOT dependency graph (Package scale):");
-        System.out.println(GraphConstructor.getDOTRepresentation(packageGraph));
+        FileGenerator.generateCSVFile("ClassScale", new HashSet<>(classNodes));
+        FileGenerator.generateCSVFile("PackageScale", new HashSet<>(packageNodes));
+        FileGenerator.generateDOTFile("ClassScale", classGraph);
+        FileGenerator.generateDOTFile("PackageScale", packageGraph);
 
     }
 
@@ -114,16 +111,6 @@ public class Main {
                 packageDependencies.add(new Dependency(srcParent, dstParent, dep.getType()));
         }
         return packageDependencies;
-    }
-
-    private static void displayMetrics(Granule g) {
-        Metrics metrics = g.getMetrics();
-        System.out.println(g.getDisplayName());
-        System.out.println("\tA : "     + metrics.getAbstractness());
-        System.out.println("\tCa : "    + metrics.getAfferentCoupling());
-        System.out.println("\tCe : "    + metrics.getEfferentCoupling());
-        System.out.println("\tI : "     + metrics.getInstability());
-        System.out.println("\tDn : "    + metrics.getNormalizedDistance());
     }
 
     private static void parseCommandLine(String[] args) {
