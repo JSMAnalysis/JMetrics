@@ -29,12 +29,12 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     private boolean canAddNode;
     private boolean terminated;
 
-    public GraphDotBuilder(){
+    public GraphDotBuilder() {
         createNewGraph();
     }
 
     @Override
-    public void createNewGraph(){
+    public void createNewGraph() {
         strBuilder = new StringBuilder();
         mapping = new HashMap<>();
         nodeNumber = 0;
@@ -45,8 +45,8 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     }
 
     @Override
-    public void addNode(Granule node){
-        if(!canAddNode || terminated){
+    public void addNode(Granule node) {
+        if (!canAddNode || terminated) {
             return;
         }
         mapping.putIfAbsent(node, ++nodeNumber);
@@ -59,9 +59,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
 
     @Override
     public void addEdge(DependencyEdge edge){
-        if(terminated){
-            return;
-        }
+        if (terminated) return;
         strBuilder.append(mapping.get(edge.getSource()));
         strBuilder.append(EDGE_TOKEN);
         strBuilder.append(mapping.get(edge.getTarget()));
@@ -86,20 +84,15 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     }
 
     @Override
-    public void endGraph(){
-        if(terminated){
-            return;
-        }
+    public void endGraph() {
+        if (terminated) return;
         strBuilder.append(ENDING_TOKEN);
         terminated = true;
     }
 
     @Override
-    public String getGraphPresentation(){
-        if(terminated) {
-            return strBuilder.toString();
-        }
-        return "";
+    public String getGraphPresentation() {
+        return terminated ? strBuilder.toString() : "";
     }
 
     private void buildLegend(){

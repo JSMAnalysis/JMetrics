@@ -20,9 +20,9 @@ public abstract class IntrospectionParser {
 
     private Map<ClassFile, SoftReference<Class<?>>> cache = new HashMap<>();
 
-    public Class<?> getClassFromFile(ClassFile file){
+    Class<?> getClassFromFile(ClassFile file){
         Class<?> c = cache.containsKey(file) ? cache.get(file).get() : null;
-        if(c != null){
+        if (c != null) {
             return c;
         }
         byte[] byteCode;
@@ -40,7 +40,7 @@ public abstract class IntrospectionParser {
         try {
             URL projectRoot = (new File(ProjectStructure.getInstance().getRootPath()).toURI().toURL());
             loader = new ByteCodeClassLoader(projectRoot);
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             loader = new ByteCodeClassLoader();
         }
         c = loader.getClassFromByteCode(byteCode);
@@ -53,15 +53,15 @@ public abstract class IntrospectionParser {
      */
     private class ByteCodeClassLoader extends URLClassLoader {
 
-        public ByteCodeClassLoader(){
+        ByteCodeClassLoader(){
             super(new URL[0]);
         }
 
-        public ByteCodeClassLoader(URL url) {
+        ByteCodeClassLoader(URL url) {
             super(new URL[]{url});
         }
 
-        public Class<?> getClassFromByteCode(byte[] bytes){
+        Class<?> getClassFromByteCode(byte[] bytes){
             return defineClass(null, bytes, 0, bytes.length);
         }
 

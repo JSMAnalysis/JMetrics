@@ -22,7 +22,7 @@ public abstract class JDTParser extends ASTVisitor{
      * @param file The file that contains the source code.
      * @return An array of chars containing the source code.
      */
-    public char[] getSourceCodeFromFile(ClassFile file){
+    char[] getSourceCodeFromFile(ClassFile file) {
         byte[] code;
         try {
             code = Files.readAllBytes(file.getFile().toPath());
@@ -31,7 +31,6 @@ public abstract class JDTParser extends ASTVisitor{
                     + file.getFullyQualifiedName()
                     + " does not seem to exist or is temporarily unavailable.");
         }
-
         return (new String(code).toCharArray());
     }
 
@@ -41,7 +40,7 @@ public abstract class JDTParser extends ASTVisitor{
      * @param srcFile The source file to use to build the AST.
      * @return The created AST.
      */
-    public CompilationUnit createAST(char[] sourceCode, ClassFile srcFile){
+    CompilationUnit createAST(char[] sourceCode, ClassFile srcFile) {
         ASTParser parser = ASTParser.newParser(AST.JLS11);
         Map<String,String> options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);

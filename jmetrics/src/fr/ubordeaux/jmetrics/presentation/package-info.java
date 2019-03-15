@@ -1,4 +1,4 @@
 /**
- * Provide classes that get in touch analysis results.
+ * Provide classes that structure analysis results.
  */
 package fr.ubordeaux.jmetrics.presentation;

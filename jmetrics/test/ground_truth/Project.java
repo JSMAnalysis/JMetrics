@@ -36,15 +36,19 @@ public class Project {
         this.dependencies = new ArrayList<>();
     }
 
-    public int getNumberOfClasses() { return this.numberOfClasses; }
+    public int getNumberOfClasses() {
+        return this.numberOfClasses;
+    }
 
-    public int getNumberOfPackages() { return this.numberOfPackages; }
+    public int getNumberOfPackages() {
+        return this.numberOfPackages;
+    }
 
     /**
      * Get the relative path to the project's source code (concatenate GROUND_TRUTH_SOURCE_PATH with the directory name).
      * @return The path to the project' source code.
      */
-    public String getSourcePath(){
+    public String getSourcePath() {
         return GroundTruthManager.GROUND_TRUTH_SOURCE_PATH + directory;
     }
 
@@ -52,7 +56,7 @@ public class Project {
      * Get the relative path to the project's bytecode (concatenate GROUND_TRUTH_BYTECODE_PATH with the directory name).
      * @return The path to the project's bytecode.
      */
-    public String getBytecodePath(){
+    public String getBytecodePath() {
         return GroundTruthManager.GROUND_TRUTH_BYTECODE_PATH + directory;
     }
 
@@ -70,7 +74,7 @@ public class Project {
     }
 
     void addDependency(String srcName, String dstName, DependencyType type) {
-        dependencies.add(new Dependency(getClassCategory(srcName), getClassCategory(dstName), type));
+        dependencies.add(new Dependency(getClassGranule(srcName), getClassGranule(dstName), type));
     }
 
     private ClassFile getClassFile(String name) {
@@ -78,7 +82,7 @@ public class Project {
         return new ClassFile(new File(path), name);
     }
 
-    private Granule getClassCategory(String className) {
+    private Granule getClassGranule(String className) {
         return new ClassGranule(getClassFile(className));
     }
 

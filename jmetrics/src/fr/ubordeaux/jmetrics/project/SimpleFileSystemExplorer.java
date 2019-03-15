@@ -44,9 +44,8 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     }
 
     /**
-     * Explores recursively a project's structure to find a subdir from a given file node.
-     * This method is used to build package names from the project's root until it find the subdirectory
-     * we want to explore.
+     * Explores recursively a project's structure to find a subdir from a given file node. This method is used to
+     * build package names from the project's root until it find the subdirectory we want to explore.
      * When the targeted subdirectory is found, it performs the recursive exploration on its structure.
      * @param node The {@link File} to explore.
      * @param parent The current root node of the structure to explore.
@@ -54,9 +53,9 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      * @param currentName The fully qualified name of the package currently explored.
      * @param targetSubdir The subdirectory to find.
      */
-    private void exploreToSubdir(File node, PackageDirectory parent, int depth, String currentName, File targetSubdir){
-        if(node.isDirectory()){
-            if(node.equals(targetSubdir)){
+    private void exploreToSubdir(File node, PackageDirectory parent, int depth, String currentName, File targetSubdir) {
+        if (node.isDirectory()) {
+            if (node.equals(targetSubdir)) {
                 setRecursiveStructure(node, parent, depth, currentName);
             }
             else {
@@ -68,27 +67,24 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
                 exploreToSubdir(newNode, dir, depth, packageName, targetSubdir);
             }
         }
-        else{
-            throw new InvalidProjectPathException(
-                    "The path " + node.getPath() + " leads to a file."
-            );
+        else {
+            throw new InvalidProjectPathException("The path " + node.getPath() + " leads to a file.");
         }
     }
 
     /**
      * Retrieves the name of the directory to explore from the current directory.
-     * For example, if the current directory is foo and the target directory is foo/bar/foobar, it will return
-     * bar.
+     * For example, if the current directory is foo and the target directory is foo/bar/foobar, it will return bar.
      * @param currentDir The current directory.
      * @param targetDir The target directory.
      * @return The name of the directory to explore from the current directory to get to the target directory.
      */
-    private String nextStepToDirectory(File currentDir, File targetDir){
+    private String nextStepToDirectory(File currentDir, File targetDir) {
         String fileName = targetDir.getAbsolutePath();
-        //removes the current directory path from the target's path
+        // Removes the current directory path from the target's path
         fileName = fileName.replace(currentDir.getAbsolutePath() + File.separator, "");
-        if(fileName.contains(File.separator)) {
-            //keeps only the first directory's name in the path
+        if (fileName.contains(File.separator)) {
+            // Keeps only the first directory's name in the path
             fileName = fileName.substring(0, fileName.indexOf(File.separator));
         }
         return fileName;
@@ -131,7 +127,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
 
     /**
      * Verify that a given path exists and correspond to a directory.
-     * @param path The Path of to verify.
+     * @param path The Path to verify.
      * @return true if the path exists and leads to a directory, false otherwise.
      */
     private boolean isValidPath(String path) {
@@ -142,11 +138,11 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     /**
      * Remove file extension of a filename.
      * @param filename The filename on which remove extension.
-     * @return The file fullyQualifiedName without its extension or filename if the extension was not found.
+     * @return The filename without its extension or filename if the extension was not found.
      */
     private String removeFileExtension(String filename) {
         int extensionIndex = filename.indexOf(CODE_FILE_EXTENSION);
-        if(extensionIndex != -1) {
+        if (extensionIndex != -1) {
             return filename.substring(0, extensionIndex);
         }
         return filename;

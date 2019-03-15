@@ -4,7 +4,6 @@ import fr.ubordeaux.jmetrics.analysis.*;
 import fr.ubordeaux.jmetrics.datastructure.*;
 import fr.ubordeaux.jmetrics.metrics.*;
 import fr.ubordeaux.jmetrics.presentation.CSVGenerator;
-import fr.ubordeaux.jmetrics.presentation.CSVRepresentable;
 import fr.ubordeaux.jmetrics.project.*;
 import org.apache.commons.cli.*;
 
@@ -12,17 +11,18 @@ import java.util.*;
 
 public class Main {
 
-    private static final String DOTONLY_OPTION = "dotonly";
-    private static final String DOTONLY_DESC = "Only prints the dot-formated graphs";
     private static final String PATH_OPTION = "p";
     private static final String PATH_OPTION_LONG = "path";
     private static final String PATH_DESC = "Specifies the root of the project to analyze";
+
     private static final String TYPE_OPTION = "t";
     private static final String TYPE_OPTION_LONG = "type";
     private static final String TYPE_DESC = "Indicates whether the program should perform a bytecode or source analysis";
+
     private static final String HELP_OPTION = "h";
     private static final String HELP_OPTION_LONG = "help";
-    private static final String HELP_DESC = "Prints help";
+    private static final String HELP_DESC = "Display help message";
+
     private static final String SUBDIR_OPTION = "s";
     private static final String SUBDIR_OPTION_LONG = "subdir";
     private static final String SUBDIR_DESC = "Specifies a subdirectory to restrict the analyse";
@@ -31,7 +31,6 @@ public class Main {
 
     private static String path;
     private static String subdirectory;
-    private static boolean dotonly;
     private static FileSystemExplorer explorer;
     private static ParserFactory parserFactory;
 
@@ -79,7 +78,7 @@ public class Main {
     private static void projectExploration(String path, String subdirectory) {
         try {
             ProjectStructure.getInstance().setStructure(explorer.generateStructure(path, subdirectory));
-        } catch(InvalidProjectPathException e){
+        } catch (InvalidProjectPathException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         }
@@ -88,7 +87,7 @@ public class Main {
     private static Map<ClassFile, AbstractnessData> abstractnessAnalysis(List<ClassFile> classes) {
         Map<ClassFile, AbstractnessData> aData = new HashMap<>();
         AbstractnessParser aParser = parserFactory.getAbstractnessParser();
-        for (ClassFile c : classes) {
+        for (ClassFile c: classes) {
             aData.put(c, aParser.getAbstractnessData(c));
         }
         return aData;
@@ -133,16 +132,15 @@ public class Main {
         CommandLine line = null;
         try {
             line = parser.parse(options, args);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             System.out.println("Parsing failed : " + e.getMessage());
             printHelpAndExit(options, 1);
         }
 
-        if(line.hasOption(HELP_OPTION)){
+        assert line != null;
+        if (line.hasOption(HELP_OPTION)) {
             printHelpAndExit(options, 0);
         }
-        dotonly = line.hasOption(DOTONLY_OPTION);
         path = line.getOptionValue(PATH_OPTION);
         subdirectory = line.hasOption(SUBDIR_OPTION) ? line.getOptionValue(SUBDIR_OPTION) : path;
         if (line.getOptionValue(TYPE_OPTION).equals("source")) {
@@ -151,7 +149,7 @@ public class Main {
         } else if (line.getOptionValue(TYPE_OPTION).equals("bytecode")) {
             explorer = new BytecodeFileSystemExplorer();
             parserFactory = new IntrospectionParserFactory();
-        } else{
+        } else {
             System.out.println("Type option can only be either source or bytecode");
             System.exit(1);
         }
@@ -167,12 +165,10 @@ public class Main {
         Options options = new Options();
 
         Option path = Option.builder(PATH_OPTION).required().longOpt(PATH_OPTION_LONG).numberOfArgs(1).desc(PATH_DESC).build();
-        Option dotonly =  Option.builder().longOpt(DOTONLY_OPTION).hasArg(false).desc(DOTONLY_DESC).build();
         Option parsingType =  Option.builder(TYPE_OPTION).required().longOpt(TYPE_OPTION_LONG).numberOfArgs(1).desc(TYPE_DESC).build();
         Option help = Option.builder(HELP_OPTION).longOpt(HELP_OPTION_LONG).hasArg(false).desc(HELP_DESC).build();
         Option subdir = Option.builder(SUBDIR_OPTION).longOpt(SUBDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(SUBDIR_DESC).build();
 
-        options.addOption(dotonly);
         options.addOption(path);
         options.addOption(parsingType);
         options.addOption(help);

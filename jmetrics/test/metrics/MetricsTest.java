@@ -48,7 +48,7 @@ class MetricsTest {
             normalizedDistanceMethod.invoke(metrics, 0, 1);
             normalizedDistanceMethod.invoke(metrics, 0, 0);
             normalizedDistanceMethod.invoke(metrics, 1, 0.63);
-        } catch (BadMetricsValueException e){
+        } catch (BadMetricsValueException e) {
             fail("No exception should be throw when metrics is built with correct values");
         } catch (IllegalAccessException | InvocationTargetException e) {
             fail("(TEST ERROR) Error had been raised while trying to access private method through test: ");

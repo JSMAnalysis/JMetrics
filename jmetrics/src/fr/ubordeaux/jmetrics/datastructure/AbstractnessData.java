@@ -7,7 +7,7 @@ public class AbstractnessData {
     private int numberOfMethods;
     private int numberOfAbstractMethods;
 
-    public AbstractnessData(int numberOfMethods, int numberOfAbstractMethods){
+    public AbstractnessData(int numberOfMethods, int numberOfAbstractMethods) {
         this.numberOfMethods = numberOfMethods;
         this.numberOfAbstractMethods = numberOfAbstractMethods;
     }

@@ -1,6 +1,7 @@
 package fr.ubordeaux.jmetrics.analysis;
 
-public class IntrospectionParserFactory implements ParserFactory{
+public class IntrospectionParserFactory implements ParserFactory {
+
     @Override
     public AbstractnessParser getAbstractnessParser() {
         return new IntrospectionAbstractnessParser();
@@ -10,4 +11,5 @@ public class IntrospectionParserFactory implements ParserFactory{
     public CouplingParser getCouplingParser() {
         return new IntrospectionCouplingParser();
     }
+
 }

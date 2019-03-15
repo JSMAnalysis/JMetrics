@@ -5,4 +5,5 @@ public interface ParserFactory {
     AbstractnessParser getAbstractnessParser();
 
     CouplingParser getCouplingParser();
+
 }

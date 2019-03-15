@@ -1,4 +1,4 @@
 /**
- * Provides set of classes to analyze .class file.
+ * Provides set of classes to analyze Java class files.
  */
 package fr.ubordeaux.jmetrics.analysis;

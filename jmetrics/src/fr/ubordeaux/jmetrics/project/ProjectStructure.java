@@ -105,7 +105,7 @@ public class ProjectStructure {
     }
 
     /**
-     * Prune the ProjectStructure from superfluous packages and reduce components fullyQualifiedName.
+     * Prune the ProjectStructure from superfluous packages and set component's displayableName.
      */
     private void pruneStructure() {
 
@@ -140,9 +140,6 @@ public class ProjectStructure {
             }
         }
 
-        //To proceed with the renaming, we need to decrement the removedDepth as the original top-level package has no name
-        removedDepth -= 1;
-
         // Rename Components
         List<ClassFile> classes = recursiveEnumerateClasses(structure, new ArrayList<>());
         List<PackageDirectory> packages = recursiveEnumeratePackages(structure, new ArrayList<>());
@@ -154,7 +151,7 @@ public class ProjectStructure {
         String first = componentNames.get(0);
         String[] splitFirst = first.split("\\.");
         StringBuilder prefixBuild = new StringBuilder();
-        for (int i = 0; i < removedDepth; i++) {
+        for (int i = 0; i < removedDepth - 1; i++) {
             prefixBuild.append(splitFirst[i]);
             prefixBuild.append(".");
         }

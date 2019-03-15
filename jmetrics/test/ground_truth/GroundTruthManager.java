@@ -1,6 +1,5 @@
 package ground_truth;
 
-import fr.ubordeaux.jmetrics.analysis.DependencyType;
 import fr.ubordeaux.jmetrics.project.*;
 
 import java.lang.reflect.Field;
@@ -87,7 +86,7 @@ public class GroundTruthManager {
      * @param classNames An array containing the name of all project's classes.
      * @param project The project which the classes are located in.
      */
-    private void readClassinfoAnnotations(String[] classNames, Project project){
+    private void readClassinfoAnnotations(String[] classNames, Project project) {
         for (String className : classNames) {
             try {
                 Class<?> c = Class.forName(className);
@@ -98,8 +97,7 @@ public class GroundTruthManager {
                                     info.Ca(), info.Ce(), info.I(), info.A(), info.Dn())
                     );
                 }
-            }
-            catch(ClassNotFoundException e){
+            } catch(ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -111,24 +109,23 @@ public class GroundTruthManager {
      * @param classNames An array containing the name of all project's classes.
      * @param project The project which the classes are located in.
      */
-    private void readDependencyAnnotations(String[] classNames, Project project){
+    private void readDependencyAnnotations(String[] classNames, Project project) {
         for (String className : classNames) {
             try {
                 Class<?> c = Class.forName(className);
                 List<Dependency> annotations = new ArrayList<>(Arrays.asList(c.getAnnotationsByType(Dependency.class)));
-                //get all annotations on declared fields
-                for(Field f : c.getDeclaredFields()){
+                // Get all annotations on declared fields
+                for (Field f : c.getDeclaredFields()) {
                     annotations.addAll(Arrays.asList(f.getAnnotationsByType(Dependency.class)));
                 }
-                //get all annotations on declared methods
-                for(Method m : c.getDeclaredMethods()){
+                // Get all annotations on declared methods
+                for (Method m : c.getDeclaredMethods()) {
                     annotations.addAll(Arrays.asList(m.getAnnotationsByType(Dependency.class)));
                 }
                 for (Dependency d : annotations) {
                     project.addDependency(className, d.dependencyTo().getName(), d.type());
                 }
-            }
-            catch(ClassNotFoundException e){
+            } catch(ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -137,8 +134,6 @@ public class GroundTruthManager {
 
     private void setupExample1() {
         Project Example1 = new Project("example1/", 6, 1);
-
-
         String[] classNames = new String[]{
                 "ground_truth.example1.Airplane",
                 "ground_truth.example1.Car",
@@ -147,20 +142,15 @@ public class GroundTruthManager {
                 "ground_truth.example1.Vehicle",
                 "ground_truth.example1.Wheel"
         };
-
         readClassinfoAnnotations(classNames, Example1);
         readDependencyAnnotations(classNames, Example1);
-
-
         // TODO: Dependency (through Generic Types) to add :
         //  (CLASS_VEHICLE, CLASS_WHEEL, DependencyType.Aggregation)
-
         projects.add(Example1);
     }
 
     private void setupExample2() {
         Project Example2 = new Project("example2/", 11, 4);
-
         String[] classNames = new String[]{
                 "ground_truth.example2.kitchen.BasePizza",
                 "ground_truth.example2.kitchen.PastaType",
@@ -174,18 +164,14 @@ public class GroundTruthManager {
                 "ground_truth.example2.store.Pizzaiolo",
                 "ground_truth.example2.store.Pizzeria"
         };
-
-
         readClassinfoAnnotations(classNames, Example2);
         readDependencyAnnotations(classNames, Example2);
-
         // TODO: Dependency (through Generic Types) to add :
         //  (CLASS_PIZZAIOLO,   CLASS_PIZZA,        DependencyType.Aggregation)
         //  (CLASS_PIZZA,       CLASS_INGREDIENT,   DependencyType.Aggregation)
         //  (CLASS_CUSTOMER,    CLASS_PIZZA,        DependencyType.Aggregation)
         //  (CLASS_PIZZERIA,    CLASS_CUSTOMER,     DependencyType.Aggregation)
         //  (CLASS_PIZZERIA,    CLASS_PIZZAIOLO,    DependencyType.Aggregation)
-
         projects.add(Example2);
     }
 

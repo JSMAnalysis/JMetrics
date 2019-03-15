@@ -24,11 +24,6 @@ public abstract class ProjectComponent {
         return fullyQualifiedName;
     }
 
-    public void setFullyQualifiedName(String fullyQualifiedName) {
-        this.fullyQualifiedName = fullyQualifiedName;
-    }
-
-
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }

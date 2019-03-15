@@ -8,6 +8,11 @@ import fr.ubordeaux.jmetrics.project.ClassFile;
  */
 public interface AbstractnessParser {
 
+    /**
+     * Retrieve abstractness data (number of methods, number of abstract methods) of a given class.
+     * @param file The class to analyze.
+     * @return The abstractness data of the class.
+     */
     AbstractnessData getAbstractnessData(ClassFile file);
 
 }

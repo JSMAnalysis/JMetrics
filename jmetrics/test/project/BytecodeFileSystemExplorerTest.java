@@ -120,7 +120,7 @@ class BytecodeFileSystemExplorerTest {
      * @param name The fullyQualifiedName of the searched PackageDirectory.
      * @return The searched Package Directory if exists, null otherwise.
      */
-    public PackageDirectory getPackageDirectory(String name) {
+    private PackageDirectory getPackageDirectory(String name) {
         for (PackageDirectory directory: ProjectStructure.getInstance().getPackages()) {
             if (directory.getFullyQualifiedName().equals(name)) {
                 return directory;

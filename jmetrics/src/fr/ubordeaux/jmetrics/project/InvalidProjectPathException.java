@@ -4,7 +4,7 @@ public class InvalidProjectPathException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public InvalidProjectPathException(String message) {
+    InvalidProjectPathException(String message) {
         super(message);
     }
 

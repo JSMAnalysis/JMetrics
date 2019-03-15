@@ -23,8 +23,8 @@ public class IntrospectionAbstractnessParser extends IntrospectionParser impleme
 
     private int getNumberOfAbstractMethods(Class<?> c) {
         int abstractCount = 0;
-        for(Method method : c.getDeclaredMethods()){
-            if(Modifier.isAbstract(method.getModifiers())){
+        for (Method method : c.getDeclaredMethods()) {
+            if(Modifier.isAbstract(method.getModifiers())) {
                 abstractCount++;
             }
         }

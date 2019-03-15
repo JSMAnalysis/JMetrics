@@ -101,7 +101,7 @@ public class Metrics {
         return instability;
     }
 
-    private void setInstability(double Ce, double Ca) {
+    private void setInstability(double Ca, double Ce) {
         instability = (Ca + Ce) == 0 ? 0 : Ce / (Ca + Ce);
         instability = roundValue(instability);
         if (!isValidComponents.apply(instability)) {

@@ -4,7 +4,7 @@ import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
 import fr.ubordeaux.jmetrics.metrics.Granule;
 
 /**
- * Exposes an interface to build the representation of a graph as a String.
+ * Interface that build a representation of a graph as a String.
  */
 public interface GraphPresentationBuilder {
 
@@ -15,21 +15,22 @@ public interface GraphPresentationBuilder {
 
     /**
      * Adds a new node to the graph.
-     * IMPORTANT : all nodes must be added before calling any other method of the builder. If another method is called,
-     * subsequents calls to this method will do nothing.
+     * IMPORTANT : all nodes must be added before calling any other method of the builder.
+     * If another method is called, subsequents calls to this method will do nothing.
      * @param node The node to add.
      */
     void addNode(Granule node);
 
     /**
-     * Adds a new edge to the graph. Source and destination nodes must have been previously added. If not, this method
-     * does nothing.
+     * Adds a new edge to the graph. Source and destination nodes must have been previously added.
+     * If not, this method does nothing.
      * @param edge The edge to add.
      */
     void addEdge(DependencyEdge edge);
 
     /**
-     * Called to finish the graph's representation. No node or edge can be added after calling this method.
+     * Called to finish the graph's representation.
+     * No node or edge can be added after calling this method.
      */
     void endGraph();
 

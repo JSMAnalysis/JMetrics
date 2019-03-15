@@ -15,5 +15,4 @@ public @interface ClassInfo {
     double I();
     double A();
     double Dn();
-
 }

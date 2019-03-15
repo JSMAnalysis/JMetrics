@@ -11,7 +11,7 @@ public interface CouplingParser {
 
     /**
      * Retrieve all types of efferent dependencies of a given class.
-     * @param srcFile The file to analyze
+     * @param srcFile The class to analyze
      * @return The list of all dependencies.
      */
     List<Dependency> getDependencies(ClassFile srcFile);

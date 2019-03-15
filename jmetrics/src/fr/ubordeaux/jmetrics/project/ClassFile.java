@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Represents a .class File (containing a Java class ByteCode).
+ * Represents a Java class file (containing ByteCode or SourceCode).
  */
 public class ClassFile extends ProjectComponent {
 
-    public ClassFile(File file, String name){
+    public ClassFile(File file, String name) {
         super(file, name);
     }
 
@@ -19,10 +19,10 @@ public class ClassFile extends ProjectComponent {
      * Note that the caller is responsible for closing the stream.
      * @return Stream that point to the file.
      */
-    public InputStream getInputStream(){
+    public InputStream getInputStream() {
         try {
             return new FileInputStream(getFile());
-        } catch(IOException e){
+        } catch(IOException e) {
             return null;
         }
     }

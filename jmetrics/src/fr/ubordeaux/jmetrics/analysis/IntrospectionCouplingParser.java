@@ -16,6 +16,15 @@ import java.util.List;
  */
 public class IntrospectionCouplingParser extends IntrospectionParser implements CouplingParser {
 
+    @Override
+    public List<Dependency> getDependencies(ClassFile srcFile) {
+        List<Dependency> dependencies = new ArrayList<>();
+        dependencies.addAll(getAggregationDependencies(srcFile));
+        dependencies.addAll(getInheritanceDependencies(srcFile));
+        dependencies.addAll(getUseLinkDependencies(srcFile));
+        return dependencies;
+    }
+
     /**
      * Retrieve efferent dependencies of type Inheritance of a given class.
      * @param srcFile The file to analyze.
@@ -28,7 +37,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         Class<?>[] interfaces = srcClass.getInterfaces();
 
         ArrayList<Class<?>> efferentDependencies = new ArrayList<>(Arrays.asList(interfaces));
-        if(superClass != null) {
+        if (superClass != null) {
             efferentDependencies.add(superClass);
         }
 
@@ -63,7 +72,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
      * @param srcFile The file to analyze.
      * @return The list of UseLink dependencies.
      */
-    private List<Dependency> getUseLinkdependencies(ClassFile srcFile) {
+    private List<Dependency> getUseLinkDependencies(ClassFile srcFile) {
         Class<?> srcClass = getClassFromFile(srcFile);
 
         ArrayList<Class<?>> efferentDependencies = new ArrayList<>();
@@ -89,16 +98,6 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
         return generateDependenciesList(new ClassGranule(srcFile), DependencyType.UseLink, dstClasses);
     }
 
-    @Override
-    public List<Dependency> getDependencies(ClassFile srcFile) {
-        List<Dependency> dependencies = new ArrayList<>();
-        dependencies.addAll(getAggregationDependencies(srcFile));
-        dependencies.addAll(getInheritanceDependencies(srcFile));
-        dependencies.addAll(getUseLinkdependencies(srcFile));
-        return dependencies;
-
-    }
-
     /**
      * Determine the list of efferent dependencies class that is present in project classes.
      * @param efferentDependencies List of class where the analyzed class depend upon.
@@ -121,14 +120,13 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
     }
 
     /**
-     * Generate a list of dependencies from a source category, a dependency type and a list of destination categories.
-     * @param src The source category of the dependencies.
+     * Generate a list of dependencies from a source granule, a dependency type and a list of destination granules.
+     * @param src The source granule of the dependencies.
      * @param type The type of the dependencies.
-     * @param dstList The list of destination class categories.
+     * @param dstList The list of destination class granules.
      * @return The list of generated dependencies.
      */
-    private List<Dependency> generateDependenciesList(Granule src, DependencyType type,
-                                                      List<Granule> dstList) {
+    private List<Dependency> generateDependenciesList(Granule src, DependencyType type, List<Granule> dstList) {
         List<Dependency> dependencies = new ArrayList<>();
         for (Granule dst: dstList) {
             dependencies.add(new Dependency(src, dst, type));

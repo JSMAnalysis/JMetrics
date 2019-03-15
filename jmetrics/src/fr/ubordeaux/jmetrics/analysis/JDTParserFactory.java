@@ -1,6 +1,7 @@
 package fr.ubordeaux.jmetrics.analysis;
 
 public class JDTParserFactory implements ParserFactory {
+
     @Override
     public AbstractnessParser getAbstractnessParser() {
         return new JDTAbstractnessParser();
@@ -10,4 +11,5 @@ public class JDTParserFactory implements ParserFactory {
     public CouplingParser getCouplingParser() {
         return new JDTCouplingParser();
     }
+
 }
