@@ -25,7 +25,7 @@ def instability_histogram():
         datay.append(csv[i][1])
 
     plt.figure(figsize=(20, 0.5 * len(datax)))
-    plt.axes([0.3,0.1,0.6,0.8])
+    plt.axes([0.3, 0.1, 0.6, 0.8])
     plt.barh(datax, datay, align='center')
     plt.yticks(datax, labels)
     plt.xlabel("Instability")

@@ -7,6 +7,8 @@ import fr.ubordeaux.jmetrics.presentation.FileGenerator;
 import fr.ubordeaux.jmetrics.project.*;
 import org.apache.commons.cli.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -27,16 +29,23 @@ public class Main {
     private static final String SUBDIR_OPTION_LONG = "subdir";
     private static final String SUBDIR_DESC = "Specifies a subdirectory to restrict the analyse";
 
+    private static final String OUTDIR_OPTION = "o";
+    private static final String OUTDIR_OPTION_LONG = "output";
+    private static final String OUTDIR_DESC = "Specifies the directory in which to write the output files. Defaults to report/.";
+
     private static final String PROGRAM_USAGE = "jmetrics -t <source|bytecode> -p <project_root> [OPTIONS]";
 
     private static String path;
     private static String subdirectory;
     private static FileSystemExplorer explorer;
     private static ParserFactory parserFactory;
+    private static String outputPath = "report/";
 
     public static void main(String[] args) {
 
+        //Initialization
         parseCommandLine(args);
+        createOutputPath(outputPath);
 
         // Execute Pipeline
         projectExploration(path, subdirectory);
@@ -63,10 +72,10 @@ public class Main {
             Metrics.computePackageMetrics(g, packageGraph);
         }
 
-        FileGenerator.generateCSVFile("ClassScale", new HashSet<>(classNodes));
-        FileGenerator.generateCSVFile("PackageScale", new HashSet<>(packageNodes));
-        FileGenerator.generateDOTFile("ClassScale", classGraph);
-        FileGenerator.generateDOTFile("PackageScale", packageGraph);
+        FileGenerator.generateCSVFile(outputPath, "ClassScale", new HashSet<>(classNodes));
+        FileGenerator.generateCSVFile(outputPath, "PackageScale", new HashSet<>(packageNodes));
+        FileGenerator.generateDOTFile(outputPath, "ClassScale", classGraph);
+        FileGenerator.generateDOTFile(outputPath, "PackageScale", packageGraph);
 
     }
 
@@ -113,6 +122,14 @@ public class Main {
         return packageDependencies;
     }
 
+    private static void createOutputPath(String path){
+        File outputFile = new File(path);
+        if(!outputFile.exists() && ! outputFile.mkdirs()){
+            System.out.println("Unable to create the output directory : " + path);
+            System.exit(1);
+        }
+    }
+
     private static void parseCommandLine(String[] args) {
         CommandLineParser parser = new DefaultParser();
         Options options = buildOptions();
@@ -128,8 +145,13 @@ public class Main {
         if (line.hasOption(HELP_OPTION)) {
             printHelpAndExit(options, 0);
         }
+
         path = line.getOptionValue(PATH_OPTION);
         subdirectory = line.hasOption(SUBDIR_OPTION) ? line.getOptionValue(SUBDIR_OPTION) : path;
+        if(line.hasOption(OUTDIR_OPTION)) {
+            outputPath = line.getOptionValue(OUTDIR_OPTION);
+        }
+
         if (line.getOptionValue(TYPE_OPTION).equals("source")) {
             explorer = new SourceFileSystemExplorer();
             parserFactory = new JDTParserFactory();
@@ -155,11 +177,13 @@ public class Main {
         Option parsingType =  Option.builder(TYPE_OPTION).required().longOpt(TYPE_OPTION_LONG).numberOfArgs(1).desc(TYPE_DESC).build();
         Option help = Option.builder(HELP_OPTION).longOpt(HELP_OPTION_LONG).hasArg(false).desc(HELP_DESC).build();
         Option subdir = Option.builder(SUBDIR_OPTION).longOpt(SUBDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(SUBDIR_DESC).build();
+        Option outputDir = Option.builder(OUTDIR_OPTION).longOpt(OUTDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(OUTDIR_DESC).build();
 
         options.addOption(path);
         options.addOption(parsingType);
         options.addOption(help);
         options.addOption(subdir);
+        options.addOption(outputDir);
         return options;
     }
 
