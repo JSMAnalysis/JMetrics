@@ -1,5 +1,18 @@
 # Jmetrics
 
+Jmetrics is a Java application designed to analyze other Java applications.
+It aims to provide some indicators of a Java project's quality.
+
+It can analyze both source and byte code to :
+
+ - extract dependencies between classes and packages in the project.
+ 
+ - compute some software metrics base on those defined by Robert C. Martin in
+ <a href="https://linux.ime.usp.br/~joaomm/mac499/arquivos/referencias/oodmetrics.pdf">this article</a>
+
+It can then output dependency graphs using the .DOT format and metrics values using the .CSV
+format.
+
 ## Build instructions :
 
 This project uses **Gradle** as a build tool. To ensure Gradle's version compatibility, a wrapper 
@@ -9,7 +22,7 @@ is provided. To use it, please run the wrapper script corresponding to your oper
 
  - **gradlew** for Linux, MacOS or other Unix-like systems.
 
-The following example assume that you're using an Unix-like system ; you will have to replace the *./gradlew* by 
+The following examples assume that you're using an Unix-like system ; you will have to replace the *./gradlew* by 
 *.\gradlew.bat* for it to work on Windows. To compile and test, you can use the following commands :
 
 - to compile the project : 
@@ -24,7 +37,7 @@ The following example assume that you're using an Unix-like system ; you will ha
 ./gradlew compileTestJava
 ```
 
-- to run tests : 
+- to run compile and run tests : 
 
 ```
 ./gradlew test
@@ -36,7 +49,7 @@ The following example assume that you're using an Unix-like system ; you will ha
 ./gradlew build
 ```
 
-- to generate a jar binary : 
+- to compile the project and generate a jar binary : 
 
 ```
 ./gradlew jar
@@ -49,42 +62,61 @@ The jar is located in **out/jar/**
 
 ## Run instructions :
 
-For now, jmetrics allows to display metrics values for all classes of a compiled Java project, as well as getting a
-DOT-formatted dependency graph. The software detects dependencies in :
+Jmetrics allows to analyze either source or bytecode of a Java project.
+Be aware the bytecode analysis is pretty much limited and should be used when the
+ source code is unavailable only. The dependencies that can be extracted from bytecode 
+ are mainly the followings :
  
-- inheritance and implementation
-- attributes
-- methods parameters, return type and thrown exceptions
- 
-You can run the application using the following command (using the jar compiled in out/jar/) :
+- inheritance and implementation (except parameterized types).
+- simple attributes (no parameterized types or arrays).
+- methods parameters, return type and thrown exceptions (except parameterized types).
 
-```
-java -jar jmetrics.jar <args...>
-```
-
-Alternatively, you can run jmetrics using gradle :
+For now, the recommended way to run jmetrics is using gradle :
 
 ```
 ./gradlew run --args="<args...>"
 ```
 
-The command-line application takes up to 2 arguments, one mandatory and one optional. These arguments must come in
- the following order :
+The command-line application takes 2 mandatory arguments. These are the following :
 
- - The path to the root of a compiled Java project (containing .class files). This is the project you want to analyze.
-  This cannot be omitted.
+ - `-p <root> | --path <root>` The path to the root of the Java project you want to analyze 
+ (containing .class or .java files).
   
- - A `--dot-only` flag. If this flag is passed to the application, it will only input a dependency graph encoded in the
- .DOT format. It is useful the redirect the program's output to a .dot file. This is optional.
+ - `-t <source|bytecode> | --type <source|bytecode>`. This tells the application whether to
+ performs a source code or bytecode analysis. Value can only be source or bytecode.
  
-For example, to analyze a project located in **out/bin/** and get **metrics values + DOT graph**, you can use :
+For example, to analyze this project (sources are located in **src/**), you can use:
 
 ```
-java -jar jmetrics.jar out/bin/
+./gradlew run --args="-p src -t source"
 ```
 
-To get a .dot file containing the dependency graph of the same project, you can use :
+It will parse the project's files and generate some outputs that will be placed in 
+ $current_directory$/report/. These outputs are composed of :
+ 
+  - metrics .csv files for class and package level analysis.
+  
+  - dependency graph .dot files for class and package level analysis.
+
+You can change the output directory by providing a `-o` or `--output` option. For example,
+you can choose to put outputs in the output folder by using the following command :
 
 ```
-java -jar jmetrics.jar out/bin/ --dot-only > myfile.dot
+./gradlew run --args="-p src -t source -o output"
+```
+
+You can also restrict the analysis to a subdirectory of the project. This can be done using
+the `-s` or `--subdir` option. Note that you will still have to provide the project's root.
+For example, to only analyze the *presentation* package, you can restrict the analysis to the
+corresponding directory :
+
+```
+./gradlew run --args="-p src -t source -s src/fr/ubordeaux/jmetrics/presentation"
+```
+
+This document may not cover all the available options. To get a description of these
+options, just use the `-h` or  `--help` option like this :
+
+```
+./gradlew run --args="-h"
 ```
