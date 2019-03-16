@@ -8,7 +8,6 @@ import fr.ubordeaux.jmetrics.project.*;
 import org.apache.commons.cli.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -43,7 +42,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //Initialization
+        // Initialization
         parseCommandLine(args);
         createOutputPath(outputPath);
 
@@ -76,6 +75,8 @@ public class Main {
         FileGenerator.generateCSVFile(outputPath, "PackageScale", new HashSet<>(packageNodes));
         FileGenerator.generateDOTFile(outputPath, "ClassScale", classGraph);
         FileGenerator.generateDOTFile(outputPath, "PackageScale", packageGraph);
+        FileGenerator.generateCSVFile(outputPath, "ClassScaleDependencies", new HashSet<>(classDependencies));
+        FileGenerator.generateCSVFile(outputPath, "PackageScaleDependencies", new HashSet<>(packageDependencies));
 
     }
 
