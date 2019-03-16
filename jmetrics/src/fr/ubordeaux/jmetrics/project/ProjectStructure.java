@@ -28,9 +28,8 @@ public class ProjectStructure {
     private ProjectStructure() {  }
 
     public void setStructure(ProjectComponent rootComponent) {
-        structure = rootComponent;
+        structure = pruneStructure(rootComponent);
         projectRootPath = rootComponent.getPath();
-        pruneStructure();
     }
 
     /**
@@ -105,65 +104,66 @@ public class ProjectStructure {
     }
 
     /**
-     * Prune the ProjectStructure from superfluous packages and set component's displayableName.
+     * Prune the ProjectComponent's tree from superfluous packages and set component's displayableName.
+     * @param rootComponent The root of the tree to clean.
+     * @return The cleaned structure.
      */
-    private void pruneStructure() {
-
-        List<PackageDirectory> packageList = recursiveEnumeratePackages(structure, new ArrayList<>());
-        for (PackageDirectory dir: packageList) {
-            if (dir.getContent().isEmpty()) {
-                PackageDirectory parent = getParentComponent(packageList, dir);
-                if (parent != null) { parent.removeContent(dir); }
-            }
-        }
-
-        int removedDepth = 0;
-        ProjectComponent newRootComponent = null;
-        List<ProjectComponent> content;
-        for (PackageDirectory dir: packageList) {
-            content = dir.getContent();
-            if (content.size() == 1 && content.get(0) instanceof PackageDirectory) {
-                removedDepth++;
-                newRootComponent = content.get(0);
-            }
-        }
-        if (newRootComponent != null) {
-            structure = newRootComponent;
-        }
-
-        // Rename Components
-        List<ClassFile> classes = recursiveEnumerateClasses(structure, new ArrayList<>());
-        List<PackageDirectory> packages = recursiveEnumeratePackages(structure, new ArrayList<>());
-        ArrayList<ProjectComponent> componentsList = new ArrayList<>(classes);
-        componentsList.addAll(packages);
-        ArrayList<String> componentNames = componentsList.stream()
-                .map(ProjectComponent::getFullyQualifiedName)
-                .collect(Collectors.toCollection(ArrayList::new));
-        String first = componentNames.get(0);
-        String[] splitFirst = first.split("\\.");
-        StringBuilder prefixBuild = new StringBuilder();
-        for (int i = 0; i < removedDepth - 1; i++) {
-            prefixBuild.append(splitFirst[i]);
-            prefixBuild.append(".");
-        }
-        String prefix = prefixBuild.toString();
-        if (!prefix.equals("")) {
-            for (ProjectComponent c: componentsList) {
-                c.setDisplayName(c.getFullyQualifiedName().substring(prefix.length()));
-            }
-        }
-
+    private ProjectComponent pruneStructure(ProjectComponent rootComponent) {
+        return recursivePruneRoot(rootComponent, "");
     }
 
-    private PackageDirectory getParentComponent(List<PackageDirectory> packages, ProjectComponent comp) {
-        for (PackageDirectory packageG: packages) {
-            for (ProjectComponent innerG: packageG.getContent()) {
-                if (innerG.equals(comp)) {
-                    return packageG;
-                }
+    /**
+     * Prune the root of a project's component tree from packages that only contains one other package
+     * and build the prefix to remove from all its children's displayName.
+     * @param root The root of the current tree.
+     * @param prefixToRemove The current prefix that needs to be removed from all the current root's children name.
+     * @return The cleaned structure.
+     */
+    private ProjectComponent recursivePruneRoot(ProjectComponent root, String prefixToRemove){
+        if(root instanceof PackageDirectory){
+            PackageDirectory rootPackage = (PackageDirectory) root;
+            if(rootPackage.getContent().size() > 1){
+                return recursivePruneStructure(rootPackage, prefixToRemove);
+            }
+            else if(rootPackage.getContent().size() == 1){
+                return recursivePruneRoot(rootPackage.getContent().get(0), rootPackage.getFullyQualifiedName());
             }
         }
-        return null;
+        return root;
+    }
+
+    /**
+     * Prune a ProjectComponent's tree to remove a prefix from all the children's displayName.
+     * @param node The root of the current tree.
+     * @param prefixToRemove The prefix to remove from the displayName.
+     * @return The cleaned structure.
+     */
+    private ProjectComponent recursivePruneStructure(ProjectComponent node, String prefixToRemove){
+        if(node instanceof PackageDirectory){
+            PackageDirectory dir = (PackageDirectory) node;
+            for(ProjectComponent component : dir.getContent()){
+                dir.removeContent(component);
+                dir.addContent(recursivePruneStructure(component, prefixToRemove));
+            }
+        }
+        node.setDisplayName(removePrefix(node.getFullyQualifiedName(), prefixToRemove));
+        return node;
+    }
+
+    /**
+     * Remove a prefix from a component's name.
+     * @param name The name from which to remove the prefix.
+     * @param prefix The prefix to remove from the name.
+     * @return The name without the provided prefix.
+     */
+    private String removePrefix(String name, String prefix){
+        if(prefix.length() != 0 && name.startsWith(prefix)){
+            name = name.substring(prefix.length());
+            if(name.startsWith(".")){
+                name = name.substring(1);
+            }
+        }
+        return name;
     }
 
 }
