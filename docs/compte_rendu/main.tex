@@ -1,0 +1,178 @@
+\documentclass{scrartcl}
+\setkomafont{disposition}{\normalfont\bfseries}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{rotating}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{calc}
+\usepackage{xparse}
+\usepackage{framed}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{float}
+\lstset{ 
+  basicstyle=\footnotesize,
+  commentstyle=\color{green},
+  frame=single,
+  keywordstyle=\color{blue},
+  language=Java,
+  rulecolor=\color{black},
+  stringstyle=\color{red},
+  tabsize=2,
+  title=\lstname
+}
+\usepackage[nottoc]{tocbibind}
+
+
+\title{Compte rendu de TD}
+\author{Delrée Sylvain, Giachino Nicolas, Martinez Eudes, Ousseny Irfaane}
+\date{Jeudi 4 Avril 2019}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\begin{document}
+
+% ----------> PAGE TITLE
+\begin{titlepage}
+	\centering
+    \vspace*{0.5 cm}
+    \includegraphics[scale = 0.5]{img/logo.jpg}\\[1.0 cm]
+    \textsc{\LARGE PdP - Métriques de Maintenabilité}\\[1.0 cm]
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[0.5 cm]
+	{\small \thedate}\\[0.5 cm]
+	{\small Dépôt Savane :\\ \url{https://services.emi.u-bordeaux.fr/projet/savane/projects/pdp2019mm/}}\\[1.5 cm]
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft} \large
+			\emph{Soumis pour :}\\
+			(Client) Narbel Philippe\\
+            (Chargé de TD) Hofer Ludovic\\
+		\end{flushleft}
+	\end{minipage}~
+	\begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+			\emph{Soumis par :} \\
+			Delrée Sylvain\\
+            Giachino Nicolas\\
+            Martinez Eudes\\
+            Ousseny Irfaane\\
+		\end{flushright}
+	\end{minipage}\\[2 cm]
+	
+\end{titlepage}
+
+\section{TD - 23 janvier}
+\paragraph{}Discussion autour de la mise en place du cahier des besoins
+\begin{itemize}
+    \item Utilisation de verbe d'action afin de décrire les besoins fonctionnels
+    \item Spécification de la dépendance (au sein des classes, packages, attributs, méthodes,...)
+    \item Extraction des données à partir d'une des méthodes (analyse de bytecode ou de code source), choix d'implémentation à justifier.
+    \item Tests : garantit la fiabilité de l'implémentation
+    \item Détailler les termes "Bons codes / Mauvais code", si possible les illustrer avec des exemples.
+    \item Documentation (à demander au client) et format du résultat souhaité (graphe, résultat affiché dans un fichier, navigateur,...)
+    \item Test de charge, pour le temps d'exécution du problème, est-on limiter à des contraintes de temps ? A voir avec le client.
+    \item Classifier les besoins par priorités (À l'aide de macros LaTeX) 
+\end{itemize}
+
+\section{TD - 30 janvier}
+\paragraph{}Discussion à propos de la rédaction du cahier des besoins
+\newline
+De nombreux soucis ont été mis en lumières : 
+\begin{itemize}
+    \item Eviter d'employer des termes avant de les décrire, il faut décrire les concepts avant de les évoquer 
+    \item Description de la métrique de Martin : il faut la remettre au centre du projet
+    \item Revoir la distinction classes / catégories
+    \item On parle du langage JAVA après la description de JDepend
+\end{itemize}    
+    
+Dans le cadre des calculs de dépendances, il faut bien preciser que la métrique de Martin n'est pas un critère assurant la maintenabilité d'un logiciel (ce n'est pas une valeur absolue) mais un indicateur qui entre dans le calcul.
+
+Des oublis ont été faits dans la description des besoins:
+\begin{itemize}
+    \item L'extraction des dépendances qui est le point fondamental du projet n'a pas été abordé
+    \item Comment allons-nous extraire les dependances ?
+    \item Differents types de dépendances : extraction de dépendances classe à classe. Extraire la liste des méthodes et la liste des méthodes abstraites pour le calcul de l'abstraction
+\end{itemize}
+
+\textcolor{red}{Bilan du TD2 : revoir l'agencement / ordonnencement de certaines parties afin d'assurer une cohérence dans la lecture et du domaine au niveau de l'introduction}
+
+
+\section{TD - 5 Février}
+\paragraph{}Retour sur le cahier des besoins après le rendu
+\newline
+Points négatifs
+\begin{itemize}
+    \item Contradictions dans les définitions, distinction entre la terminologie commune n'est pas la même que la terminologie employée dans le cadre de la métrique de Martin.
+    \item Définitions multiples de concepts
+    \item Problème au niveau du formalisme qui n'est pas assez détaillé, expliqué, de plus la formule du couplage efferent (Ce) est fausse (ou ne prend pas en compte la notion de catégorie)
+    \item Pas de précision sur l'analyse syntaxique, les besoins extrait ne sont pas clair
+    \item Manque d'analyse sur ce qui est faisable ou pas
+    \item Manque de numérotations des besoins
+\end{itemize}
+
+Points positifs
+\begin{itemize}
+    \item Bonne compréhension du sujet, lecture agréable
+    \item Bien d'avoir pensé à faire un formalisme pour le calcul des métriques malgré quelques coquilles
+    \item Explication claire de JDepend
+\end{itemize}
+
+\section{TD - 13 Février}
+\paragraph{}Discution autour du code avant le rendu de la première release.
+\newline
+Malgré un code bien organisé, quelques remarques ont été faites :
+\begin{itemize}
+    \item Manque d'un README afin de comprendre les modalités de compilation et d'exécution.
+    \item Choix d'analyse des dépendances se base sur le bytecode JAVA, pourquoi ne pas avoir commencer l'analyse syntaxique au niveau du code source JAVA en prevision de la première release.
+    \item Manque de tests unitaire sur les fonctions
+    \item Gestion des warnings n'a pas été réalisé, 130 warnings ont été relevés, nous utilision IntelliJ comme IDE et il nous masque les warnings) d'où la non-gestion de ceux-ci.
+    \item Concernant le graphe des dépendances, la police devrait être plus grande, l'espace entre les cadres devraient être réduits
+\end{itemize}
+    
+
+\section{TD - 6 Mars}
+\paragraph{}Retour sur l'audit :
+\begin{itemize}
+    \item Problème au niveau de la gestion du temps 
+    \item Trop absolue sur la métrique !! Ne pas oublier que c'est un indicateur
+    \item Certaines diapositives étaient "vides"
+    \item L'exemple projeté était pas lisible, il aurait fallu, au préalable, présenter un exemple avec peu de sommets
+\end{itemize}
+
+\paragraph{}Retour sur le code de la première release :
+\begin{itemize}
+    \item Gestions d'erreurs lié aux commandes décrit dans le fichier README
+    \item Dans le fichier gradle, la $mainClass$ n'a pas été renseigné (JAR)
+    \item On peut négliger l'extension \textit{".class"} dans le nom des sommets des graphes
+    \item L'architecture proposé est bonne
+\end{itemize}
+
+\paragraph{}Discussion autour des améliorations possibles :
+\begin{itemize}
+    \item Analyse de code source JAVA
+    \item Regrouper les métriques au niveau d'une classe unifiée
+    \item Correction du cahier des besoins
+\end{itemize}
+
+\section{TD - 13 Mars}
+
+\section{TD - 27 Mars}
+
+\section{TD - 3 Avril}
+
+\end{document}
