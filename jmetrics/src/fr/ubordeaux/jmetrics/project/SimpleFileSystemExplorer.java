@@ -34,9 +34,18 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
         if (!isValidPath(path) || !isValidPath(subdirPath)) {
             throw new InvalidProjectPathException("Path \"" + path + "\" does not exist or does not lead to a directory.");
         }
+
         File subdir = new File(subdirPath);
         File rootDir = new File(path);
-        if(!subdir.getAbsolutePath().startsWith(rootDir.getAbsolutePath())){
+        try {
+            subdir = subdir.getCanonicalFile();
+            rootDir = rootDir.getCanonicalFile();
+
+        } catch (IOException e){
+            throw new InvalidProjectPathException("Unable to resolve the directory or subdirectory path", e);
+        }
+
+        if (!subdir.getAbsolutePath().startsWith(rootDir.getAbsolutePath())) {
             throw new InvalidProjectPathException(
                     "The subdirectory \"" + subdirPath + "\" is not located inside \"" + path + "\""
             );
@@ -56,7 +65,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      * @param currentName The fully qualified name of the package currently explored.
      * @param targetSubdir The subdirectory to find.
      */
-    private void exploreToSubdir(File node, PackageDirectory parent, int depth, String currentName, File targetSubdir) {
+    private void exploreToSubdir(File node, PackageDirectory parent, int depth, String currentName, File targetSubdir){
         if (node.isDirectory()) {
             if (node.equals(targetSubdir)) {
                 setRecursiveStructure(node, parent, depth, currentName);
@@ -78,6 +87,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     /**
      * Retrieves the name of the directory to explore from the current directory.
      * For example, if the current directory is foo and the target directory is foo/bar/foobar, it will return bar.
+     * This function assumes that the files are canonical files.
      * @param currentDir The current directory.
      * @param targetDir The target directory.
      * @return The name of the directory to explore from the current directory to get to the target directory.
@@ -85,7 +95,13 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     private String nextStepToDirectory(File currentDir, File targetDir) {
         String fileName = targetDir.getAbsolutePath();
         // Removes the current directory path from the target's path
-        fileName = fileName.replace(currentDir.getAbsolutePath() + File.separator, "");
+
+        System.out.println(currentDir.getAbsolutePath());
+        System.out.println(fileName);
+        fileName = fileName.replace(currentDir.getAbsolutePath(), "");
+        if(fileName.startsWith(File.separator)){
+            fileName = fileName.substring(1);
+        }
         if (fileName.contains(File.separator)) {
             // Keeps only the first directory's name in the path
             fileName = fileName.substring(0, fileName.indexOf(File.separator));
@@ -120,8 +136,13 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
         }
     }
 
-    private boolean isIgnoredFile(String className) {
-        String[] splitClassName = className.split("\\.");
+    /**
+     * Checks if a filename corresponds to an ignored one.
+     * @param filename The filename to check.
+     * @return true if it is an ignored filename, false otherwise.
+     */
+    private boolean isIgnoredFile(String filename) {
+        String[] splitClassName = filename.split("\\.");
         return Arrays.asList(IGNORE_FILE).contains(splitClassName[splitClassName.length - 1]);
     }
 
@@ -157,6 +178,13 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
         return filename;
     }
 
+    /**
+     * Generates a component's fully qualified name.
+     * @param currentName The current fully qualified name's prefix.
+     * @param fileName The name of the file containing the component.
+     * @param depth The depth currently reached by the exploration.
+     * @return The fully qualified name of the component.
+     */
     private String generateComponentName(String currentName, String fileName, int depth){
         if(depth == 0) return "";
         if (currentName.isEmpty()) return fileName;
