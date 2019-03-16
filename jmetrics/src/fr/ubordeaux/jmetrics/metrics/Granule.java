@@ -9,10 +9,16 @@ import java.util.Objects;
 
 public abstract class Granule implements CSVRepresentable {
 
-    protected ProjectComponent relatedComponent;
-    protected String fullyQualifiedName;
-    protected String displayName;
-    protected Metrics metrics;
+    private ProjectComponent relatedComponent;
+    private String fullyQualifiedName;
+    private String displayName;
+    private Metrics metrics = null;
+
+    protected Granule(ProjectComponent relatedComponent, String fullyQualifiedName, String displayName) {
+        this.relatedComponent = relatedComponent;
+        this.fullyQualifiedName = fullyQualifiedName;
+        this.displayName = displayName;
+    }
 
     public String getFullyQualifiedName() {
         return fullyQualifiedName;
@@ -32,6 +38,10 @@ public abstract class Granule implements CSVRepresentable {
 
     public ProjectComponent getRelatedComponent() {
         return relatedComponent;
+    }
+
+    public int computeDepth(){
+        return fullyQualifiedName.split(".").length;
     }
 
     @Override

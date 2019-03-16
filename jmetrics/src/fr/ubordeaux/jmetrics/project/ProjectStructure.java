@@ -109,11 +109,7 @@ public class ProjectStructure {
      */
     private void pruneStructure() {
 
-        // Remove empty packages (packageList is sorted by depth desc)
         List<PackageDirectory> packageList = recursiveEnumeratePackages(structure, new ArrayList<>());
-        packageList = packageList.stream()
-                .sorted(Comparator.comparing(PackageDirectory::getDepth).reversed())
-                .collect(Collectors.toList());
         for (PackageDirectory dir: packageList) {
             if (dir.getContent().isEmpty()) {
                 PackageDirectory parent = getParentComponent(packageList, dir);
@@ -121,8 +117,6 @@ public class ProjectStructure {
             }
         }
 
-        // Remove top tree useless directories (packageList is now sorted by depth asc)
-        Collections.reverse(packageList);
         int removedDepth = 0;
         ProjectComponent newRootComponent = null;
         List<ProjectComponent> content;
@@ -135,9 +129,6 @@ public class ProjectStructure {
         }
         if (newRootComponent != null) {
             structure = newRootComponent;
-            for (PackageDirectory dir: packageList) {
-                dir.setDepth(dir.getDepth() - removedDepth);
-            }
         }
 
         // Rename Components

@@ -41,7 +41,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
                     "The subdirectory \"" + subdirPath + "\" is not located inside \"" + path + "\""
             );
         }
-        PackageDirectory project = new PackageDirectory(rootDir, "", 0);
+        PackageDirectory project = new PackageDirectory(rootDir, "");
         exploreToSubdir(rootDir, project, 0, "", subdir);
         return project.getContent().get(0);
     }
@@ -65,9 +65,9 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
                 String newFileName = nextStepToDirectory(node, targetSubdir);
                 File newNode = new File(node, newFileName);
                 String packageName = generateComponentName(currentName, node.getName(), depth);
-                PackageDirectory dir = new PackageDirectory(node, packageName, depth++);
+                PackageDirectory dir = new PackageDirectory(node, packageName);
                 parent.addContent(dir);
-                exploreToSubdir(newNode, dir, depth, packageName, targetSubdir);
+                exploreToSubdir(newNode, dir, depth+1, packageName, targetSubdir);
             }
         }
         else {
@@ -108,13 +108,13 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
             parent.addContent(new ClassFile(node, className));
         } else if (node.isDirectory()) {
             String packageName = generateComponentName(currentName, node.getName(), depth);
-            PackageDirectory dir = new PackageDirectory(node, packageName, depth++);
+            PackageDirectory dir = new PackageDirectory(node, packageName);
             File[] files = node.listFiles();
             if (files == null) {
                 throw new UncheckedIOException(new IOException("A problem has occurred while inspecting the given directory."));
             }
             for (File file: files) {
-                setRecursiveStructure(file, dir, depth, packageName);
+                setRecursiveStructure(file, dir, depth+1, packageName);
             }
             parent.addContent(dir);
         }

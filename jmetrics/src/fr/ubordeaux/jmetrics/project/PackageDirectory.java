@@ -12,12 +12,9 @@ public class PackageDirectory extends ProjectComponent {
 
     private List<ProjectComponent> content;
 
-    private int depth;
-
-    public PackageDirectory(File file, String name, int depth) {
+    public PackageDirectory(File file, String name) {
         super(file, name);
         content = new ArrayList<>();
-        this.depth = depth;
     }
 
     public List<ProjectComponent> getContent() {
@@ -30,14 +27,6 @@ public class PackageDirectory extends ProjectComponent {
 
     public void removeContent(ProjectComponent content) {
         this.content.remove(content);
-    }
-
-    public int getDepth() {
-        return depth;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
     }
 
     @Override

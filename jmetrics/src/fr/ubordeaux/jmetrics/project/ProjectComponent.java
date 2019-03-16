@@ -40,6 +40,10 @@ public abstract class ProjectComponent {
         return displayName;
     }
 
+    public int computeDepth(){
+        return fullyQualifiedName.split(".").length;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
