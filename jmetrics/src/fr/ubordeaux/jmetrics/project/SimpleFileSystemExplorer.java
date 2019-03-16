@@ -95,9 +95,6 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
     private String nextStepToDirectory(File currentDir, File targetDir) {
         String fileName = targetDir.getAbsolutePath();
         // Removes the current directory path from the target's path
-
-        System.out.println(currentDir.getAbsolutePath());
-        System.out.println(fileName);
         fileName = fileName.replace(currentDir.getAbsolutePath(), "");
         if(fileName.startsWith(File.separator)){
             fileName = fileName.substring(1);
