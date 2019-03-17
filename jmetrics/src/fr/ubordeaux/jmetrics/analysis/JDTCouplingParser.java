@@ -18,6 +18,9 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     private Set<String> rawAggregationDependencies;
     private Set<String> rawUseLinkDependencies;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Dependency> getDependencies(ClassFile srcFile) {
         rawInheritanceDependencies = new HashSet<>();
@@ -93,6 +96,19 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Recursively explore and adds the parameters of a generic type reference to a set of dependencies.
+     * @param typeBinding The type that has arguments to explore.
+     * @param dependencies The dependency Set to add the dependencies in.
+     */
+    private void extractTypeArguments(ITypeBinding typeBinding, Set<String> dependencies){
+        if(!typeBinding.isParameterizedType()) return;
+        for(ITypeBinding parameterBinding : typeBinding.getTypeArguments()){
+            dependencies.add(parameterBinding.getQualifiedName());
+            extractTypeArguments(parameterBinding, dependencies);
+        }
+    }
+
 
 
     /* ******************************************** */
@@ -104,7 +120,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         // Find dependencies from extends and implements declarations
         ITypeBinding typeBinding = node.resolveBinding();
         // Ignore internal and anonymous classes
-        if (typeBinding.isNested()) { return false; }
+        if (typeBinding.isNested()) return false;
         List<ITypeBinding> bindings = new ArrayList<>(Arrays.asList(typeBinding.getInterfaces()));
         if (typeBinding.getSuperclass() != null) {
             bindings.add(typeBinding.getSuperclass());
@@ -116,10 +132,20 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     }
 
     @Override
+    public boolean visit(EnumDeclaration node) {
+        // Find dependencies from interfaces implemented by this enum.
+        for (ITypeBinding binding : node.resolveBinding().getInterfaces()) {
+            rawInheritanceDependencies.add(binding.getQualifiedName());
+        }
+        return true;
+    }
+
+    @Override
     public boolean visit(FieldDeclaration node) {
         // Find dependencies from fields declaration
         ITypeBinding typeBinding = node.getType().resolveBinding();
         rawAggregationDependencies.add(typeBinding.getQualifiedName());
+        extractTypeArguments(typeBinding, rawAggregationDependencies);
         return true;
     }
 
@@ -133,6 +159,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         bindings.add(methodBinding.getReturnType());
         for (ITypeBinding binding : bindings) {
             rawUseLinkDependencies.add(binding.getQualifiedName());
+            extractTypeArguments(binding, rawUseLinkDependencies);
         }
         return true;
     }
@@ -150,15 +177,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         // Find dependencies from a variable declaration
         ITypeBinding typeBinding = node.getType().resolveBinding();
         rawUseLinkDependencies.add(typeBinding.getQualifiedName());
-        return true;
-    }
-
-    @Override
-    public boolean visit(ParameterizedType node) {
-        // Find dependencies contained in a generic type instance creation
-        for (ITypeBinding binding : node.resolveBinding().getTypeArguments()) {
-            rawUseLinkDependencies.add(binding.getQualifiedName());
-        }
+        extractTypeArguments(typeBinding, rawUseLinkDependencies);
         return true;
     }
 

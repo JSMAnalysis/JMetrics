@@ -31,8 +31,11 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      */
     @Override
     public ProjectComponent generateStructure(String path, String subdirPath) throws InvalidProjectPathException {
-        if (!isValidPath(path) || !isValidPath(subdirPath)) {
+        if (!isValidPath(path)) {
             throw new InvalidProjectPathException("Path \"" + path + "\" does not exist or does not lead to a directory.");
+        }
+        else if(!isValidPath(subdirPath)){
+            throw new InvalidProjectPathException("Path \"" + subdirPath + "\" does not exist or does not lead to a directory.");
         }
 
         File subdir = new File(subdirPath);
