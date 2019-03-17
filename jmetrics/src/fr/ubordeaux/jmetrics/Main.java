@@ -71,12 +71,14 @@ public class Main {
             Metrics.computePackageMetrics(g, packageGraph);
         }
 
-        FileGenerator.generateCSVFile(outputPath, "ClassScale", new HashSet<>(classNodes));
-        FileGenerator.generateCSVFile(outputPath, "PackageScale", new HashSet<>(packageNodes));
-        FileGenerator.generateDOTFile(outputPath, "ClassScale", classGraph);
-        FileGenerator.generateDOTFile(outputPath, "PackageScale", packageGraph);
-        FileGenerator.generateCSVFile(outputPath, "ClassScaleDependencies", new HashSet<>(classDependencies));
-        FileGenerator.generateCSVFile(outputPath, "PackageScaleDependencies", new HashSet<>(packageDependencies));
+        FileGenerator generator = new FileGenerator(outputPath);
+
+        generator.generateCSVFile("ClassScale", new HashSet<>(classNodes));
+        generator.generateCSVFile("PackageScale", new HashSet<>(packageNodes));
+        generator.generateDOTFile("ClassScale", classGraph);
+        generator.generateDOTFile("PackageScale", packageGraph);
+        generator.generateCSVFile("ClassScaleDependencies", new HashSet<>(classDependencies));
+        generator.generateCSVFile("PackageScaleDependencies", new HashSet<>(packageDependencies));
 
     }
 

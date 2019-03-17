@@ -13,28 +13,40 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-public abstract class FileGenerator {
+public class FileGenerator {
 
-    public static void generateDOTFile(String directory, String filePrefix, DirectedGraph<Granule, DependencyEdge> graph) {
+    private String directory;
+
+    public FileGenerator(String directory){
+        this.setDirectory(directory);
+    }
+
+    public void setDirectory(String directory){
+        if(!directory.endsWith(File.separator)) directory += File.separator;
+        this.directory = directory;
+    }
+
+    public void generateDOTFile(String filePrefix, DirectedGraph<Granule, DependencyEdge> graph) {
         String strDOT = GraphConstructor.getDOTRepresentation(graph);
-        writeFile(getFilename(directory, filePrefix, ".dot"), strDOT);
+        writeFile(getFilename(filePrefix, ".dot"), strDOT);
     }
 
-    public static void generateCSVFile(String directory, String filePrefix, HashSet<CSVRepresentable> data) {
-        if (data.size() == 0) throw new IllegalStateException("Trying to generate CSV file with empty data.");
-        List<String> caption = data.iterator().next().getCSVCaption();
-        String strCSV = CSVBuilder.buildContent(caption, data);
-        writeFile(getFilename(directory, filePrefix, ".csv"), strCSV);
+    public void generateCSVFile(String filePrefix, HashSet<CSVRepresentable> data) {
+        String strCSV = "";
+        if(data.size() != 0) {
+            List<String> caption = data.iterator().next().getCSVCaption();
+            strCSV = CSVBuilder.buildContent(caption, data);
+        }
+        writeFile(getFilename(filePrefix, ".csv"), strCSV);
     }
 
-    private static String getFilename(String directory, String filePrefix, String extension) {
+    private String getFilename(String filePrefix, String extension) {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-YY-HH-mm-ss");
         String formattedDate = dateFormat.format(new Date());
-        if(!directory.endsWith(File.separator)) directory += File.separator;
         return directory + filePrefix + "_" + formattedDate + extension;
     }
 
-    private static void writeFile(String filename, String CSVFormattedData) {
+    private void writeFile(String filename, String CSVFormattedData) {
         BufferedWriter br = null;
         try {
             br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), StandardCharsets.UTF_8));
