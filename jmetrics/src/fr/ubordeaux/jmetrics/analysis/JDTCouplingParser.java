@@ -181,4 +181,22 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         return true;
     }
 
+    @Override
+    public boolean visit(MethodInvocation node) {
+        // Find dependencies from a method call
+        ITypeBinding typeBinding = node.resolveMethodBinding().getDeclaringClass();
+        if(typeBinding != null) {
+            rawUseLinkDependencies.add(typeBinding.getQualifiedName());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean visit(FieldAccess node) {
+        ITypeBinding typeBinding = node.resolveFieldBinding().getDeclaringClass();
+        if(typeBinding != null) {
+            rawUseLinkDependencies.add(typeBinding.getQualifiedName());
+        }
+        return true;
+    }
 }
