@@ -5,11 +5,11 @@ import fr.ubordeaux.jmetrics.project.ProjectStructure;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,16 +25,12 @@ public abstract class IntrospectionParser {
         if (c != null) {
             return c;
         }
+
         byte[] byteCode;
         try {
-            InputStream stream = file.getInputStream();
-            byteCode = new byte[stream.available()];
-            file.getInputStream().read(byteCode);
-            stream.close();
+            byteCode = Files.readAllBytes(file.getFile().toPath());
         } catch (IOException e) {
-            throw new ClassFileNotFoundException("The file associated with the class "
-                    + file.getFullyQualifiedName()
-                    + " does not seem to exist or is temporarily unavailable.");
+            throw new ClassFileNotFoundException(file);
         }
         ByteCodeClassLoader loader;
         try {

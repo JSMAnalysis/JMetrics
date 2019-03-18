@@ -17,7 +17,7 @@ public class JDTAbstractnessParser extends JDTParser implements AbstractnessPars
         abstractMethodsNumber = 0;
         methodsNumber = 0;
         char[] sourceCode = getSourceCodeFromFile(file);
-        CompilationUnit comUnit = createAST(sourceCode, file);
+        CompilationUnit comUnit = createAST(sourceCode, file, false);
         comUnit.accept(this);
         return new AbstractnessData(methodsNumber, abstractMethodsNumber);
     }

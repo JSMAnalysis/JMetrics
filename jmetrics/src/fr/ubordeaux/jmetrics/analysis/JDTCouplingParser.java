@@ -28,7 +28,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         rawUseLinkDependencies = new HashSet<>();
 
         char[] sourceCode = getSourceCodeFromFile(srcFile);
-        CompilationUnit comUnit = createAST(sourceCode, srcFile);
+        CompilationUnit comUnit = createAST(sourceCode, srcFile, true);
         comUnit.accept(this);
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
