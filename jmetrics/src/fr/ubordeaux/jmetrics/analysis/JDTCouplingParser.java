@@ -4,6 +4,7 @@ import fr.ubordeaux.jmetrics.metrics.ClassGranule;
 import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
@@ -111,6 +112,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
 
 
 
+
     /* ******************************************** */
     /* *************** VISIT METHOD *************** */
     /* ******************************************** */
@@ -144,8 +146,10 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     public boolean visit(FieldDeclaration node) {
         // Find dependencies from fields declaration
         ITypeBinding typeBinding = node.getType().resolveBinding();
-        rawAggregationDependencies.add(typeBinding.getQualifiedName());
-        extractTypeArguments(typeBinding, rawAggregationDependencies);
+        if(typeBinding != null) {
+            rawAggregationDependencies.add(typeBinding.getQualifiedName());
+            extractTypeArguments(typeBinding, rawAggregationDependencies);
+        }
         return true;
     }
 
@@ -168,23 +172,6 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     public boolean visit(ClassInstanceCreation node) {
         // Find dependencies from a class instance creation
         ITypeBinding typeBinding = node.resolveTypeBinding();
-        rawUseLinkDependencies.add(typeBinding.getQualifiedName());
-        return true;
-    }
-
-    @Override
-    public boolean visit(VariableDeclarationStatement node) {
-        // Find dependencies from a variable declaration
-        ITypeBinding typeBinding = node.getType().resolveBinding();
-        rawUseLinkDependencies.add(typeBinding.getQualifiedName());
-        extractTypeArguments(typeBinding, rawUseLinkDependencies);
-        return true;
-    }
-
-    @Override
-    public boolean visit(MethodInvocation node) {
-        // Find dependencies from a method call
-        ITypeBinding typeBinding = node.resolveMethodBinding().getDeclaringClass();
         if(typeBinding != null) {
             rawUseLinkDependencies.add(typeBinding.getQualifiedName());
         }
@@ -192,10 +179,32 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     }
 
     @Override
-    public boolean visit(FieldAccess node) {
-        ITypeBinding typeBinding = node.resolveFieldBinding().getDeclaringClass();
+    public boolean visit(VariableDeclarationStatement node) {
+        // Find dependencies from a variable declaration
+        ITypeBinding typeBinding = node.getType().resolveBinding();
         if(typeBinding != null) {
             rawUseLinkDependencies.add(typeBinding.getQualifiedName());
+            extractTypeArguments(typeBinding, rawUseLinkDependencies);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean visit(MethodInvocation node) {
+        // Find dependencies from a method call
+        IMethodBinding methodBinding = node.resolveMethodBinding();
+        if(methodBinding != null && methodBinding.getDeclaringClass() != null) {
+            rawUseLinkDependencies.add(methodBinding.getDeclaringClass().getQualifiedName());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean visit(FieldAccess node) {
+        // Find dependencies from a field access
+        IVariableBinding fieldBinding = node.resolveFieldBinding();
+        if(fieldBinding != null && fieldBinding.getDeclaringClass() != null) {
+            rawUseLinkDependencies.add(fieldBinding.getDeclaringClass().getQualifiedName());
         }
         return true;
     }
