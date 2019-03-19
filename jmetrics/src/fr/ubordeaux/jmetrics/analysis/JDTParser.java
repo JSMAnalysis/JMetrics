@@ -9,6 +9,8 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
 
@@ -16,6 +18,9 @@ import java.util.Map;
  * A base class for parsers using JDT. Provides methods to get a class source code from a source file and create an AST.
  */
 public abstract class JDTParser extends ASTVisitor{
+
+    private Charset charset = StandardCharsets.UTF_8; //use UTF_8 by default. Maybe we should expose an option to
+                                                      //tweak it.
 
     /**
      * Reads the source code of a class from a .java file.
@@ -27,11 +32,9 @@ public abstract class JDTParser extends ASTVisitor{
         try {
             code = Files.readAllBytes(file.getFile().toPath());
         } catch (IOException e) {
-            throw new ClassFileNotFoundException("The file associated with the class "
-                    + file.getFullyQualifiedName()
-                    + " does not seem to exist or is temporarily unavailable.");
+            throw new ClassFileNotFoundException(file);
         }
-        return (new String(code).toCharArray());
+        return (new String(code, charset).toCharArray());
     }
 
     /**
@@ -40,14 +43,14 @@ public abstract class JDTParser extends ASTVisitor{
      * @param srcFile The source file to use to build the AST.
      * @return The created AST.
      */
-    CompilationUnit createAST(char[] sourceCode, ClassFile srcFile) {
+    CompilationUnit createAST(char[] sourceCode, ClassFile srcFile, boolean needBindings) {
         ASTParser parser = ASTParser.newParser(AST.JLS11);
         Map<String,String> options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
         parser.setCompilerOptions(options);
         parser.setSource(sourceCode);
-        parser.setResolveBindings(true);
-        parser.setBindingsRecovery(true);
+        parser.setResolveBindings(needBindings);
+        parser.setBindingsRecovery(needBindings);
         parser.setEnvironment(new String[]{}, new String[]{ProjectStructure.getInstance().getRootPath()}, null, true);
         parser.setUnitName(srcFile.getFile().getPath());
         return (CompilationUnit) parser.createAST(null);
