@@ -5,78 +5,83 @@
     usage : python stability_histogram.py <csv_file_name>
 '''
 
-import numpy as np
+from retrieve_csv_data import retrieve_data
 import matplotlib.pyplot as plt
 import sys
+import mplcursors
 
 
-def retrieve_data(usecols):
-    return np.genfromtxt(sys.argv[1], delimiter=';', dtype=None, encoding=True, names=True, usecols=usecols)
+
+def setupData():
+    csv = retrieve_data(sys.argv[1], ("Granule", "I", "A", "Dn"))
+    granules = []
+    instability = []
+    asbstractness = []
+    distance = []
+    for i in range(len(csv)):
+        granules.append(csv[i][0])
+        instability.append(csv[i][1])
+        asbstractness.append(csv[i][2])
+        distance.append(csv[i][3])
+    return granules, instability, asbstractness, distance
+
+
+
+def setupPositionStructure():
+    ''' Creates an (average time complexity) O(1) granules access structure.
+    Dict with tuple (i, a) as key; granule index as value) '''
+    global positions
+    positions = dict()
+    for k in range(len(labels)):
+        tuple = (datax[k], datay[k])
+        if positions.get(tuple) == None:
+            positions[tuple] = [k]
+        else:
+            positions.get(tuple).append(k)
+
+
 
 def instability_abstraction_2D_axis():
-    # Retrieve data
-    csv = retrieve_data(("Granule", "I", "A"))
-    labels = []
-    datax = []
-    datay = []
-    for i in range(len(csv)):
-        labels.append(csv[i][0])
-        datax.append(csv[i][1])
-        datay.append(csv[i][2])
+    global labels, datax, datay, distance
+    labels, datax, datay, distance = setupData()
+    setupPositionStructure()
 
-    return labels, datax, datay
+    fig, axes = plt.subplots(figsize=(6, 6))
+    plt.axes().set_aspect('equal', 'datalim') # Keep square ratio
 
-fig,axes = plt.subplots(figsize=(10,10))
-labels, datax, datay = instability_abstraction_2D_axis()
+    # Plot
+    pain_zone = plt.Circle((0, 0), 0.4, color='r', fill=False)
+    uselessness_zone = plt.Circle((1, 1), 0.4, color='g', fill=False)
+    main_sequence = plt.plot([1, 0], [0, 1], color="black", linestyle="solid")
+    granules = plt.scatter(datax, datay)
+    plt.gcf().gca().add_artist(pain_zone)
+    plt.gcf().gca().add_artist(uselessness_zone)
 
-# Plot
-pain_zone = plt.Circle((0, 0), 0.4, color='r', fill=False)
-useless_zone = plt.Circle((1, 1), 0.4, color='g', fill=False)
-plt.gcf().gca().add_artist(pain_zone)
-plt.gcf().gca().add_artist(useless_zone)
-plt.text(0.52, 0.5, "Main Sequence", rotation=-45, horizontalalignment='center', verticalalignment='center')
-main_sequence = plt.plot([1, 0], [0, 1], color="black", linestyle="solid")
-granule = plt.scatter(datax, datay)
+    # Details
+    plt.legend(
+        [pain_zone, uselessness_zone, granules],
+        ["Zone of Pain", "Zone of Uselessness", "Granule"],
+        loc=9, bbox_to_anchor=(0.5, 1.15), shadow=True, ncol=3
+    )
+    plt.axis([0, 1, 0, 1])
+    plt.xlabel("Abstraction")
+    plt.ylabel("Instability")
+    plt.text(0.52, 0.5, "Main Sequence", rotation=-45, horizontalalignment='center', verticalalignment='center')
+    plt.title("Instability and Abstraction on 2D axis", y=1)
+    mplcursors.cursor(granules, hover=True, highlight=True).connect("add", setPointHover)
 
-plt.legend(
-    [pain_zone, useless_zone, granule],
-    ["Zone of Pain", "Zone of Useless", "Granule"],
-    loc=9, bbox_to_anchor=(0.5, 1.14), fancybox=True, shadow=True, ncol=3
-)
-plt.axis([0, 1, 0, 1])
-plt.xlabel("Abstraction")
-plt.ylabel("Instability")
-plt.title("Instability and Abstraction on 2D axis", y = 1.05)
-
-fileName = axes.annotate("", xy=(0,0), xytext=(10,10),textcoords="offset pixels",
-                    bbox=dict(boxstyle="round", fc="w"),
-                    arrowprops=dict(arrowstyle="->"))
-fileName.set_visible(False)
-
-def printLabel(index):
-    pos = granule.get_offsets()[index["ind"][0]]
-    fileName.xy = pos
-
-    text = "{}".format(" \n".join([labels[n] for n in index["ind"]]))
-    fileName.set_text(text)
-    fileName.get_bbox_patch().set_alpha(0.4)
-
-def onClickEvent(event):
-    visible = fileName.get_visible()
-    if event.inaxes == axes:
-        cont, ind = granule.contains(event)
-        if cont:
-            printLabel(ind)
-            fileName.set_visible(True)
-            fig.canvas.draw_idle()
-        else:
-            if visible:
-                fileName.set_visible(False)
-                fig.canvas.draw_idle()
+    plt.show()
 
 
-fig.canvas.mpl_connect("button_press_event", onClickEvent)
-plt.show()
+
+def setPointHover(sel):
+    index = int(sel.target.index)
+    loc = "[I = " + str(datax[index]) + "; A = " + str(datay[index]) + "]"
+    dist = "Distance = " + str(distance[index])
+    pointsOnSamePos = positions[(datax[index], datay[index])]
+    granulesDisplay = [labels[g] for g in pointsOnSamePos]
+    sel.annotation.set_text(loc + " - " + dist + "\n" + '\n'.join(granulesDisplay))
+
 
 
 if __name__ == "__main__":

@@ -7,3 +7,4 @@ build/
 report/*
 venv/
 scripts/*.csv
+scripts/__pycache__
