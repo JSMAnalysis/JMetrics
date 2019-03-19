@@ -32,13 +32,18 @@ public class Main {
     private static final String OUTDIR_OPTION_LONG = "output";
     private static final String OUTDIR_DESC = "Specifies the directory in which to write the output files. Defaults to report/.";
 
+    private static final String VERBOSE_OPTION = "v";
+    private static final String VERBOSE_OPTION_LONG = "verbose";
+    private static final String VERBOSE_DESC = "Enables verbose mode. The program will display some information about its actions";
+
     private static final String PROGRAM_USAGE = "jmetrics -t <source|bytecode> -p <project_root> [OPTIONS]";
 
     private static String path;
     private static String subdirectory;
+    private static String outputPath = "report/";
+    private static boolean verbose = false;
     private static FileSystemExplorer explorer;
     private static ParserFactory parserFactory;
-    private static String outputPath = "report/";
 
     public static void main(String[] args) {
 
@@ -85,6 +90,9 @@ public class Main {
 
 
     private static void projectExploration(String path, String subdirectory) {
+        if(verbose){
+            System.out.println("Exploring files tree.");
+        }
         try {
             ProjectStructure.getInstance().setStructure(explorer.generateStructure(path, subdirectory));
         } catch (InvalidProjectPathException e) {
@@ -97,6 +105,9 @@ public class Main {
         Map<ClassFile, AbstractnessData> aData = new HashMap<>();
         AbstractnessParser aParser = parserFactory.getAbstractnessParser();
         for (ClassFile c: classes) {
+            if(verbose){
+                System.out.println("Parsing abstractness of " + c.getFullyQualifiedName());
+            }
             aData.put(c, aParser.getAbstractnessData(c));
         }
         return aData;
@@ -107,7 +118,9 @@ public class Main {
         //  (Or rather) Shouldn't if we consider multiple dependencies (which is not actually the case).
         List<Dependency> dependencies = new ArrayList<>();
         CouplingParser cParser = parserFactory.getCouplingParser();
-        for (ClassFile c: classes) {
+        for (ClassFile c: classes) {if(verbose){
+            System.out.println("Parsing dependencies of " + c.getFullyQualifiedName());
+        }
             dependencies.addAll(cParser.getDependencies(c));
         }
         return dependencies;
@@ -151,6 +164,7 @@ public class Main {
 
         path = line.getOptionValue(PATH_OPTION);
         subdirectory = line.hasOption(SUBDIR_OPTION) ? line.getOptionValue(SUBDIR_OPTION) : path;
+        verbose = line.hasOption(VERBOSE_OPTION);
         if(line.hasOption(OUTDIR_OPTION)) {
             outputPath = line.getOptionValue(OUTDIR_OPTION);
         }
@@ -181,12 +195,14 @@ public class Main {
         Option help = Option.builder(HELP_OPTION).longOpt(HELP_OPTION_LONG).hasArg(false).desc(HELP_DESC).build();
         Option subdir = Option.builder(SUBDIR_OPTION).longOpt(SUBDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(SUBDIR_DESC).build();
         Option outputDir = Option.builder(OUTDIR_OPTION).longOpt(OUTDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(OUTDIR_DESC).build();
+        Option verbose = Option.builder(VERBOSE_OPTION).longOpt(VERBOSE_OPTION_LONG).hasArg(false).desc(VERBOSE_OPTION_LONG).build();
 
         options.addOption(path);
         options.addOption(parsingType);
         options.addOption(help);
         options.addOption(subdir);
         options.addOption(outputDir);
+        options.addOption(verbose);
         return options;
     }
 
