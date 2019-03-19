@@ -13,6 +13,7 @@ import sys
 
 
 def setupData():
+    # Arity is currently unused (and will probably remain)
     csv = retrieve_data(sys.argv[1], ("GranuleSrc", "GranuleDst", "Type", "Arity"))
     dependencies = []
     for i in range(len(csv)):
@@ -22,8 +23,8 @@ def setupData():
     granuleNames = granulesSrc.union(granulesDst)
     granules = []
     for g in granuleNames:
-        afferentDependencies = list(filter(lambda d: d.src == g, dependencies))
-        efferentDependencies = list(filter(lambda d: d.dst == g, dependencies))
+        efferentDependencies = list(filter(lambda d: d.src == g, dependencies))
+        afferentDependencies = list(filter(lambda d: d.dst == g, dependencies))
         granules.append(Granule(g, afferentDependencies, efferentDependencies))
     return granules, dependencies
 
@@ -78,9 +79,9 @@ class Granule:
         self.afferentDependencies = afferentDependencies
         self.efferentDependencies = efferentDependencies
     def getCaArity(self):
-        return sum(d.arity for d in self.afferentDependencies)
+        return len([d for d in self.afferentDependencies])
     def getCeArity(self):
-        return sum(d.arity for d in self.efferentDependencies)
+        return len([d for d in self.efferentDependencies])
     def getCaBarInfo(self):
         return Granule.getBarInfo(self.afferentDependencies)
     def getCeBarInfo(self):
