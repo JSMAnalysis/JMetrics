@@ -47,7 +47,7 @@ public class IntrospectionAbstractnessParser extends IntrospectionParser impleme
         List<Method> methodsList = new ArrayList<>();
         for(Method m : methods){
             if(!m.getName().equals("values") && !m.getName().equals("valueOf")){
-            methodsList.add(m);
+                methodsList.add(m);
             }
         }
         return methodsList;

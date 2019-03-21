@@ -3,7 +3,7 @@ package ground_truth.example2.kitchen;
 import ground_truth.ClassInfo;
 
 @ClassInfo(
-        numberOfMethod = 2,
+        numberOfMethod = 0,
         numberOfAbstractMethod = 0,
         Ca = 1,
         Ce = 0,

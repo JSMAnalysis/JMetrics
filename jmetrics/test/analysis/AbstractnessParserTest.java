@@ -56,9 +56,11 @@ class AbstractnessParserTest {
                 if (PSFile.getFullyQualifiedName().equals(GTFile.getFullyQualifiedName())) {
                     ClassInformation GTInfo = GTClasses.get(GTFile);
                     assertEquals(numberOfMethodsCalculated, GTInfo.getNumberOfMethod(),
-                            "Fail nbMethod Project" + projectNumber);
+                            "Fail nbMethod Project" + projectNumber + " for class " +
+                                    GTFile.getFullyQualifiedName());
                     assertEquals(numberOfAbstractMethodsCalculated, GTInfo.getNumberOfAbstractMethod(),
-                            "Fail nbAbstractMethod Project" + projectNumber);
+                            "Fail nbAbstractMethod Project" + projectNumber  +
+                                    " for class " + GTFile.getFullyQualifiedName());
                 }
             }
         }

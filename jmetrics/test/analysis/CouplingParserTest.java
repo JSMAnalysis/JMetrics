@@ -42,10 +42,16 @@ class CouplingParserTest {
     }
 
     private void selectExplorerAndParser( CouplingParser parser, int explorer, int projectNumber) {
-        if (explorer == BYTECODE) GT.loadExampleBytecode(projectNumber);
-        else if (explorer == SOURCE) GT.loadExampleSourcecode(projectNumber);
+        List<Dependency> GTDependencies = new ArrayList<>();
+        if (explorer == BYTECODE) {
+            GT.loadExampleBytecode(projectNumber);
+            GTDependencies = GT.getProject(projectNumber).getBytecodeDependencies();
+        }
+        else if (explorer == SOURCE){
+            GT.loadExampleSourcecode(projectNumber);
+            GTDependencies = GT.getProject(projectNumber).getSourceDependencies();
+        }
 
-        List<Dependency> GTDependencies = GT.getProject(projectNumber).getDependencies();
         List<Dependency> PSDependencies = new ArrayList<>();
 
         for (ClassFile PSFile: ProjectStructure.getInstance().getClasses()) {

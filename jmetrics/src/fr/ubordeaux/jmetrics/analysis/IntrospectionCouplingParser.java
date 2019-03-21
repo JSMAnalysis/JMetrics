@@ -108,6 +108,9 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
                                                             List<ClassFile> projectClasses) {
         List<Granule> matchDependencies = new ArrayList<>();
         for (Class<?> classEff: efferentDependencies) {
+            if(classEff.isMemberClass() || classEff.isLocalClass()){ //ignores inner and anonymous classes
+                continue;
+            }
             for (ClassFile dstFile: projectClasses) {
                 Class<?> dstClass = getClassFromFile(dstFile);
                 if (dstClass.getName().equals(classEff.getName())) {

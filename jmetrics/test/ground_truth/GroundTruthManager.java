@@ -123,7 +123,7 @@ public class GroundTruthManager {
                     annotations.addAll(Arrays.asList(m.getAnnotationsByType(Dependency.class)));
                 }
                 for (Dependency d : annotations) {
-                    project.addDependency(className, d.dependencyTo().getName(), d.type());
+                    project.addDependency(className, d.dependencyTo().getName(), d.type(), d.sourceOnly());
                 }
             } catch(ClassNotFoundException e) {
                 System.out.println(e.getMessage());

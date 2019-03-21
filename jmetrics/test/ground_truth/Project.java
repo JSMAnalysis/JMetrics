@@ -26,14 +26,16 @@ public class Project {
     /**
      * List of dependencies of the project.
      */
-    private List<Dependency> dependencies;
+    private List<Dependency> bytecodeDependencies;
+    private List<Dependency> sourceDependencies;
 
     Project (String directory, int numberOfClasses, int numberOfPackages) {
         this.directory = directory;
         this.numberOfClasses = numberOfClasses;
         this.numberOfPackages = numberOfPackages;
         this.classes = new HashMap<>();
-        this.dependencies = new ArrayList<>();
+        this.sourceDependencies = new ArrayList<>();
+        this.bytecodeDependencies = new ArrayList<>();
     }
 
     public int getNumberOfClasses() {
@@ -60,8 +62,12 @@ public class Project {
         return GroundTruthManager.GROUND_TRUTH_BYTECODE_PATH + directory;
     }
 
-    public List<Dependency> getDependencies() {
-        return new ArrayList<>(dependencies);
+    public List<Dependency> getBytecodeDependencies() {
+        return new ArrayList<>(bytecodeDependencies);
+    }
+
+    public List<Dependency> getSourceDependencies(){
+        return new ArrayList<>(sourceDependencies);
     }
 
     public HashMap<ClassFile, ClassInformation> getClasses() {
@@ -73,8 +79,11 @@ public class Project {
         classes.put(file, classInfo);
     }
 
-    void addDependency(String srcName, String dstName, DependencyType type) {
-        dependencies.add(new Dependency(getClassGranule(srcName), getClassGranule(dstName), type));
+    void addDependency(String srcName, String dstName, DependencyType type, boolean sourceOnly) {
+        sourceDependencies.add(new Dependency(getClassGranule(srcName), getClassGranule(dstName), type));
+        if(!sourceOnly){
+            bytecodeDependencies.add(new Dependency(getClassGranule(srcName), getClassGranule(dstName), type));
+        }
     }
 
     private ClassFile getClassFile(String name) {
