@@ -1,6 +1,6 @@
 package metrics;
 
-import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
+import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
 import fr.ubordeaux.jmetrics.metrics.BadMetricsValueException;
 import fr.ubordeaux.jmetrics.metrics.Metrics;
 

@@ -1,8 +1,8 @@
 package fr.ubordeaux.jmetrics.presentation;
 
-import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
-import fr.ubordeaux.jmetrics.datastructure.DirectedGraph;
-import fr.ubordeaux.jmetrics.datastructure.GraphConstructor;
+import fr.ubordeaux.jmetrics.graph.DependencyEdge;
+import fr.ubordeaux.jmetrics.graph.DirectedGraph;
+import fr.ubordeaux.jmetrics.graph.GraphConstructor;
 import fr.ubordeaux.jmetrics.metrics.Granule;
 
 import java.io.*;

@@ -3,7 +3,7 @@ package analysis;
 import fr.ubordeaux.jmetrics.analysis.AbstractnessParser;
 import fr.ubordeaux.jmetrics.analysis.IntrospectionAbstractnessParser;
 import fr.ubordeaux.jmetrics.analysis.JDTAbstractnessParser;
-import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
+import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 

@@ -1,8 +1,8 @@
 package fr.ubordeaux.jmetrics.metrics;
 
-import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
-import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
-import fr.ubordeaux.jmetrics.datastructure.DirectedGraph;
+import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
+import fr.ubordeaux.jmetrics.graph.DependencyEdge;
+import fr.ubordeaux.jmetrics.graph.DirectedGraph;
 
 import java.util.List;
 import java.util.Objects;

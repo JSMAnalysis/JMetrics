@@ -1,4 +1,4 @@
-package fr.ubordeaux.jmetrics.datastructure;
+package fr.ubordeaux.jmetrics.graph;
 
 import fr.ubordeaux.jmetrics.analysis.Dependency;
 import fr.ubordeaux.jmetrics.metrics.Granule;
@@ -17,7 +17,7 @@ public abstract class GraphConstructor {
         for (Granule node : nodes) {
             graph.addNode(node);
         }
-        for(Dependency dependency : dependencies) {
+        for (Dependency dependency : dependencies) {
             DependencyEdge edge = new DependencyEdge(
                     dependency.getSource(),
                     dependency.getDestination(),

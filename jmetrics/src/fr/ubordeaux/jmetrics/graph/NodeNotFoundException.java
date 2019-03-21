@@ -1,4 +1,4 @@
-package fr.ubordeaux.jmetrics.datastructure;
+package fr.ubordeaux.jmetrics.graph;
 
 /**
  * Exception thrown when a client try to access a node that does not exist in a graph.

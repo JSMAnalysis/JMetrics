@@ -1,4 +1,4 @@
-package fr.ubordeaux.jmetrics.datastructure;
+package fr.ubordeaux.jmetrics.graph;
 
 import fr.ubordeaux.jmetrics.analysis.DependencyType;
 import fr.ubordeaux.jmetrics.metrics.Granule;

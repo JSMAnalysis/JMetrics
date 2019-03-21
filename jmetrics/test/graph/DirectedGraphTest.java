@@ -1,9 +1,9 @@
-package datastructure;
+package graph;
 
-import fr.ubordeaux.jmetrics.datastructure.DependencyEdge;
-import fr.ubordeaux.jmetrics.datastructure.DirectedGraph;
-import fr.ubordeaux.jmetrics.datastructure.DirectedGraphEdge;
-import fr.ubordeaux.jmetrics.datastructure.GraphConstructor;
+import fr.ubordeaux.jmetrics.graph.DependencyEdge;
+import fr.ubordeaux.jmetrics.graph.DirectedGraph;
+import fr.ubordeaux.jmetrics.graph.DirectedGraphEdge;
+import fr.ubordeaux.jmetrics.graph.GraphConstructor;
 import fr.ubordeaux.jmetrics.metrics.ClassGranule;
 import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
@@ -22,7 +22,6 @@ class DirectedGraphTest {
 
     @Test
     void testGroundTruthGraphNodesValidity() {
-        // Construct a graph from the GT
         GroundTruthManager GT = new GroundTruthManager();
         GT.loadExampleBytecode(2);
         List<ClassFile> classes = ProjectStructure.getInstance().getClasses();

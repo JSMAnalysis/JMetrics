@@ -1,6 +1,5 @@
 package fr.ubordeaux.jmetrics.analysis;
 
-import fr.ubordeaux.jmetrics.datastructure.AbstractnessData;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 
 import java.lang.reflect.Method;

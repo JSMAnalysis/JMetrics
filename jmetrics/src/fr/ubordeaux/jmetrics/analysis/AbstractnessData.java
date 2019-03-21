@@ -1,4 +1,4 @@
-package fr.ubordeaux.jmetrics.datastructure;
+package fr.ubordeaux.jmetrics.analysis;
 
 import java.util.Objects;
 
