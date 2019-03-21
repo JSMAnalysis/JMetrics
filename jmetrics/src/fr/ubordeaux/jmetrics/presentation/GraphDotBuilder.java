@@ -46,9 +46,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
 
     @Override
     public void addNode(Granule node) {
-        if (!canAddNode || terminated) {
-            return;
-        }
+        if (!canAddNode || terminated) return;
         mapping.putIfAbsent(node, ++nodeNumber);
         strBuilder.append(nodeNumber);
         strBuilder.append(LABEL_BEGIN);
@@ -58,7 +56,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
     }
 
     @Override
-    public void addEdge(DependencyEdge edge){
+    public void addEdge(DependencyEdge edge) {
         if (terminated) return;
         strBuilder.append(mapping.get(edge.getSource()));
         strBuilder.append(EDGE_TOKEN);
