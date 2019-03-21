@@ -20,6 +20,7 @@ import java.util.List;
 public class Customer {
 
     private String name;
+    @Dependency(dependencyTo = Pizza.class, type = DependencyType.Aggregation, sourceOnly = true)
     private List<Pizza> pizzas;
 
     public Customer(String name) {

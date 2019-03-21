@@ -19,6 +19,7 @@ public abstract class Vehicle {
 
     private int nbWheel;
 
+    @Dependency(dependencyTo = Wheel.class, type = DependencyType.Aggregation, sourceOnly = true)
     private ArrayList<Wheel> wheels;
 
     public abstract void move();

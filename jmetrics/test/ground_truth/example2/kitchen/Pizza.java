@@ -25,6 +25,7 @@ public class Pizza {
     private PizzaSize pizzaSize;
     @Dependency(dependencyTo = PastaType.class, type = DependencyType.Aggregation)
     private PastaType pastaType;
+    @Dependency(dependencyTo = Ingredient.class, type = DependencyType.Aggregation, sourceOnly = true)
     private List<Ingredient> ingredientList;
     private double price;
 
