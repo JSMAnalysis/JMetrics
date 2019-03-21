@@ -9,7 +9,7 @@ public class DependencyEdge extends DirectedGraphEdge<Granule> {
 
     private DependencyType type;
 
-    public DependencyEdge(Granule source, Granule target, DependencyType type) {
+    DependencyEdge(Granule source, Granule target, DependencyType type) {
         super(source, target);
         this.type = type;
     }

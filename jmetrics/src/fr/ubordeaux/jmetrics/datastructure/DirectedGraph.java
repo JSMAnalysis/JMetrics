@@ -22,20 +22,6 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
     }
 
     /**
-     * Removes a node from the graph, as well as all edges that targets this node.
-     * If the node does not exist, this function has no effect.
-     * @param node The node to remove.
-     */
-    public void removeNode(N node) {
-        if (!hasNode(node)) return;
-        // Removes all edges which the node is targeted by
-        for (Map.Entry<N, List<E>> adjacencyList : adjacencyLists.entrySet()) {
-            adjacencyList.getValue().removeAll(getIncomingEdgesList(node, adjacencyList.getKey()));
-        }
-        adjacencyLists.remove(node);
-    }
-
-    /**
      * Add a new edge to the graph.
      * @param edge The edge to add.
      * @throws NodeNotFoundException if either the destination or the source of the edge is not part of the graph.
@@ -48,23 +34,11 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
     }
 
     /**
-     * Remove an edge from the graph.
-     * @param edge The edge to remove.
-     * @throws NodeNotFoundException if either the destination or the source of the edge is not part of the graph.
-     */
-    public void removeEdge(E edge){
-        if (!hasNode(edge.getSource()) || !hasNode(edge.getTarget())) {
-            throw new NodeNotFoundException("The edge contains nodes that are not part of the graph");
-        }
-        adjacencyLists.get(edge.getSource()).remove(edge);
-    }
-
-    /**
      * Tests whether the graph contains a node.
      * @param node The node to test the existence of.
      * @return true if the node exists, false otherwise.
      */
-    public boolean hasNode(N node) {
+    private boolean hasNode(N node) {
         return adjacencyLists.containsKey(node);
     }
 
@@ -92,7 +66,7 @@ public class DirectedGraph<N, E extends DirectedGraphEdge<N>> {
      * @return A {@link List} containing all edges coming from the provided source to the provided destination.
      * @throws NodeNotFoundException if either the destination or the source is not part of the graph.
      */
-    public List<E> getIncomingEdgesList(N destination, N source) {
+    private List<E> getIncomingEdgesList(N destination, N source) {
         List<E> incomingEdges = new ArrayList<>();
         if (!hasNode(destination) || !hasNode(source)){
             throw new NodeNotFoundException("Either the destination or source node does not exist.");
