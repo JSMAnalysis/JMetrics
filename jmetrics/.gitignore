@@ -8,3 +8,4 @@ report/*
 venv/
 scripts/*.csv
 scripts/__pycache__
+*.pyc
