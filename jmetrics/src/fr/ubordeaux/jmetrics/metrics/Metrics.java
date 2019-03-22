@@ -51,12 +51,13 @@ public class Metrics {
                 .mapToDouble(o -> o.getMetrics().getAbstractness())
                 .sum();
         metrics.setAbstractness(abstractnessSum / gContent.size());
+        metrics.setNormalizedDistance(metrics.getAbstractness(), metrics.getInstability());
         g.setMetrics(metrics);
     }
 
 
 
-    public double getAbstractness() {
+    double getAbstractness() {
         return abstractness;
     }
 
@@ -75,7 +76,7 @@ public class Metrics {
         }
     }
 
-    public int getAfferentCoupling() {
+    int getAfferentCoupling() {
         return afferentCoupling;
     }
 
@@ -86,7 +87,7 @@ public class Metrics {
         }
     }
 
-    public int getEfferentCoupling() {
+    int getEfferentCoupling() {
         return efferentCoupling;
     }
 
@@ -97,7 +98,7 @@ public class Metrics {
         }
     }
 
-    public double getInstability() {
+    double getInstability() {
         return instability;
     }
 
@@ -109,7 +110,7 @@ public class Metrics {
         }
     }
 
-    public double getNormalizedDistance() {
+    double getNormalizedDistance() {
         return normalizedDistance;
     }
 
