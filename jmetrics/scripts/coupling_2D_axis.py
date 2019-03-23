@@ -60,10 +60,13 @@ def coupling_2D_axis():
 
 def setPointHover(sel):
     index = int(sel.target.index)
-    loc = "[Ca = " + str(datax[index]) + "; Ce = " + str(datay[index]) + "]"
+    ca, ce = datax[index], datay[index]
+    loc = "[Ca = " + str(ca) + "; Ce = " + str(ce) + "]"
+    div = ce / (ca + ce) if (ca != 0 or ce != 0) else 0.0
+    instability = "[I = Ce / (Ca + Ce) = " + str(round(div, 2)) + "]\n"
     pointsOnSamePos = positions[(datax[index], datay[index])]
     granulesDisplay = [labels[i] for i in pointsOnSamePos]
-    sel.annotation.set_text(loc + "\n" + '\n'.join(granulesDisplay))
+    sel.annotation.set_text(loc + " - " + instability + '\n'.join(granulesDisplay))
 
 
 

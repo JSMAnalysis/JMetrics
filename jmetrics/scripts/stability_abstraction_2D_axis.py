@@ -23,7 +23,7 @@ def setupData():
         instability.append(csv[i][1])
         asbstractness.append(csv[i][2])
         distance.append(csv[i][3])
-    return granules, instability, asbstractness, distance
+    return granules, asbstractness, instability, distance
 
 
 
@@ -64,8 +64,13 @@ def instability_abstraction_2D_axis():
         loc=9, bbox_to_anchor=(0.5, 1.15), shadow=True, ncol=3
     )
     plt.axis([0, 1, 0, 1])
-    plt.xlabel("Abstraction")
-    plt.ylabel("Instability")
+    plt.xlabel("Instability")
+    plt.ylabel("Abstractness")
+    plt.text(0, -0.1, 'stable', horizontalalignment='left', verticalalignment='bottom')
+    plt.text(1, -0.1, 'unstable', horizontalalignment='right', verticalalignment='bottom')
+    plt.text(-0.15, 0, 'concrete', horizontalalignment='left', verticalalignment='bottom', rotation=90)
+    plt.text(-0.15, 1, 'abstract', horizontalalignment='left', verticalalignment='top', rotation=90)
+
     plt.text(0.52, 0.5, "Main Sequence", rotation=-45, horizontalalignment='center', verticalalignment='center')
     plt.title("Instability and Abstraction on 2D axis", y=1)
     mplcursors.cursor(granules, hover=True, highlight=True).connect("add", setPointHover)
