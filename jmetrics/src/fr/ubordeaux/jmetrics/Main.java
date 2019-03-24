@@ -105,7 +105,7 @@ public class Main {
         Map<ClassFile, AbstractnessData> aData = new HashMap<>();
         AbstractnessParser aParser = parserFactory.getAbstractnessParser();
         for (ClassFile c: classes) {
-            if(verbose){
+            if(verbose) {
                 System.out.println("Parsing abstractness of " + c.getFullyQualifiedName());
             }
             aData.put(c, aParser.getAbstractnessData(c));
@@ -118,9 +118,10 @@ public class Main {
         //  (Or rather) Shouldn't if we consider multiple dependencies (which is not actually the case).
         List<Dependency> dependencies = new ArrayList<>();
         CouplingParser cParser = parserFactory.getCouplingParser();
-        for (ClassFile c: classes) {if(verbose){
-            System.out.println("Parsing dependencies of " + c.getFullyQualifiedName());
-        }
+        for (ClassFile c: classes) {
+            if(verbose) {
+                System.out.println("Parsing dependencies of " + c.getFullyQualifiedName());
+            }
             dependencies.addAll(cParser.getDependencies(c));
         }
         return dependencies;
@@ -147,8 +148,14 @@ public class Main {
     }
 
     private static void parseCommandLine(String[] args) {
-        CommandLineParser parser = new DefaultParser();
         Options options = buildOptions();
+
+        //First checks if the command line contains the help option.
+        if (hasHelp(args)) {
+            printHelpAndExit(options, 0);
+        }
+
+        CommandLineParser parser = new DefaultParser();
         CommandLine line = null;
         try {
             line = parser.parse(options, args);
@@ -158,10 +165,6 @@ public class Main {
         }
 
         assert line != null;
-        if (line.hasOption(HELP_OPTION)) {
-            printHelpAndExit(options, 0);
-        }
-
         path = line.getOptionValue(PATH_OPTION);
         subdirectory = line.hasOption(SUBDIR_OPTION) ? line.getOptionValue(SUBDIR_OPTION) : path;
         verbose = line.hasOption(VERBOSE_OPTION);
@@ -195,7 +198,7 @@ public class Main {
         Option help = Option.builder(HELP_OPTION).longOpt(HELP_OPTION_LONG).hasArg(false).desc(HELP_DESC).build();
         Option subdir = Option.builder(SUBDIR_OPTION).longOpt(SUBDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(SUBDIR_DESC).build();
         Option outputDir = Option.builder(OUTDIR_OPTION).longOpt(OUTDIR_OPTION_LONG).hasArg().numberOfArgs(1).desc(OUTDIR_DESC).build();
-        Option verbose = Option.builder(VERBOSE_OPTION).longOpt(VERBOSE_OPTION_LONG).hasArg(false).desc(VERBOSE_OPTION_LONG).build();
+        Option verbose = Option.builder(VERBOSE_OPTION).longOpt(VERBOSE_OPTION_LONG).hasArg(false).desc(VERBOSE_DESC).build();
 
         options.addOption(path);
         options.addOption(parsingType);
@@ -204,6 +207,21 @@ public class Main {
         options.addOption(outputDir);
         options.addOption(verbose);
         return options;
+    }
+
+    private static boolean hasHelp(String[] args)
+    {
+        Options options = new Options();
+        options.addOption(HELP_OPTION, HELP_OPTION_LONG, false, HELP_DESC);
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd;
+        try {
+            cmd = parser.parse(options, args);
+        }
+        catch (ParseException e){
+            return false;
+        }
+        return cmd.hasOption(HELP_OPTION);
     }
 
 }
