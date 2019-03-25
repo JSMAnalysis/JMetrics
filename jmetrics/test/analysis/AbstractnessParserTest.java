@@ -37,7 +37,7 @@ class AbstractnessParserTest {
     void countMethodTest() {
         for (int projectNumber = 1; projectNumber <= GroundTruthManager.groundTruthSize; projectNumber++) {
             selectExplorerForCountingMethod(iParser, BYTECODE, projectNumber);
-            //selectExplorerForCountingMethod(jParser, SOURCE, projectNumber);
+            selectExplorerForCountingMethod(jParser, SOURCE, projectNumber);
         }
     }
 

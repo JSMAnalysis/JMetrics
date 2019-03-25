@@ -144,8 +144,6 @@ public class GroundTruthManager {
         };
         readClassinfoAnnotations(classNames, Example1);
         readDependencyAnnotations(classNames, Example1);
-        // TODO: Dependency (through Generic Types) to add :
-        //  (CLASS_VEHICLE, CLASS_WHEEL, DependencyType.Aggregation)
         projects.add(Example1);
     }
 
@@ -166,12 +164,6 @@ public class GroundTruthManager {
         };
         readClassinfoAnnotations(classNames, Example2);
         readDependencyAnnotations(classNames, Example2);
-        // TODO: Dependency (through Generic Types) to add :
-        //  (CLASS_PIZZAIOLO,   CLASS_PIZZA,        DependencyType.Aggregation)
-        //  (CLASS_PIZZA,       CLASS_INGREDIENT,   DependencyType.Aggregation)
-        //  (CLASS_CUSTOMER,    CLASS_PIZZA,        DependencyType.Aggregation)
-        //  (CLASS_PIZZERIA,    CLASS_CUSTOMER,     DependencyType.Aggregation)
-        //  (CLASS_PIZZERIA,    CLASS_PIZZAIOLO,    DependencyType.Aggregation)
         projects.add(Example2);
     }
 
