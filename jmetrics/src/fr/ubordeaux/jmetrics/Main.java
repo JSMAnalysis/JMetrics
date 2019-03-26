@@ -61,12 +61,16 @@ public class Main {
 
         GranuleManager gManager = new GranuleManager(classes, packages);
         Set<Granule> classNodes = gManager.getClassGranules();
+        List<Granule> listClassGranules = new ArrayList<>(classNodes);
         Set<Granule> packageNodes = gManager.getPackageGranules();
+        List<Granule> listPackageGranules = new ArrayList<>(packageNodes);
 
         DirectedGraph<Granule, DependencyEdge> classGraph, packageGraph;
         classGraph = GraphConstructor.constructGraph(classNodes, new HashSet<>(classDependencies));
         List<Dependency> packageDependencies = constructPackageDependencies(classDependencies, gManager);
         packageGraph = GraphConstructor.constructGraph(packageNodes, new HashSet<>(packageDependencies));
+        int[][] classMatrix = GraphConstructor.getMatrixRepresentation(listClassGranules, classGraph);
+        int[][] packageMatrix = GraphConstructor.getMatrixRepresentation(listPackageGranules, packageGraph);
 
         for (Granule g: classNodes) {
             ClassFile cf = (ClassFile)g.getRelatedComponent();
@@ -77,13 +81,14 @@ public class Main {
         }
 
         FileGenerator generator = new FileGenerator(outputPath);
-
         generator.generateCSVFile("ClassScale", new HashSet<>(classNodes));
         generator.generateCSVFile("PackageScale", new HashSet<>(packageNodes));
         generator.generateDOTFile("ClassScale", classGraph);
         generator.generateDOTFile("PackageScale", packageGraph);
         generator.generateCSVFile("ClassScaleDependencies", new HashSet<>(classDependencies));
         generator.generateCSVFile("PackageScaleDependencies", new HashSet<>(packageDependencies));
+        generator.generateCSVFile("classScaleMatrix", classMatrix, listClassGranules);
+        generator.generateCSVFile("packageScaleMatrix", packageMatrix, listPackageGranules);
 
     }
 

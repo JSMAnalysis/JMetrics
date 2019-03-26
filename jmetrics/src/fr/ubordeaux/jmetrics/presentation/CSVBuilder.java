@@ -24,4 +24,24 @@ abstract class CSVBuilder {
         return strBuilder.toString();
     }
 
+    static String buildContent(List<String> matrixCaption, int[][] matrix) {
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(DELIMITER); // Starting in (1, 0)
+        for (String str: matrixCaption) {
+            strBuilder.append(str);
+            strBuilder.append(DELIMITER);
+        }
+        strBuilder.append("\n");
+        for (int i = 0; i < matrix.length; i++) {
+            strBuilder.append(matrixCaption.get(i));
+            strBuilder.append(DELIMITER);
+            for (int j = 0; j < matrix.length; j++) {
+                strBuilder.append(matrix[i][j]);
+                strBuilder.append(DELIMITER);
+            }
+            strBuilder.append("\n");
+        }
+        return strBuilder.toString();
+    }
+
 }

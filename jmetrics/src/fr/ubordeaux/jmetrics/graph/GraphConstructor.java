@@ -5,7 +5,7 @@ import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.presentation.GraphDotBuilder;
 import fr.ubordeaux.jmetrics.presentation.GraphPresentationBuilder;
 
-import java.util.Set;
+import java.util.*;
 
 /**
  * Service that provide graph construction and presentation methods.
@@ -41,6 +41,27 @@ public abstract class GraphConstructor {
         }
         gBuilder.endGraph();
         return gBuilder.getGraphPresentation();
+    }
+
+    public static int[][] getMatrixRepresentation(List<Granule> granules, DirectedGraph<Granule, DependencyEdge> graph) {
+        int size = granules.size();
+        int[][] matrix = new int[size][];
+        for (int i = 0; i < matrix.length; i++) {
+            matrix[i] = new int[size];
+        }
+
+        List<DependencyEdge> incomingEdges;
+        int i1, i2;
+        for (Granule g: granules) {
+            i2 = granules.indexOf(g);
+            incomingEdges = graph.getIncomingEdgesList(g);
+            for (DependencyEdge e: incomingEdges) {
+                i1 = granules.indexOf(e.getSource());
+                matrix[i1][i2]++; // Or = 1, if we don't want to keep DependencyType information.
+            }
+        }
+
+        return matrix;
     }
 
 }

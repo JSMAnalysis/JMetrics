@@ -44,6 +44,12 @@ public class FileGenerator {
         writeFile(getFilename(filePrefix, CSV_EXTENSION), strCSV);
     }
 
+    public void generateCSVFile(String filePrefix, int[][] matrix, List<Granule> granules) {
+        List<String> caption = granules.stream().map(Granule::getDisplayName).collect(Collectors.toList());
+        String strCSV = CSVBuilder.buildContent(caption, matrix);
+        writeFile(getFilename(filePrefix, CSV_EXTENSION), strCSV);
+    }
+
     private String getFilename(String filePrefix, String extension) {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-YY-HH-mm-ss");
         String formattedDate = dateFormat.format(new Date());
