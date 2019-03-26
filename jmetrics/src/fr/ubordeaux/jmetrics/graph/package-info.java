@@ -1,4 +1,4 @@
 /**
- * Provides classes to manage dependencies graphs
+ * Provides classes to manage dependency graphs.
  */
 package fr.ubordeaux.jmetrics.graph;

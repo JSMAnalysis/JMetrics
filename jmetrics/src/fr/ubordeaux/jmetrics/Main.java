@@ -90,7 +90,7 @@ public class Main {
 
 
     private static void projectExploration(String path, String subdirectory) {
-        if(verbose){
+        if (verbose) {
             System.out.println("Exploring files tree.");
         }
         try {
@@ -105,7 +105,7 @@ public class Main {
         Map<ClassFile, AbstractnessData> aData = new HashMap<>();
         AbstractnessParser aParser = parserFactory.getAbstractnessParser();
         for (ClassFile c: classes) {
-            if(verbose) {
+            if (verbose) {
                 System.out.println("Parsing abstractness of " + c.getFullyQualifiedName());
             }
             aData.put(c, aParser.getAbstractnessData(c));
@@ -119,7 +119,7 @@ public class Main {
         List<Dependency> dependencies = new ArrayList<>();
         CouplingParser cParser = parserFactory.getCouplingParser();
         for (ClassFile c: classes) {
-            if(verbose) {
+            if (verbose) {
                 System.out.println("Parsing dependencies of " + c.getFullyQualifiedName());
             }
             dependencies.addAll(cParser.getDependencies(c));
@@ -133,15 +133,16 @@ public class Main {
         for (Dependency dep: classDependencies) {
             srcParent = manager.getParentGranule(dep.getSource());
             dstParent = manager.getParentGranule(dep.getDestination());
-            if (!srcParent.equals(dstParent))
+            if (!srcParent.equals(dstParent)) {
                 packageDependencies.add(new Dependency(srcParent, dstParent, dep.getType()));
+            }
         }
         return packageDependencies;
     }
 
     private static void createOutputPath(String path){
         File outputFile = new File(path);
-        if(!outputFile.exists() && ! outputFile.mkdirs()){
+        if (!outputFile.exists() && ! outputFile.mkdirs()) {
             System.out.println("Unable to create the output directory : " + path);
             System.exit(1);
         }
@@ -150,7 +151,7 @@ public class Main {
     private static void parseCommandLine(String[] args) {
         Options options = buildOptions();
 
-        //First checks if the command line contains the help option.
+        // First checks if the command line contains the help option.
         if (hasHelp(args)) {
             printHelpAndExit(options, 0);
         }
@@ -168,7 +169,7 @@ public class Main {
         path = line.getOptionValue(PATH_OPTION);
         subdirectory = line.hasOption(SUBDIR_OPTION) ? line.getOptionValue(SUBDIR_OPTION) : path;
         verbose = line.hasOption(VERBOSE_OPTION);
-        if(line.hasOption(OUTDIR_OPTION)) {
+        if (line.hasOption(OUTDIR_OPTION)) {
             outputPath = line.getOptionValue(OUTDIR_OPTION);
         }
 
@@ -209,16 +210,14 @@ public class Main {
         return options;
     }
 
-    private static boolean hasHelp(String[] args)
-    {
+    private static boolean hasHelp(String[] args) {
         Options options = new Options();
         options.addOption(HELP_OPTION, HELP_OPTION_LONG, false, HELP_DESC);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         try {
             cmd = parser.parse(options, args);
-        }
-        catch (ParseException e){
+        } catch (ParseException e){
             return false;
         }
         return cmd.hasOption(HELP_OPTION);

@@ -93,7 +93,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         return terminated ? strBuilder.toString() : "";
     }
 
-    private void buildLegend(){
+    private void buildLegend() {
         strBuilder.append("subgraph cluster_legend { ");
         strBuilder.append("label=\"Legend\";");
         strBuilder.append("shape=rectangle;");

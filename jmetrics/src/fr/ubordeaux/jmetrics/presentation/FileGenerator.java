@@ -12,32 +12,36 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileGenerator {
 
     private String directory;
 
-    public FileGenerator(String directory){
+    private static final String DOT_EXTENSION = ".dot";
+    private static final String CSV_EXTENSION = ".csv";
+
+    public FileGenerator(String directory) {
         this.setDirectory(directory);
     }
 
-    public void setDirectory(String directory){
+    private void setDirectory(String directory) {
         if(!directory.endsWith(File.separator)) directory += File.separator;
         this.directory = directory;
     }
 
     public void generateDOTFile(String filePrefix, DirectedGraph<Granule, DependencyEdge> graph) {
         String strDOT = GraphConstructor.getDOTRepresentation(graph);
-        writeFile(getFilename(filePrefix, ".dot"), strDOT);
+        writeFile(getFilename(filePrefix, DOT_EXTENSION), strDOT);
     }
 
     public void generateCSVFile(String filePrefix, HashSet<CSVRepresentable> data) {
         String strCSV = "";
-        if(data.size() != 0) {
+        if (data.size() != 0) {
             List<String> caption = data.iterator().next().getCSVCaption();
             strCSV = CSVBuilder.buildContent(caption, data);
         }
-        writeFile(getFilename(filePrefix, ".csv"), strCSV);
+        writeFile(getFilename(filePrefix, CSV_EXTENSION), strCSV);
     }
 
     private String getFilename(String filePrefix, String extension) {
@@ -53,9 +57,9 @@ public class FileGenerator {
             br.write(CSVFormattedData);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally{
+        } finally {
             try {
-                if(br != null) {
+                if (br != null) {
                     br.close();
                 }
             } catch (IOException e) {
