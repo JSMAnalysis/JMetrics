@@ -169,12 +169,15 @@ public class GroundTruthManager {
     }
 
     private void setupExample3() {
-        Project Example3 = new Project("example3/", 4, 1);
+        Project Example3 = new Project("example3/", 7, 1);
         String[] classNames = new String[]{
                 "ground_truth.example3.A",
                 "ground_truth.example3.B",
                 "ground_truth.example3.C",
-                "ground_truth.example3.D"
+                "ground_truth.example3.D",
+                "ground_truth.example3.E",
+                "ground_truth.example3.F",
+                "ground_truth.example3.G"
         };
         readClassinfoAnnotations(classNames, Example3);
         readDependencyAnnotations(classNames, Example3);
