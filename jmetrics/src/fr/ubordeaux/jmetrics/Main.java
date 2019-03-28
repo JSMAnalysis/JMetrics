@@ -74,10 +74,14 @@ public class Main {
 
         for (Granule g: classNodes) {
             ClassFile cf = (ClassFile)g.getRelatedComponent();
-            MartinMetrics.computeClassMetrics(g, aData.get(cf), classGraph);
+            MartinMetrics metrics = new MartinMetrics();
+            metrics.computeClassMetrics(g, aData.get(cf), classGraph);
+            g.setMetrics(metrics);
         }
         for (Granule g: packageNodes) {
-            MartinMetrics.computePackageMetrics(g, packageGraph);
+            MartinMetrics metrics = new MartinMetrics();
+            metrics.computePackageMetrics(g, packageGraph);
+            g.setMetrics(metrics);
         }
 
         FileGenerator generator = new FileGenerator(outputPath);

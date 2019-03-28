@@ -26,22 +26,19 @@ public class MartinMetrics extends Metrics{
         return Math.round(value * shift) / shift;
     }
 
-    public static void computeClassMetrics(Granule g, AbstractnessData aData, DirectedGraph<Granule, DependencyEdge> graph) {
-        MartinMetrics martinMetrics = new MartinMetrics();
-        martinMetrics.setAfferentCoupling(graph, g);
-        martinMetrics.setEfferentCoupling(graph, g);
-        martinMetrics.setInstability(martinMetrics.getAfferentCoupling(), martinMetrics.getEfferentCoupling());
-        martinMetrics.setAbstractness(aData);
-        martinMetrics.setNormalizedDistance(martinMetrics.getAbstractness(), martinMetrics.getInstability());
-        g.setMetrics(martinMetrics);
+    public void computeClassMetrics(Granule g, AbstractnessData aData, DirectedGraph<Granule, DependencyEdge> graph) {
+        setAfferentCoupling(graph, g);
+        setEfferentCoupling(graph, g);
+        setInstability(getAfferentCoupling(), getEfferentCoupling());
+        setAbstractness(aData);
+        setNormalizedDistance(getAbstractness(), getInstability());
     }
 
-    public static void computePackageMetrics(Granule g, DirectedGraph<Granule, DependencyEdge> graph) {
-        MartinMetrics martinMetrics = new MartinMetrics();
-        martinMetrics.setAfferentCoupling(graph, g);
-        martinMetrics.setEfferentCoupling(graph, g);
+    public void computePackageMetrics(Granule g, DirectedGraph<Granule, DependencyEdge> graph) {
+        setAfferentCoupling(graph, g);
+        setEfferentCoupling(graph, g);
         // TODO: Instability calculus should consider dependencies arity.
-        martinMetrics.setInstability(martinMetrics.getAfferentCoupling(), martinMetrics.getEfferentCoupling());
+        setInstability(getAfferentCoupling(), getEfferentCoupling());
         List<Granule> gContent = ((PackageGranule)g).getContent();
         // TODO: Should we consider the abstractness of a package as :
         //  1. SUM(nbAbstractMethod_Class) / SUM(nbMethod_Class)
@@ -50,9 +47,8 @@ public class MartinMetrics extends Metrics{
                 .filter(o -> o instanceof ClassGranule)
                 .mapToDouble(o -> o.getMetrics().getAbstractness())
                 .sum();
-        martinMetrics.setAbstractness(abstractnessSum / gContent.size());
-        martinMetrics.setNormalizedDistance(martinMetrics.getAbstractness(), martinMetrics.getInstability());
-        g.setMetrics(martinMetrics);
+        setAbstractness(abstractnessSum / gContent.size());
+        setNormalizedDistance(getAbstractness(), getInstability());
     }
 
 
