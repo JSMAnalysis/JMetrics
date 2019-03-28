@@ -1,11 +1,13 @@
 package fr.ubordeaux.jmetrics.metrics;
 
+import fr.ubordeaux.jmetrics.presentation.CSVRepresentable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public abstract class Metrics {
+public abstract class Metrics implements CSVRepresentable {
     private Map<String, Integer> intMap = new HashMap<>();
     private Map<String, Double> doubleMap = new HashMap<>();
 

@@ -12,7 +12,7 @@ public abstract class Granule implements CSVRepresentable {
     private ProjectComponent relatedComponent;
     private String fullyQualifiedName;
     private String displayName;
-    private MartinMetrics metrics = null;
+    private Metrics metrics = null;
 
     protected Granule(ProjectComponent relatedComponent, String fullyQualifiedName, String displayName) {
         this.relatedComponent = relatedComponent;
@@ -24,7 +24,7 @@ public abstract class Granule implements CSVRepresentable {
         return fullyQualifiedName;
     }
 
-    public MartinMetrics getMetrics() {
+    public Metrics getMetrics() {
         return metrics;
     }
 
@@ -32,7 +32,7 @@ public abstract class Granule implements CSVRepresentable {
         return displayName;
     }
 
-    public void setMetrics(MartinMetrics metrics) {
+    public void setMetrics(Metrics metrics) {
         this.metrics = metrics;
     }
 
@@ -61,24 +61,15 @@ public abstract class Granule implements CSVRepresentable {
     public List<String> getCSVCaption() {
         List<String> caption = new ArrayList<>();
         caption.add("Granule");
-        caption.add("Ca");
-        caption.add("Ce");
-        caption.add("I");
-        caption.add("A");
-        caption.add("Dn");
+        caption.addAll(metrics.getCSVCaption());
         return caption;
     }
 
     @Override
     public List<String> getCSVExposedData() {
-        MartinMetrics m = getMetrics();
         List<String> exposedData = new ArrayList<>();
         exposedData.add(getDisplayName());
-        exposedData.add(Integer.toString(m.getAfferentCoupling()));
-        exposedData.add(Integer.toString(m.getEfferentCoupling()));
-        exposedData.add(Double.toString(m.getInstability()));
-        exposedData.add(Double.toString(m.getAbstractness()));
-        exposedData.add(Double.toString(m.getNormalizedDistance()));
+        exposedData.addAll(metrics.getCSVExposedData());
         return exposedData;
     }
 

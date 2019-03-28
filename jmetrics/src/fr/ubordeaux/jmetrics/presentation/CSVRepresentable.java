@@ -16,8 +16,4 @@ public interface CSVRepresentable {
      */
     List<String> getCSVExposedData();
 
-    default int getCSVReprensentationSize() {
-        return getCSVCaption().size();
-    }
-
 }

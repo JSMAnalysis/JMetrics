@@ -4,6 +4,7 @@ import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
 import fr.ubordeaux.jmetrics.graph.DependencyEdge;
 import fr.ubordeaux.jmetrics.graph.DirectedGraph;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -45,7 +46,8 @@ public class MartinMetrics extends Metrics{
         //  2. AVERAGE(Abstractness_Class) [Solution actually implemented]
         double abstractnessSum = gContent.stream()
                 .filter(o -> o instanceof ClassGranule)
-                .mapToDouble(o -> o.getMetrics().getAbstractness())
+                // TODO: need to improve the following line (temporary solution)
+                .mapToDouble(o -> o.getMetrics().getDoubleMetrics(A))
                 .sum();
         setAbstractness(abstractnessSum / gContent.size());
         setNormalizedDistance(getAbstractness(), getInstability());
@@ -124,4 +126,25 @@ public class MartinMetrics extends Metrics{
         addMetric(DN, normalizedDistance);
     }
 
+    @Override
+    public List<String> getCSVCaption() {
+        List<String> caption = new ArrayList<>();
+        caption.add(CA);
+        caption.add(CE);
+        caption.add(I);
+        caption.add(A);
+        caption.add(DN);
+        return caption;
+    }
+
+    @Override
+    public List<String> getCSVExposedData() {
+        List<String> exposedData = new ArrayList<>();
+        exposedData.add(Integer.toString(getAfferentCoupling()));
+        exposedData.add(Integer.toString(getEfferentCoupling()));
+        exposedData.add(Double.toString(getInstability()));
+        exposedData.add(Double.toString(getAbstractness()));
+        exposedData.add(Double.toString(getNormalizedDistance()));
+        return exposedData;
+    }
 }
