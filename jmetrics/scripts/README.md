@@ -22,8 +22,8 @@ JMetrics lets available to user two kinds of CSV files :
 
 The available scripts are :
 
-* stability_histogram.py (use metrics data csv)
-* stability_abstraction_2D_axis.py (use metrics data csv)
+* stability_histogram.py (use martinMetrics data csv)
+* stability_abstraction_2D_axis.py (use martinMetrics data csv)
 * dependencies_histogram.py (use dependencies data csv)
 * coupling_2D_axis.py (use dependencies data csv)
 

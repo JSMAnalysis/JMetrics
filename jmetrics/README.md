@@ -7,10 +7,10 @@ It can analyze both source and byte code to :
 
  - extract dependencies between classes and packages in the project.
  
- - compute some software metrics base on those defined by Robert C. Martin in
+ - compute some software Metrics base on those defined by Robert C. Martin in
  <a href="https://linux.ime.usp.br/~joaomm/mac499/arquivos/referencias/oodmetrics.pdf">this article</a>
 
-It can then output dependency graphs using the .DOT format and metrics values using the .CSV
+It can then output dependency graphs using the .DOT format and Metrics values using the .CSV
 format.
 
 ## Build instructions :
@@ -94,7 +94,7 @@ For example, to analyze this project (sources are located in **src/**), you can 
 It will parse the project's files and generate some outputs that will be placed in 
  $current_directory$/report/. These outputs are composed of :
  
-  - metrics .csv files for class and package level analysis.
+  - Metrics .csv files for class and package level analysis.
   
   - dependency graph .dot files for class and package level analysis.
 

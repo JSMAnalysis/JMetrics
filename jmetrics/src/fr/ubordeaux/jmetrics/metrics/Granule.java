@@ -12,7 +12,7 @@ public abstract class Granule implements CSVRepresentable {
     private ProjectComponent relatedComponent;
     private String fullyQualifiedName;
     private String displayName;
-    private Metrics metrics = null;
+    private MartinMetrics metrics = null;
 
     protected Granule(ProjectComponent relatedComponent, String fullyQualifiedName, String displayName) {
         this.relatedComponent = relatedComponent;
@@ -24,7 +24,7 @@ public abstract class Granule implements CSVRepresentable {
         return fullyQualifiedName;
     }
 
-    public Metrics getMetrics() {
+    public MartinMetrics getMetrics() {
         return metrics;
     }
 
@@ -32,7 +32,7 @@ public abstract class Granule implements CSVRepresentable {
         return displayName;
     }
 
-    public void setMetrics(Metrics metrics) {
+    public void setMetrics(MartinMetrics metrics) {
         this.metrics = metrics;
     }
 
@@ -71,7 +71,7 @@ public abstract class Granule implements CSVRepresentable {
 
     @Override
     public List<String> getCSVExposedData() {
-        Metrics m = getMetrics();
+        MartinMetrics m = getMetrics();
         List<String> exposedData = new ArrayList<>();
         exposedData.add(getDisplayName());
         exposedData.add(Integer.toString(m.getAfferentCoupling()));
