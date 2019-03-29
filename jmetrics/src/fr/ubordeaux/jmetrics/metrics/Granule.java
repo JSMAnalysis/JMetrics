@@ -61,24 +61,15 @@ public abstract class Granule implements CSVRepresentable {
     public List<String> getCSVCaption() {
         List<String> caption = new ArrayList<>();
         caption.add("Granule");
-        caption.add("Ca");
-        caption.add("Ce");
-        caption.add("I");
-        caption.add("A");
-        caption.add("Dn");
+        caption.addAll(metrics.getCSVCaption());
         return caption;
     }
 
     @Override
     public List<String> getCSVExposedData() {
-        Metrics m = getMetrics();
         List<String> exposedData = new ArrayList<>();
         exposedData.add(getDisplayName());
-        exposedData.add(Integer.toString(m.getAfferentCoupling()));
-        exposedData.add(Integer.toString(m.getEfferentCoupling()));
-        exposedData.add(Double.toString(m.getInstability()));
-        exposedData.add(Double.toString(m.getAbstractness()));
-        exposedData.add(Double.toString(m.getNormalizedDistance()));
+        exposedData.addAll(metrics.getCSVExposedData());
         return exposedData;
     }
 

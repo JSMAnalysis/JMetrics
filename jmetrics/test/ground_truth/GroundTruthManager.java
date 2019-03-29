@@ -34,7 +34,7 @@ public class GroundTruthManager {
     /**
      * Number of projects in the Ground Truth.
      */
-    public static final int groundTruthSize = 2;
+    public static final int groundTruthSize = 3;
 
     /**
      * List of projects in the GroundTruth.
@@ -45,6 +45,7 @@ public class GroundTruthManager {
         projects = new ArrayList<>();
         setupExample1();
         setupExample2();
+        setupExample3();
     }
 
     /**
@@ -165,6 +166,22 @@ public class GroundTruthManager {
         readClassinfoAnnotations(classNames, Example2);
         readDependencyAnnotations(classNames, Example2);
         projects.add(Example2);
+    }
+
+    private void setupExample3() {
+        Project Example3 = new Project("example3/", 7, 1);
+        String[] classNames = new String[]{
+                "ground_truth.example3.A",
+                "ground_truth.example3.B",
+                "ground_truth.example3.C",
+                "ground_truth.example3.D",
+                "ground_truth.example3.E",
+                "ground_truth.example3.F",
+                "ground_truth.example3.G"
+        };
+        readClassinfoAnnotations(classNames, Example3);
+        readDependencyAnnotations(classNames, Example3);
+        projects.add(Example3);
     }
 
 }
