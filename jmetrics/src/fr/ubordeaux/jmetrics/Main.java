@@ -75,12 +75,12 @@ public class Main {
         for (Granule g: classNodes) {
             ClassFile cf = (ClassFile)g.getRelatedComponent();
             MartinMetrics metrics = new MartinMetrics();
-            metrics.computeClassMetrics(g, aData.get(cf), classGraph);
+            metrics.computeClassMetrics((ClassGranule)g, aData.get(cf), classGraph);
             g.setMetrics(metrics);
         }
         for (Granule g: packageNodes) {
             MartinMetrics metrics = new MartinMetrics();
-            metrics.computePackageMetrics(g, packageGraph);
+            metrics.computePackageMetrics((PackageGranule)g, packageGraph);
             g.setMetrics(metrics);
         }
 
@@ -123,8 +123,6 @@ public class Main {
     }
 
     private static List<Dependency> couplingAnalysis(List<ClassFile> classes) {
-        // TODO: (Refactor) Coupling analysis should return Set (instead of List).
-        //  (Or rather) Shouldn't if we consider multiple dependencies (which is not actually the case).
         List<Dependency> dependencies = new ArrayList<>();
         CouplingParser cParser = parserFactory.getCouplingParser();
         for (ClassFile c: classes) {
