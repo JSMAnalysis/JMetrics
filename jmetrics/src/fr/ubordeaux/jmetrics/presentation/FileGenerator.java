@@ -26,7 +26,7 @@ public class FileGenerator {
     }
 
     private void setDirectory(String directory) {
-        if(!directory.endsWith(File.separator)) directory += File.separator;
+        if (!directory.endsWith(File.separator)) directory += File.separator;
         this.directory = directory;
     }
 

@@ -3,7 +3,7 @@ package fr.ubordeaux.jmetrics.presentation;
 import java.util.List;
 import java.util.Set;
 
-abstract class CSVBuilder {
+public abstract class CSVBuilder {
 
     private final static char DELIMITER = ';'; // Use semicolon character for Excel support
 

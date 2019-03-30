@@ -1,10 +1,7 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Provides structure (as Singleton) to represent a Java Project.
@@ -99,7 +96,7 @@ public class ProjectStructure {
     /**
      * @return The path to the project's root.
      */
-    public String getRootPath(){
+    public String getRootPath() {
         return projectRootPath;
     }
 
@@ -119,13 +116,13 @@ public class ProjectStructure {
      * @param prefixToRemove The current prefix that needs to be removed from all the current root's children name.
      * @return The cleaned structure.
      */
-    private ProjectComponent recursivePruneRoot(ProjectComponent root, String prefixToRemove){
-        if(root instanceof PackageDirectory){
+    private ProjectComponent recursivePruneRoot(ProjectComponent root, String prefixToRemove) {
+        if (root instanceof PackageDirectory){
             PackageDirectory rootPackage = (PackageDirectory) root;
-            if(rootPackage.getContent().size() > 1){
+            if (rootPackage.getContent().size() > 1) {
                 return recursivePruneStructure(rootPackage, prefixToRemove);
             }
-            else if(rootPackage.getContent().size() == 1){
+            else if (rootPackage.getContent().size() == 1) {
                 return recursivePruneRoot(rootPackage.getContent().get(0), rootPackage.getFullyQualifiedName());
             }
         }
@@ -138,10 +135,10 @@ public class ProjectStructure {
      * @param prefixToRemove The prefix to remove from the displayName.
      * @return The cleaned structure.
      */
-    private ProjectComponent recursivePruneStructure(ProjectComponent node, String prefixToRemove){
-        if(node instanceof PackageDirectory){
+    private ProjectComponent recursivePruneStructure(ProjectComponent node, String prefixToRemove) {
+        if (node instanceof PackageDirectory) {
             PackageDirectory dir = (PackageDirectory) node;
-            for(ProjectComponent component : dir.getContent()){
+            for (ProjectComponent component : dir.getContent()) {
                 dir.removeContent(component);
                 dir.addContent(recursivePruneStructure(component, prefixToRemove));
             }
@@ -156,10 +153,10 @@ public class ProjectStructure {
      * @param prefix The prefix to remove from the name.
      * @return The name without the provided prefix.
      */
-    private String removePrefix(String name, String prefix){
-        if(prefix.length() != 0 && name.startsWith(prefix)){
+    private String removePrefix(String name, String prefix) {
+        if (prefix.length() != 0 && name.startsWith(prefix)) {
             name = name.substring(prefix.length());
-            if(name.startsWith(".")){
+            if (name.startsWith(".")) {
                 name = name.substring(1);
             }
         }

@@ -99,7 +99,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
         String fileName = targetDir.getAbsolutePath();
         // Removes the current directory path from the target's path
         fileName = fileName.replace(currentDir.getAbsolutePath(), "");
-        if(fileName.startsWith(File.separator)){
+        if (fileName.startsWith(File.separator)) {
             fileName = fileName.substring(1);
         }
         if (fileName.contains(File.separator)) {
@@ -186,7 +186,7 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
      * @return The fully qualified name of the component.
      */
     private String generateComponentName(String currentName, String fileName, int depth){
-        if(depth == 0) return "";
+        if (depth == 0) return "";
         if (currentName.isEmpty()) return fileName;
         return currentName + "." + fileName;
     }

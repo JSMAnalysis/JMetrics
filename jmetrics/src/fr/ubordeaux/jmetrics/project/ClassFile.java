@@ -1,9 +1,6 @@
 package fr.ubordeaux.jmetrics.project;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Represents a Java class file (containing ByteCode or SourceCode).
@@ -12,19 +9,6 @@ public class ClassFile extends ProjectComponent {
 
     public ClassFile(File file, String name) {
         super(file, name);
-    }
-
-    /**
-     * Opens a stream on the file property.
-     * Note that the caller is responsible for closing the stream.
-     * @return Stream that point to the file.
-     */
-    public InputStream getInputStream() {
-        try {
-            return new FileInputStream(getFile());
-        } catch(IOException e) {
-            return null;
-        }
     }
 
 }
