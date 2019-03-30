@@ -2,15 +2,16 @@
 
 '''
     Python script to visualize dependencies data from a csv file.
-    The plot displays relationship between afferent coupling and efferent coupling.
+    The plot displays relationship between afferent coupling and efferent coupling on 2D axis.
 '''
+USAGE = "python coupling_2D_axis.py <csv_file>"
+
 
 from dependency import *
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import sys
 import mplcursors
-
 
 
 def setupPositionStructure():
@@ -26,7 +27,6 @@ def setupPositionStructure():
             positions[tuple] = [k]
         else:
             positions.get(tuple).append(k)
-
 
 
 def coupling_2D_axis():
@@ -57,7 +57,6 @@ def coupling_2D_axis():
     plt.show()
 
 
-
 def setPointHover(sel):
     index = int(sel.target.index)
     ca, ce = datax[index], datay[index]
@@ -69,6 +68,8 @@ def setPointHover(sel):
     sel.annotation.set_text(loc + " - " + instability + '\n'.join(granulesDisplay))
 
 
-
 if __name__ == "__main__":
+    if (len(sys.argv) != 2):
+        print("Bad CLI args (Require dependency csv file).\nUsage : " + USAGE)
+        exit(1)
     coupling_2D_axis()

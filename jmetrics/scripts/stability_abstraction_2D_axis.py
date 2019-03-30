@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
 '''
-    Python script to generate a 2D axis of the stability and abstraction from a csv file.
-    usage : python stability_histogram.py <csv_file_name>
+    Python script to generate a 2D axis plot of the stability and abstraction from a csv file.
 '''
+USAGE = "python stability_histogram.py <csv_file>"
+
 
 from retrieve_csv_data import retrieve_data
 import matplotlib.pyplot as plt
 import sys
 import mplcursors
-
 
 
 def setupData():
@@ -23,8 +23,7 @@ def setupData():
         instability.append(csv[i][1])
         asbstractness.append(csv[i][2])
         distance.append(csv[i][3])
-    return granules, asbstractness, instability, distance
-
+    return granules, instability, asbstractness, distance
 
 
 def setupPositionStructure():
@@ -38,7 +37,6 @@ def setupPositionStructure():
             positions[tuple] = [k]
         else:
             positions.get(tuple).append(k)
-
 
 
 def instability_abstraction_2D_axis():
@@ -78,7 +76,6 @@ def instability_abstraction_2D_axis():
     plt.show()
 
 
-
 def setPointHover(sel):
     index = int(sel.target.index)
     loc = "[I = " + str(datax[index]) + "; A = " + str(datay[index]) + "]"
@@ -88,6 +85,8 @@ def setPointHover(sel):
     sel.annotation.set_text(loc + " - " + dist + "\n" + '\n'.join(granulesDisplay))
 
 
-
 if __name__ == "__main__":
+    if (len(sys.argv) != 2):
+        print("Bad CLI args (Require martinMetrics csv file).\nUsage : " + USAGE)
+        exit(1)
     instability_abstraction_2D_axis()

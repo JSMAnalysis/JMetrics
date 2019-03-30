@@ -2,15 +2,17 @@
 
 '''
     Python script to visualize dependencies data from a csv file.
-    The plot is a histogram of the afferent or efferent coupling per granule.
+    The plot is a dependency type histogram of the afferent or efferent coupling.
 '''
 USAGE = "python dependencies_histogram.py <csv_file> <ca|ce>"
+CA_ANALYSIS = "ca"
+CE_ANALYSIS = "ce"
+
 
 from dependency import *
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-
 
 
 def dependencies_histogram(analysis):
@@ -53,12 +55,8 @@ def dependencies_histogram(analysis):
     plt.show()
 
 
-
-CA_ANALYSIS = "ca"
-CE_ANALYSIS = "ce"
 if __name__ == "__main__":
     if len(sys.argv) != 3 or (sys.argv[2] != CA_ANALYSIS and sys.argv[2] != CE_ANALYSIS):
-        print("Bad CLI args.")
-        print("Usage: " + USAGE)
+        print("Bad CLI args (Require dependency csv file).\nUsage: " + USAGE)
         exit(1)
     dependencies_histogram(sys.argv[2])

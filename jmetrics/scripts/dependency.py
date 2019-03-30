@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 '''
-    Python script that define classes and methods to manipulate dependencies file. 
+    Defines classes and methods helping with handling dependency scripts.
 '''
 
 
 from retrieve_csv_data import retrieve_data
-
 
 
 def setupDependenciesData(file):
@@ -24,7 +23,6 @@ def setupDependenciesData(file):
         afferentDependencies = list(filter(lambda d: d.dst == g, dependencies))
         granules.append(Granule(g, afferentDependencies, efferentDependencies))
     return granules, dependencies
-
 
 
 class Granule:
@@ -46,7 +44,6 @@ class Granule:
             len([d for d in dependencies if d.type == "Aggregation"]),
             len([d for d in dependencies if d.type == "UseLink"])
         ]
-
 
 
 class Dependency:

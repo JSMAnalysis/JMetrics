@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 '''
-    Python script to generate horizontal histogram of the stability from a csv file.
-    usage : python stability_histogram.py <csv_file>
+    Python script that generate horizontal histogram of the stability from a csv file.
 '''
+USAGE = "python stability_histogram.py <csv_file>"
+
 
 from retrieve_csv_data import retrieve_data
 import matplotlib.pyplot as plt
 import sys
-
 
 
 def setupData():
@@ -23,6 +23,7 @@ def setupData():
         datay.append(csv[i][1])
     return labels, datax, datay
 
+
 def instability_histogram():
     labels, datax, datay = setupData()
     plt.figure(figsize=(20, 0.5 * len(datax)))
@@ -34,6 +35,8 @@ def instability_histogram():
     plt.show()
 
 
-
 if __name__ == "__main__":
+    if (len(sys.argv) != 2):
+        print("Bad CLI args (Require martinMetrics csv file).\nUsage : " + USAGE)
+        exit(1)
     instability_histogram()

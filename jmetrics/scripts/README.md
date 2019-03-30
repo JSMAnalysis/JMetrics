@@ -27,20 +27,19 @@ The available scripts are :
 * dependencies_histogram.py (use dependencies data csv)
 * coupling_2D_axis.py (use dependencies data csv)
 
-Note that the stability_abstraction_2D_axis script is an interactive plot.
-On point hover, you can visualize the next information:
+Note that stability_abstraction_2D_axis and coupling_2D_axis scripts are interactive plot.  
+(stability_abstraction_2D_axis) On point hover, you can visualize the next information:
 
 * position [I, A],
 * distance,
 * list of granules.
 
-Note that the coupling_2D_axis script is an interactive plot.
-On point hover, you can visualize the next information:
+(coupling_2D_axis) On point hover, you can visualize the next information:
 
 * position [Ca, Ce],
+* instability value,
 * list of granules.
 
-To launch a script, use the command : `python <script_name> <csv_file>`
-
+To launch a script, use the command : `python <script_name> <csv_file>`  
 The dependencies_histogram script require an other argument (the coupling analysis information).
 To visualize afferent coupling (respectively efferent coupling); use the argument 'ca' (respectively 'ce').
