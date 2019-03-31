@@ -41,7 +41,7 @@ class Granule:
     def getBarInfo(dependencies):
         return [
             len([d for d in dependencies if d.type == "Inheritance"]),
-            len([d for d in dependencies if d.type == "Aggregation"]),
+            len([d for d in dependencies if d.type == "Association"]),
             len([d for d in dependencies if d.type == "UseLink"])
         ]
 
@@ -55,6 +55,6 @@ class Dependency:
         self.arity = arity
     DependencyType = {
         "Inheritance":  "red",
-        "Aggregation":  "blue",
+        "Association":  "blue",
         "UseLink":      "green"
     }

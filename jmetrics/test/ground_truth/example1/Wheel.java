@@ -15,7 +15,7 @@ import ground_truth.Dependency;
 )
 public class Wheel {
 
-    @Dependency(dependencyTo = Material.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = Material.class, type = DependencyType.Association)
     private Material material;
 
     @Dependency(dependencyTo = Material.class, type = DependencyType.UseLink)

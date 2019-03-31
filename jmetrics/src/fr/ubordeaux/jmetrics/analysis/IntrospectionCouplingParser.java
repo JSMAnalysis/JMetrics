@@ -47,9 +47,9 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
     }
 
     /**
-     * Retrieve efferent dependencies of type Aggregation of a given class.
+     * Retrieve efferent dependencies of type Association of a given class.
      * @param srcFile The file to analyze.
-     * @return The list of Aggregation dependencies.
+     * @return The list of Association dependencies.
      */
     private List<Dependency> getAggregationDependencies(ClassFile srcFile) {
         Class<?> srcClass = getClassFromFile(srcFile);
@@ -64,7 +64,7 @@ public class IntrospectionCouplingParser extends IntrospectionParser implements 
 
         List<ClassFile> projectClasses = ProjectStructure.getInstance().getClasses();
         List<Granule> dstClasses = findEfferentDependenciesInProject(efferentDependencies, projectClasses);
-        return generateDependenciesList(new ClassGranule(srcFile), DependencyType.Aggregation, dstClasses);
+        return generateDependenciesList(new ClassGranule(srcFile), DependencyType.Association, dstClasses);
     }
 
     /**

@@ -19,7 +19,7 @@ import java.util.List;
 )
 public class Pizzaiolo {
 
-    @Dependency(dependencyTo = Pizza.class, type = DependencyType.Aggregation, sourceOnly = true)
+    @Dependency(dependencyTo = Pizza.class, type = DependencyType.Association, sourceOnly = true)
     private List<Pizza> pizzaToPrepare;
 
     public Pizzaiolo() {

@@ -19,13 +19,13 @@ import java.util.List;
 )
 public class Pizza {
 
-    @Dependency(dependencyTo = BasePizza.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = BasePizza.class, type = DependencyType.Association)
     private BasePizza base;
-    @Dependency(dependencyTo = PizzaSize.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = PizzaSize.class, type = DependencyType.Association)
     private PizzaSize pizzaSize;
-    @Dependency(dependencyTo = PastaType.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = PastaType.class, type = DependencyType.Association)
     private PastaType pastaType;
-    @Dependency(dependencyTo = Ingredient.class, type = DependencyType.Aggregation, sourceOnly = true)
+    @Dependency(dependencyTo = Ingredient.class, type = DependencyType.Association, sourceOnly = true)
     private List<Ingredient> ingredientList;
     private double price;
 
@@ -54,17 +54,17 @@ public class Pizza {
         return pastaType;
     }
 
-    @Dependency(dependencyTo = BasePizza.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = BasePizza.class, type = DependencyType.Association)
     public void setBase(BasePizza base) {
         this.base = base;
     }
 
-    @Dependency(dependencyTo = PizzaSize.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = PizzaSize.class, type = DependencyType.Association)
     public void setPizzaSize(PizzaSize pizzaSize) {
         this.pizzaSize = pizzaSize;
     }
 
-    @Dependency(dependencyTo = PastaType.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = PastaType.class, type = DependencyType.Association)
     public void setPastaType(PastaType pastaType) {
         this.pastaType = pastaType;
     }

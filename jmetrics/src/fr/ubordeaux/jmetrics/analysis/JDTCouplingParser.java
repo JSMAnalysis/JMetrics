@@ -4,7 +4,6 @@ import fr.ubordeaux.jmetrics.metrics.ClassGranule;
 import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
-import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 public class JDTCouplingParser extends JDTParser implements CouplingParser {
 
     private Set<String> rawInheritanceDependencies;
-    private Set<String> rawAggregationDependencies;
+    private Set<String> rawAssociationDependencies;
     private Set<String> rawUseLinkDependencies;
 
     /**
@@ -25,7 +24,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     @Override
     public List<Dependency> getDependencies(ClassFile srcFile) {
         rawInheritanceDependencies = new HashSet<>();
-        rawAggregationDependencies = new HashSet<>();
+        rawAssociationDependencies = new HashSet<>();
         rawUseLinkDependencies = new HashSet<>();
 
         char[] sourceCode = getSourceCodeFromFile(srcFile);
@@ -37,8 +36,8 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
 
         dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.Inheritance,
                 rawInheritanceDependencies, projectClasses));
-        dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.Aggregation,
-                rawAggregationDependencies, projectClasses));
+        dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.Association,
+                rawAssociationDependencies, projectClasses));
         dependencies.addAll(generateDependenciesList(new ClassGranule(srcFile), DependencyType.UseLink,
                 rawUseLinkDependencies, projectClasses));
 
@@ -147,8 +146,8 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         // Find dependencies from fields declaration
         ITypeBinding typeBinding = node.getType().resolveBinding();
         if(typeBinding != null) {
-            rawAggregationDependencies.add(typeBinding.getQualifiedName());
-            extractTypeArguments(typeBinding, rawAggregationDependencies);
+            rawAssociationDependencies.add(typeBinding.getQualifiedName());
+            extractTypeArguments(typeBinding, rawAssociationDependencies);
         }
         return true;
     }

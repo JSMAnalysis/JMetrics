@@ -14,6 +14,6 @@ import ground_truth.Dependency;
         Dn = 0.5
 )
 public class C {
-    @Dependency(dependencyTo = D.class, type = DependencyType.Aggregation)
+    @Dependency(dependencyTo = D.class, type = DependencyType.Association)
     private D d;
 }

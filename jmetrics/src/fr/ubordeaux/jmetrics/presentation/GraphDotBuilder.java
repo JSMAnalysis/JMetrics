@@ -66,7 +66,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
             case Inheritance:
                 strBuilder.append(INHERITANCE_COLOR);
                 break;
-            case Aggregation:
+            case Association:
                 strBuilder.append(AGGREGATION_COLOR);
                 break;
             case UseLink:
@@ -105,7 +105,7 @@ public class GraphDotBuilder implements GraphPresentationBuilder {
         strBuilder.append("e [style=invis];");
         strBuilder.append("f [style=invis];");
         strBuilder.append("e -> f [label=\"Inheritance\", color=\"" + INHERITANCE_COLOR + "\"];");
-        strBuilder.append("c -> d [label=\"Aggregation\", color=\"" + AGGREGATION_COLOR + "\"];");
+        strBuilder.append("c -> d [label=\"Association\", color=\"" + AGGREGATION_COLOR + "\"];");
         strBuilder.append("a -> b [label=\"UseLink\", color=\"" + USELINK_COLOR + "\"];");
         strBuilder.append("}");
     }
