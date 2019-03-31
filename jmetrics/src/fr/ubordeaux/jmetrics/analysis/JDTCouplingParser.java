@@ -208,4 +208,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         }
         return true;
     }
+    //TODO Extract static fields references such as Material.Plastic,
+    // this does not seem to be considered as a field access.
+
 }

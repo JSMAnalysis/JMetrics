@@ -7,13 +7,13 @@ import ground_truth.Dependency;
 import java.util.ArrayList;
 
 @ClassInfo(
-        numberOfMethod = 1,
+        numberOfMethod = 3,
         numberOfAbstractMethod = 1,
-        Ca = 2,
-        Ce = 1,
-        I = 0.33,
-        A = 1,
-        Dn = 0.33
+        Ca = 3,
+        Ce = 2,
+        I = 0.6,
+        A = 0.33,
+        Dn = 0.12
 )
 public abstract class Vehicle {
 
@@ -23,5 +23,14 @@ public abstract class Vehicle {
     private ArrayList<Wheel> wheels;
 
     public abstract void move();
+
+    public void setNbWheel(int i) {
+        this.nbWheel = i;
+    }
+
+    @Dependency(dependencyTo = Wheel.class, type = DependencyType.UseLink)
+    public void addWheel(Wheel w) {
+        this.wheels.add(w);
+    }
 
 }

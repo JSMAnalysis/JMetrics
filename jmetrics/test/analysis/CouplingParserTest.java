@@ -58,8 +58,8 @@ class CouplingParserTest {
             PSDependencies.addAll(parser.getDependencies(PSFile));
         }
 
-            assertEquals(PSDependencies.size(), GTDependencies.size(),
-                    "Project " + projectNumber + " : The number of dependencies analyzed is different from" +
+            assertEquals(GTDependencies.size(),PSDependencies.size(),
+                    "Project " + projectNumber + " : The number of dependencies analyzed is different from " +
                             "the number of dependencies referenced in the ground truth");
 
         boolean sameSrc, sameDst, sameType, find;

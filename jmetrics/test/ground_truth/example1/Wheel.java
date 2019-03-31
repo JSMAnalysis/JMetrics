@@ -7,11 +7,11 @@ import ground_truth.Dependency;
 @ClassInfo(
         numberOfMethod = 2,
         numberOfAbstractMethod = 0,
-        Ca = 1,
+        Ca = 2,
         Ce = 1,
-        I = 0.5,
+        I = 0.33,
         A = 0,
-        Dn = 0.5
+        Dn = 0.66
 )
 public class Wheel {
 
