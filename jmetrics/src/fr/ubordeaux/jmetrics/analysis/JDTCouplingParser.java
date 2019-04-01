@@ -158,13 +158,15 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     public boolean visit(MethodDeclaration node) {
         // Find dependencies from parameters, return type and exceptions thrown by a method
         IMethodBinding methodBinding = node.resolveBinding();
-        List<ITypeBinding> bindings = new ArrayList<>();
-        bindings.addAll(Arrays.asList(methodBinding.getParameterTypes()));
-        bindings.addAll(Arrays.asList(methodBinding.getExceptionTypes()));
-        bindings.add(methodBinding.getReturnType());
-        for (ITypeBinding binding : bindings) {
-            rawUseLinkDependencies.add(binding.getQualifiedName());
-            extractTypeArguments(binding, rawUseLinkDependencies);
+        if(methodBinding != null) {
+            List<ITypeBinding> bindings = new ArrayList<>();
+            bindings.addAll(Arrays.asList(methodBinding.getParameterTypes()));
+            bindings.addAll(Arrays.asList(methodBinding.getExceptionTypes()));
+            bindings.add(methodBinding.getReturnType());
+            for (ITypeBinding binding : bindings) {
+                rawUseLinkDependencies.add(binding.getQualifiedName());
+                extractTypeArguments(binding, rawUseLinkDependencies);
+            }
         }
         return true;
     }
