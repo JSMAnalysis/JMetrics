@@ -11,9 +11,9 @@ import java.util.ArrayList;
         numberOfAbstractMethod = 1,
         Ca = 3,
         Ce = 2,
-        I = 0.6,
+        I = 0.4,
         A = 0.33,
-        Dn = 0.12
+        Dn = 0.27
 )
 public abstract class Vehicle {
 

@@ -18,6 +18,7 @@ public class Main {
     @Dependency(dependencyTo = Vehicle.class, type = DependencyType.UseLink, sourceOnly = true)
     @Dependency(dependencyTo = Airplane.class, type = DependencyType.UseLink, sourceOnly = true)
     @Dependency(dependencyTo = Wheel.class, type = DependencyType.UseLink, sourceOnly = true)
+    @Dependency(dependencyTo = Material.class, type = DependencyType.UseLink, sourceOnly = true)
     public static void main(String[] args) {
         Vehicle v = new Airplane();
         v.setNbWheel(1);

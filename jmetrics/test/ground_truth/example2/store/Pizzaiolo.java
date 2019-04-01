@@ -12,10 +12,10 @@ import java.util.List;
         numberOfMethod = 1,
         numberOfAbstractMethod = 0,
         Ca = 1,
-        Ce = 1,
-        I = 0.5,
+        Ce = 2,
+        I = 0.67,
         A = 0,
-        Dn = 0.5
+        Dn = 0.33
 )
 public class Pizzaiolo {
 

@@ -17,6 +17,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
     private Set<String> rawInheritanceDependencies;
     private Set<String> rawAssociationDependencies;
     private Set<String> rawUseLinkDependencies;
+    private String currentAnalyzedClassName;
 
     /**
      * {@inheritDoc}
@@ -26,6 +27,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         rawInheritanceDependencies = new HashSet<>();
         rawAssociationDependencies = new HashSet<>();
         rawUseLinkDependencies = new HashSet<>();
+        currentAnalyzedClassName = srcFile.getFullyQualifiedName();
 
         char[] sourceCode = getSourceCodeFromFile(srcFile);
         CompilationUnit comUnit = createAST(sourceCode, srcFile, true);
@@ -200,14 +202,32 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
 
     @Override
     public boolean visit(FieldAccess node) {
-        // Find dependencies from a field access
+        // Find dependencies from a field access (except static ones)
         IVariableBinding fieldBinding = node.resolveFieldBinding();
         if(fieldBinding != null && fieldBinding.getDeclaringClass() != null) {
             rawUseLinkDependencies.add(fieldBinding.getDeclaringClass().getQualifiedName());
         }
         return true;
     }
-    //TODO Extract static fields references such as Material.Plastic,
-    // this does not seem to be considered as a field access.
 
+
+    //TODO test this implementation more deeply
+    @Override
+    public boolean visit(SimpleName node) {
+        // Find dependencies from a static field access
+        IBinding binding = node.resolveBinding();
+        if(binding != null && binding.getKind() == IBinding.VARIABLE) {
+            IVariableBinding variableBinding = (IVariableBinding) binding;
+            if(variableBinding.isField()){
+                ITypeBinding declaringClass = variableBinding.getDeclaringClass();
+                if(declaringClass != null){
+                    String className = declaringClass.getQualifiedName();
+                    if(!className.equals(currentAnalyzedClassName)){
+                        rawUseLinkDependencies.add(className);
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

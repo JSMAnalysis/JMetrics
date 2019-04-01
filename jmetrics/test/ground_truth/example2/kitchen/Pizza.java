@@ -11,11 +11,11 @@ import java.util.List;
 @ClassInfo(
         numberOfMethod = 7,
         numberOfAbstractMethod = 0,
-        Ca = 1,
-        Ce = 1,
-        I = 0.5,
+        Ca = 4,
+        Ce = 8,
+        I = 0.67,
         A = 0,
-        Dn = 0.5
+        Dn = 0.33
 )
 public class Pizza {
 
@@ -54,17 +54,17 @@ public class Pizza {
         return pastaType;
     }
 
-    @Dependency(dependencyTo = BasePizza.class, type = DependencyType.Association)
+    @Dependency(dependencyTo = BasePizza.class, type = DependencyType.UseLink)
     public void setBase(BasePizza base) {
         this.base = base;
     }
 
-    @Dependency(dependencyTo = PizzaSize.class, type = DependencyType.Association)
+    @Dependency(dependencyTo = PizzaSize.class, type = DependencyType.UseLink)
     public void setPizzaSize(PizzaSize pizzaSize) {
         this.pizzaSize = pizzaSize;
     }
 
-    @Dependency(dependencyTo = PastaType.class, type = DependencyType.Association)
+    @Dependency(dependencyTo = PastaType.class, type = DependencyType.UseLink)
     public void setPastaType(PastaType pastaType) {
         this.pastaType = pastaType;
     }

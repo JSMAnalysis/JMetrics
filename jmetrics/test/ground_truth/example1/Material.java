@@ -5,7 +5,7 @@ import ground_truth.ClassInfo;
 @ClassInfo(
         numberOfMethod = 0,
         numberOfAbstractMethod = 0,
-        Ca = 2,
+        Ca = 3,
         Ce = 0,
         I = 0,
         A = 0,

@@ -14,7 +14,7 @@ import ground_truth.Dependency;
         Dn = 0.5
 )
 @Dependency(dependencyTo = Vehicle.class, type = DependencyType.Inheritance)
-public class Airplane extends ground_truth.example1.Vehicle {
+public class Airplane extends Vehicle {
 
     @Override
     public void move() {
