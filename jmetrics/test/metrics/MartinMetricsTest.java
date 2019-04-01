@@ -1,14 +1,22 @@
 package metrics;
 
-import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
-import fr.ubordeaux.jmetrics.metrics.BadMetricsValueException;
-import fr.ubordeaux.jmetrics.metrics.MartinMetrics;
+import fr.ubordeaux.jmetrics.analysis.*;
+import fr.ubordeaux.jmetrics.graph.DependencyEdge;
+import fr.ubordeaux.jmetrics.graph.DirectedGraph;
+import fr.ubordeaux.jmetrics.graph.GraphConstructor;
+import fr.ubordeaux.jmetrics.metrics.*;
 
+import fr.ubordeaux.jmetrics.project.*;
+import ground_truth.ClassInfo;
+import ground_truth.Dependencies;
+import ground_truth.GroundTruthManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +24,14 @@ class MartinMetricsTest {
 
     private MartinMetrics martinMetrics;
     private Method abstractnessMethod, instabilityMethod, normalizedDistanceMethod;
+
+    private SourceFileSystemExplorer explorer;
+    private GroundTruthManager GT;
+    private ParserFactory parserFactory;
+
+    private GranuleManager granuleManager;
+    private List<ClassFile> classes;
+    private List<PackageDirectory> packages;
 
     @BeforeEach
     void setUp() {
@@ -35,10 +51,10 @@ class MartinMetricsTest {
     @Test
     void testSetMetricsRightValue() {
         try {
-            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(0,0));
-            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(10,0));
-            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(10,10));
-            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(100,63));
+            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(0, 0));
+            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(10, 0));
+            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(10, 10));
+            abstractnessMethod.invoke(martinMetrics, new AbstractnessData(100, 63));
 
             instabilityMethod.invoke(martinMetrics, 0, 0);
             instabilityMethod.invoke(martinMetrics, 0, 10);
@@ -90,6 +106,54 @@ class MartinMetricsTest {
         } catch (IllegalAccessException | InvocationTargetException e) {
             assertEquals(e.getCause().getClass(), BadMetricsValueException.class);
         }
+    }
+
+    private void initGranuleManager(int projectNumber) {
+        GT = new GroundTruthManager();
+        parserFactory = new JDTParserFactory();
+        GT.loadExampleSourcecode(projectNumber);
+        classes = ProjectStructure.getInstance().getClasses();
+        packages = ProjectStructure.getInstance().getPackages();
+        granuleManager = new GranuleManager(classes, packages);
+    }
+
+    @Test
+    void testMartinMetricsOnClass() throws ClassNotFoundException {
+        for (int projectNumber = 1; projectNumber <= GroundTruthManager.groundTruthSize; ++projectNumber) {
+            initGranuleManager(projectNumber);
+
+            Map<ClassFile, AbstractnessData> aData = new HashMap<>();
+            List<Dependency> classDependencies = new ArrayList<>();
+
+            for (ClassFile c : classes) {
+                aData.put(c, parserFactory.getAbstractnessParser().getAbstractnessData(c));
+                classDependencies.addAll(parserFactory.getCouplingParser().getDependencies(c));
+            }
+
+            Set<Granule> classNodes = granuleManager.getClassGranules();
+
+            DirectedGraph<Granule, DependencyEdge> classGraph;
+            classGraph = GraphConstructor.constructGraph(classNodes, new HashSet<>(classDependencies));
+
+            for (Granule g : classNodes) {
+                MartinMetrics metrics = new MartinMetrics();
+
+                ClassFile classFile = (ClassFile) g.getRelatedComponent();
+                metrics.computeClassMetrics((ClassGranule) g, aData.get(classFile), classGraph);
+                g.setMetrics(metrics);
+
+                Class<?> c = Class.forName(classFile.getFullyQualifiedName());
+                ClassInfo info = c.getAnnotation(ClassInfo.class);
+
+                assertEquals(info.Ce(), g.getMetrics().getIntMetrics("Ce"));
+                assertEquals(info.Ca(), g.getMetrics().getIntMetrics("Ca"));
+                assertEquals(info.A(), g.getMetrics().getDoubleMetrics("A"));
+                assertEquals(info.I(), g.getMetrics().getDoubleMetrics("I"));
+                assertEquals(info.Dn(), g.getMetrics().getDoubleMetrics("Dn"));
+
+            }
+        }
+
     }
 
 }

@@ -23,21 +23,24 @@ class DirectedGraphTest {
     @Test
     void testGroundTruthGraphNodesValidity() {
         GroundTruthManager GT = new GroundTruthManager();
-        GT.loadExampleBytecode(2);
-        List<ClassFile> classes = ProjectStructure.getInstance().getClasses();
-        Set<Granule> nodes = new HashSet<>();
-        for (ClassFile c: classes) {
-            nodes.add(new ClassGranule(c));
-        }
-        DirectedGraph<Granule, DependencyEdge> graph = GraphConstructor.constructGraph(nodes, new HashSet<>());
-        assertEquals(classes.size(), graph.getNodeSet().size());
+        for (int projectNumber = 1; projectNumber <= GroundTruthManager.groundTruthSize; ++projectNumber) {
+            GT.loadExampleBytecode(projectNumber);
+            List<ClassFile> classes = ProjectStructure.getInstance().getClasses();
+            Set<Granule> nodes = new HashSet<>();
+            for (ClassFile c: classes) {
+                nodes.add(new ClassGranule(c));
+            }
+            DirectedGraph<Granule, DependencyEdge> graph = GraphConstructor.constructGraph(nodes, new HashSet<>());
+            assertEquals(classes.size(), graph.getNodeSet().size());
 
-        DirectedGraph<Granule, DependencyEdge> graphBis = new DirectedGraph<>();
-        for (Granule g: graph.getNodeSet()) {
-            graphBis.addNode(g);
+            DirectedGraph<Granule, DependencyEdge> graphBis = new DirectedGraph<>();
+            for (Granule g: graph.getNodeSet()) {
+                graphBis.addNode(g);
+            }
+            assertEquals(graph.getNodeSet().size(), graphBis.getNodeSet().size());
+            assertEquals(classes.size(), graphBis.getNodeSet().size());
         }
-        assertEquals(graph.getNodeSet().size(), graphBis.getNodeSet().size());
-        assertEquals(classes.size(), graphBis.getNodeSet().size());
+
     }
 
 
