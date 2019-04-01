@@ -3,8 +3,6 @@ apply plugin: 'application'
 
 defaultTasks 'compileJava', 'compileTestJava'
 
-
-
 mainClassName = 'fr.ubordeaux.jmetrics.Main'
 
 repositories {
@@ -12,7 +10,7 @@ repositories {
     jcenter()
 }
 
-dependencies{
+dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
     compile 'org.eclipse.jdt:org.eclipse.jdt.core:3.16.0'
@@ -40,11 +38,11 @@ application {
     mainClassName = 'fr.ubordeaux.jmetrics.Main'
 }
 
-run{
+run {
     standardInput = System.in
 }
 
-test{
+test {
     useJUnitPlatform()
 }
 
@@ -53,6 +51,9 @@ jar {
         attributes(
                 'Main-Class': mainClassName
         )
+    }
+    from { (configurations.runtime).collect { it.isDirectory() ? it : zipTree(it) } } {
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
     }
 }
 
