@@ -14,7 +14,7 @@ import sys
 import mplcursors
 
 
-def setupPositionStructure():
+def setup_position_structure():
     ''' Creates an (average time complexity) O(1) granules access structure.
     Dict with tuple (ca, ce) as key; granule index as value) '''
     global positions
@@ -22,54 +22,54 @@ def setupPositionStructure():
     for k in range(len(granules)):
         ca = granules[k].getCaArity()
         ce = granules[k].getCeArity()
-        tuple = (datax[k], datay[k])
-        if positions.get(tuple) == None:
-            positions[tuple] = [k]
+        t = (datax[k], datay[k])
+        if positions.get(t) is None:
+            positions[t] = [k]
         else:
-            positions.get(tuple).append(k)
+            positions.get(t).append(k)
 
 
 def coupling_2D_axis():
     global granules, dependencies, labels
-    granules, dependencies = setupDependenciesData(sys.argv[1])
+    granules, dependencies = setup_dependencies_data(sys.argv[1])
     labels = [g.name for g in granules]
 
     global datax, datay
     datax = [g.getCaArity() for g in granules]
     datay = [g.getCeArity() for g in granules]
-    setupPositionStructure()
+    setup_position_structure()
 
-    maxCaArity = max(g.getCaArity() for g in granules)
-    maxCeArity = max(g.getCeArity() for g in granules)
+    max_ca_arity = max(g.getCaArity() for g in granules)
+    max_ce_arity = max(g.getCeArity() for g in granules)
 
     fig, axes = plt.subplots(figsize=(6, 6))
-    plt.xlim(-1, maxCaArity + 1)
+    plt.xlim(-1, max_ca_arity + 1)
     axes.yaxis.set_major_locator(MaxNLocator(integer=True))
-    plt.ylim(-1, maxCeArity + 1)
+    plt.ylim(-1, max_ce_arity + 1)
 
     plt.xlabel("Afferent Coupling (Ca)")
     plt.ylabel("Efferent Coupling (Ce)")
     plt.title("Relationship between Afferent Coupling and Efferent Coupling", y=1)
 
     granules = plt.scatter(datax, datay)
-    mplcursors.cursor(granules, hover=True, highlight=True).connect("add", setPointHover)
+    mplcursors.cursor(granules, hover=True, highlight=True).connect("add", set_point_hover)
 
     plt.show()
 
 
-def setPointHover(sel):
+def set_point_hover(sel):
     index = int(sel.target.index)
     ca, ce = datax[index], datay[index]
     loc = "[Ca = " + str(ca) + "; Ce = " + str(ce) + "]"
     div = ce / (ca + ce) if (ca != 0 or ce != 0) else 0.0
     instability = "[I = Ce / (Ca + Ce) = " + str(round(div, 2)) + "]\n"
-    pointsOnSamePos = positions[(datax[index], datay[index])]
-    granulesDisplay = [labels[i] for i in pointsOnSamePos]
-    sel.annotation.set_text(loc + " - " + instability + '\n'.join(granulesDisplay))
+    points_on_same_pos = positions[(datax[index], datay[index])]
+    granules_display = [labels[i] for i in points_on_same_pos]
+    sel.annotation.set_text(loc + " - " + instability + '\n'.join(granules_display))
 
 
 if __name__ == "__main__":
-    if (len(sys.argv) != 2):
+    if len(sys.argv) != 2:
         print("Bad CLI args (Require dependency csv file).\nUsage : " + USAGE)
         exit(1)
     coupling_2D_axis()

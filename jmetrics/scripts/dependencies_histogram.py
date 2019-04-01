@@ -16,7 +16,7 @@ import sys
 
 
 def dependencies_histogram(analysis):
-    granules, dependencies = setupDependenciesData(sys.argv[1])
+    granules, dependencies = setup_dependencies_data(sys.argv[1])
     nbGranules = len(granules)
 
     if (analysis == CA_ANALYSIS):

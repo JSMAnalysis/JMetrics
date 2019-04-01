@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import sys
 
 
-def setupData():
+def setup_data():
     csv = retrieve_data(sys.argv[1], ("Granule", "I"))
     csv = sorted(csv, key=lambda x: x[1])
     labels = []
@@ -25,7 +25,7 @@ def setupData():
 
 
 def instability_histogram():
-    labels, datax, datay = setupData()
+    labels, datax, datay = setup_data()
     plt.figure(figsize=(20, 0.5 * len(datax)))
     plt.axes([0.3, 0.1, 0.6, 0.8])
     plt.barh(datax, datay, align='center')
@@ -36,7 +36,7 @@ def instability_histogram():
 
 
 if __name__ == "__main__":
-    if (len(sys.argv) != 2):
+    if len(sys.argv) != 2:
         print("Bad CLI args (Require martinMetrics csv file).\nUsage : " + USAGE)
         exit(1)
     instability_histogram()

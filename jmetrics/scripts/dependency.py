@@ -8,7 +8,7 @@
 from retrieve_csv_data import retrieve_data
 
 
-def setupDependenciesData(file):
+def setup_dependencies_data(file):
     # Arity is currently unused (and will probably remain)
     csv = retrieve_data(file, ("GranuleSrc", "GranuleDst", "Type", "Arity"))
     dependencies = []
