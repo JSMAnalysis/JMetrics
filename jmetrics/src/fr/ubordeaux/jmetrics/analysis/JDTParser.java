@@ -64,12 +64,13 @@ public abstract class JDTParser extends ASTVisitor{
      */
     private class PackageNameChecker extends ASTVisitor{
 
-        private boolean corresponds = true;
+        private boolean corresponds;
         private String expectedPackage = "";
 
         boolean packagesCorrespond(ClassFile srcFile, CompilationUnit classAST) {
+            corresponds = true;
             expectedPackage = srcFile.getFullyQualifiedName()
-                    .substring(srcFile.getFullyQualifiedName().lastIndexOf('.'));
+                    .substring(0, srcFile.getFullyQualifiedName().lastIndexOf('.'));
             classAST.accept(this);
             return corresponds;
         }
