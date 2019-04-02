@@ -22,7 +22,7 @@ JMetrics lets available to user two kinds of CSV files :
 
 The available scripts are :
 
-* stability_histogram.py (use martinMetrics data csv)
+* metrics_histogram.py (use martinMetrics data csv)
 * stability_abstraction_2D_axis.py (use martinMetrics data csv)
 * dependencies_histogram.py (use dependencies data csv)
 * coupling_2D_axis.py (use dependencies data csv)
@@ -42,4 +42,7 @@ Note that stability_abstraction_2D_axis and coupling_2D_axis scripts are interac
 
 To launch a script, use the command : `python <script_name> <csv_file>`  
 The dependencies_histogram script require an other argument (the coupling analysis information).
-To visualize afferent coupling (respectively efferent coupling); use the argument 'ca' (respectively 'ce').
+To visualize afferent coupling (respectively efferent coupling); use the argument 'ca' (respectively 'ce').  
+
+The metrics_histogram script require an other argument (the metrics component to visualize).
+Give an argument in <Ca|Ce|I|A|Dn> for visualizing the corresponding component's histogram.
