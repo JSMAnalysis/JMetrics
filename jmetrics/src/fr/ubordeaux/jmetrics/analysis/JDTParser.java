@@ -3,10 +3,7 @@ package fr.ubordeaux.jmetrics.analysis;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -21,6 +18,7 @@ public abstract class JDTParser extends ASTVisitor{
 
     private Charset charset = StandardCharsets.UTF_8; //use UTF_8 by default. Maybe we should expose an option to
                                                       //tweak it.
+    private PackageNameChecker packageNameChecker = new PackageNameChecker();
 
     /**
      * Reads the source code of a class from a .java file.
@@ -53,7 +51,37 @@ public abstract class JDTParser extends ASTVisitor{
         parser.setBindingsRecovery(needBindings);
         parser.setEnvironment(new String[]{}, new String[]{ProjectStructure.getInstance().getRootPath()}, null, true);
         parser.setUnitName(srcFile.getFile().getPath());
-        return (CompilationUnit) parser.createAST(null);
+        CompilationUnit ast = (CompilationUnit) parser.createAST(null);
+        if(!packageNameChecker.packagesCorrespond(srcFile, ast)){
+            throw new ClassFileNotFoundException(srcFile);
+        }
+        return ast;
+    }
+
+
+    /**
+     * A service providing a method to checks that a ClassFile's package is the same as its associated source file.
+     */
+    private class PackageNameChecker extends ASTVisitor{
+
+        private boolean corresponds = true;
+        private String expectedPackage = "";
+
+        boolean packagesCorrespond(ClassFile srcFile, CompilationUnit classAST) {
+            expectedPackage = srcFile.getFullyQualifiedName()
+                    .substring(srcFile.getFullyQualifiedName().lastIndexOf('.'));
+            classAST.accept(this);
+            return corresponds;
+        }
+
+        @Override
+        public boolean visit(PackageDeclaration node) {
+            if (!node.getName().getFullyQualifiedName().equals(expectedPackage)) {
+                corresponds = false;
+            }
+            return false;
+        }
+
     }
 
 }

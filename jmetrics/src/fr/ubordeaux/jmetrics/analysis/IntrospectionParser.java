@@ -46,7 +46,9 @@ public abstract class IntrospectionParser {
             throw new ClassFileNotFoundException(file);
         }
 
-        return loader.getClassFromByteCode(byteCode, file.getFullyQualifiedName());
+        c = loader.getClassFromByteCode(byteCode, file.getFullyQualifiedName());
+        if(c == null) throw new ClassFileNotFoundException(file);
+        return c;
     }
 
     /**
@@ -67,7 +69,7 @@ public abstract class IntrospectionParser {
             try{
                 return loadClass(className);
             }
-            catch (ClassNotFoundException e) {
+            catch (ClassNotFoundException | NoClassDefFoundError e) {
                 return null;
             }
         }
@@ -76,8 +78,13 @@ public abstract class IntrospectionParser {
             try{
                 return loadClass(className);
             }
-            catch (ClassNotFoundException e) {
-                return defineClass(className, bytes, 0, bytes.length);
+            catch (ClassNotFoundException | NoClassDefFoundError e) {
+                try {
+                    return defineClass(className, bytes, 0, bytes.length);
+                }
+                catch(NoClassDefFoundError error){
+                    return null;
+                }
             }
         }
 

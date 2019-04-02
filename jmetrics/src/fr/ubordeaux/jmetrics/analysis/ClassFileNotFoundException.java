@@ -7,7 +7,8 @@ public class ClassFileNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private static final String DEFAULT_MESSAGE_FORMAT =
-            "The file associated with the class %s does not seem to exist or is temporarily unavailable.";
+            "The file associated with the class %s does not seem to exist or is temporarily unavailable. " +
+                    "Did you provide the right project root ?";
 
     ClassFileNotFoundException(String message) {
         super(message);

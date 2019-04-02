@@ -3,6 +3,9 @@ package fr.ubordeaux.jmetrics.project;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 /**
@@ -125,12 +128,14 @@ public abstract class SimpleFileSystemExplorer implements FileSystemExplorer {
         } else if (node.isDirectory()) {
             String packageName = generateComponentName(currentName, node.getName(), depth);
             PackageDirectory dir = new PackageDirectory(node, packageName);
-            File[] files = node.listFiles();
-            if (files == null) {
-                throw new UncheckedIOException(new IOException("A problem has occurred while inspecting the given directory."));
+            try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(node.toPath())){
+                for(Path childPath : dirStream){
+                    File child = childPath.toFile();
+                    setRecursiveStructure(child, dir, depth+1, packageName);
+                }
             }
-            for (File file: files) {
-                setRecursiveStructure(file, dir, depth+1, packageName);
+            catch (IOException e){
+                throw new UncheckedIOException(e);
             }
             parent.addContent(dir);
         }
