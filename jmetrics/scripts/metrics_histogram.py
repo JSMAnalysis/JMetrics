@@ -5,11 +5,11 @@
 '''
 USAGE = "python stability_histogram.py <csv_file> <Ca|Ce|A|I|Dn>"
 components = {
-  "Ca": "Afferent coupling",
-  "Ce": "Efferent coupling",
-  "A":  "Abstraction",
-  "I":  "Instability",
-  "Dn":  "Distance"
+    "Ca": "Afferent coupling",
+    "Ce": "Efferent coupling",
+    "A":  "Abstraction",
+    "I":  "Instability",
+    "Dn": "Distance"
 }
 
 

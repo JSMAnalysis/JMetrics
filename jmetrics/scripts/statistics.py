@@ -13,7 +13,14 @@ import sys
 
 def setup_data():
     csv = retrieve_data(sys.argv[1], ("Ce", "Ca", "A", "I", "Dn"))
-    return csv
+    ce, ca, a, i, dn = [], [], [], [], []
+    for metrics in csv:
+        ce.append(metrics[0])
+        ca.append(metrics[1])
+        a.append(metrics[2])
+        i.append(metrics[3])
+        dn.append(metrics[4])
+    return ce, ca, a, i, dn
 
 
 def print_components(ce, ca, a, i, dn, fun, fun_name):
@@ -26,18 +33,7 @@ def print_components(ce, ca, a, i, dn, fun, fun_name):
 
 
 def compute_statistics():
-    data = setup_data()
-    ce = []
-    ca = []
-    a = []
-    i = []
-    dn = []
-    for metrics in data:
-        ce.append(metrics[0])
-        ca.append(metrics[1])
-        a.append(metrics[2])
-        i.append(metrics[3])
-        dn.append(metrics[4])
+    ce, ca, a, i, dn = setup_data()
     print_components(ce, ca, a, i, dn, np.mean, "Mean")
     print_components(ce, ca, a, i, dn, np.median, "Median")
     print_components(ce, ca, a, i, dn, np.var, "Variance")
