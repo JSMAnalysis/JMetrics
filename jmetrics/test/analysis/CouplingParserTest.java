@@ -6,9 +6,7 @@ import fr.ubordeaux.jmetrics.analysis.IntrospectionCouplingParser;
 import fr.ubordeaux.jmetrics.analysis.JDTCouplingParser;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
-
 import ground_truth.GroundTruthManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

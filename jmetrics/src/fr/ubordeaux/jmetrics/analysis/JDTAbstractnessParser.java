@@ -1,7 +1,10 @@
 package fr.ubordeaux.jmetrics.analysis;
 
 import fr.ubordeaux.jmetrics.project.ClassFile;
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
  * An implementation of the {@link AbstractnessParser} interface that uses JDT.

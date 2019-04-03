@@ -2,12 +2,15 @@ package ground_truth;
 
 import fr.ubordeaux.jmetrics.analysis.Dependency;
 import fr.ubordeaux.jmetrics.analysis.DependencyType;
-import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.metrics.ClassGranule;
+import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents an example project in the ground truth.

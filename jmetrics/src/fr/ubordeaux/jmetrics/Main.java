@@ -1,7 +1,9 @@
 package fr.ubordeaux.jmetrics;
 
 import fr.ubordeaux.jmetrics.analysis.*;
-import fr.ubordeaux.jmetrics.graph.*;
+import fr.ubordeaux.jmetrics.graph.DependencyEdge;
+import fr.ubordeaux.jmetrics.graph.DirectedGraph;
+import fr.ubordeaux.jmetrics.graph.GraphConstructor;
 import fr.ubordeaux.jmetrics.metrics.*;
 import fr.ubordeaux.jmetrics.presentation.FileGenerator;
 import fr.ubordeaux.jmetrics.project.*;

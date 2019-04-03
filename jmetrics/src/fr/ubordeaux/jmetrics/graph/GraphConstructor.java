@@ -5,7 +5,8 @@ import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.presentation.GraphDotBuilder;
 import fr.ubordeaux.jmetrics.presentation.GraphPresentationBuilder;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Service that provide graph construction and presentation methods.

@@ -1,15 +1,13 @@
 package analysis;
 
+import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
 import fr.ubordeaux.jmetrics.analysis.AbstractnessParser;
 import fr.ubordeaux.jmetrics.analysis.IntrospectionAbstractnessParser;
 import fr.ubordeaux.jmetrics.analysis.JDTAbstractnessParser;
-import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
-
 import ground_truth.ClassInformation;
 import ground_truth.GroundTruthManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

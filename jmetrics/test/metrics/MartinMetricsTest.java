@@ -1,14 +1,18 @@
 package metrics;
 
-import fr.ubordeaux.jmetrics.analysis.*;
+import fr.ubordeaux.jmetrics.analysis.AbstractnessData;
+import fr.ubordeaux.jmetrics.analysis.Dependency;
+import fr.ubordeaux.jmetrics.analysis.JDTParserFactory;
+import fr.ubordeaux.jmetrics.analysis.ParserFactory;
 import fr.ubordeaux.jmetrics.graph.DependencyEdge;
 import fr.ubordeaux.jmetrics.graph.DirectedGraph;
 import fr.ubordeaux.jmetrics.graph.GraphConstructor;
 import fr.ubordeaux.jmetrics.metrics.*;
-
-import fr.ubordeaux.jmetrics.project.*;
+import fr.ubordeaux.jmetrics.project.ClassFile;
+import fr.ubordeaux.jmetrics.project.PackageDirectory;
+import fr.ubordeaux.jmetrics.project.ProjectStructure;
+import fr.ubordeaux.jmetrics.project.SourceFileSystemExplorer;
 import ground_truth.ClassInfo;
-import ground_truth.Dependencies;
 import ground_truth.GroundTruthManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +20,9 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class MartinMetricsTest {
 

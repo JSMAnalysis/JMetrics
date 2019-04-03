@@ -8,12 +8,13 @@ import fr.ubordeaux.jmetrics.metrics.ClassGranule;
 import fr.ubordeaux.jmetrics.metrics.Granule;
 import fr.ubordeaux.jmetrics.project.ClassFile;
 import fr.ubordeaux.jmetrics.project.ProjectStructure;
-
 import ground_truth.GroundTruthManager;
-
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
