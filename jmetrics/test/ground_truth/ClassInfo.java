@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 public @interface ClassInfo {
     int numberOfMethod();
     int numberOfAbstractMethod();
-    double Ca();
-    double Ce();
+    int Ca();
+    int Ce();
     double I();
     double A();
     double Dn();
