@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +57,30 @@ public abstract class JDTParser extends ASTVisitor{
         if(!packageNameChecker.packagesCorrespond(srcFile, ast)){
             throw new ClassFileNotFoundException(srcFile);
         }
+        removeUnreferencedClasses(ast, srcFile);
         return ast;
+    }
+
+
+    /**
+     * Removes all the classes that are not the srcClass one from an ast.
+     * @param ast The ast from which the classes are to be removed.
+     * @param srcClass The class to keep.
+     * @implNote As the list of classes contained in the AST is implemented as a raw type by the JDT, we need
+     * to suppress the compilation warning.
+     */
+    @SuppressWarnings("unchecked")
+    private void removeUnreferencedClasses(CompilationUnit ast, ClassFile srcClass){
+        String className = srcClass.getFullyQualifiedName();
+        className = className.substring(className.lastIndexOf('.') + 1);
+        List<AbstractTypeDeclaration> toRemove = new ArrayList<>();
+        for(Object declarationObject : ast.types()){
+            AbstractTypeDeclaration declaration = (AbstractTypeDeclaration) declarationObject;
+            if(!declaration.getName().getFullyQualifiedName().equals(className)){
+                toRemove.add(declaration);
+            }
+        }
+        ast.types().removeAll(toRemove);
     }
 
 
