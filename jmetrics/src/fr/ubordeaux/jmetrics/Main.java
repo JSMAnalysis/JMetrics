@@ -104,6 +104,10 @@ public class Main {
         }
         try {
             ProjectStructure.getInstance().setStructure(explorer.generateStructure(path, subdirectory));
+            if(ProjectStructure.getInstance().getClasses().size() == 0){
+                System.out.println("Directory " + subdirectory + " does not contain any class");
+                System.exit(1);
+            }
         } catch (InvalidProjectPathException e) {
             System.out.println(e.getMessage());
             System.exit(1);

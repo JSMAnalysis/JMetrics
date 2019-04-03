@@ -69,8 +69,8 @@ public abstract class JDTParser extends ASTVisitor{
 
         boolean packagesCorrespond(ClassFile srcFile, CompilationUnit classAST) {
             corresponds = true;
-            expectedPackage = srcFile.getFullyQualifiedName()
-                    .substring(0, srcFile.getFullyQualifiedName().lastIndexOf('.'));
+            int lastSeparatorIndex = srcFile.getFullyQualifiedName().lastIndexOf('.');
+            expectedPackage = lastSeparatorIndex == -1 ?  "" : srcFile.getFullyQualifiedName().substring(0, lastSeparatorIndex);
             classAST.accept(this);
             return corresponds;
         }
