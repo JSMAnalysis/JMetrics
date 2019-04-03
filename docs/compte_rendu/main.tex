@@ -3,8 +3,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage{natbib}
 \usepackage{graphicx}
-\usepackage[a4paper,margin=1in]{geometry}
-\usepackage{rotating}
 \usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}
@@ -47,37 +45,37 @@
 
 % ----------> PAGE TITLE
 \begin{titlepage}
-	\centering
+    \centering
     \vspace*{0.5 cm}
     \includegraphics[scale = 0.5]{img/logo.jpg}\\[1.0 cm]
     \textsc{\LARGE PdP - Métriques de Maintenabilité}\\[1.0 cm]
-	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
-	{ \huge \bfseries \thetitle}\\
-	\rule{\linewidth}{0.2 mm} \\[0.5 cm]
-	{\small \thedate}\\[0.5 cm]
-	{\small Dépôt Savane :\\ \url{https://services.emi.u-bordeaux.fr/projet/savane/projects/pdp2019mm/}}\\[1.5 cm]
-	
-	\begin{minipage}{0.4\textwidth}
-		\begin{flushleft} \large
-			\emph{Soumis pour :}\\
-			(Client) Narbel Philippe\\
+    \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+    { \huge \bfseries \thetitle}\\
+    \rule{\linewidth}{0.2 mm} \\[0.5 cm]
+    {\small \thedate}\\[0.5 cm]
+    {\small Dépôt Savane :\\ \url{https://services.emi.u-bordeaux.fr/projet/savane/projects/pdp2019mm/}}\\[1.5 cm]
+    
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+            \emph{Soumis pour :}\\
+            (Client) Narbel Philippe\\
             (Chargé de TD) Hofer Ludovic\\
-		\end{flushleft}
-	\end{minipage}~
-	\begin{minipage}{0.4\textwidth}
+        \end{flushleft}
+    \end{minipage}~
+    \begin{minipage}{0.4\textwidth}
         \begin{flushright} \large
-			\emph{Soumis par :} \\
-			Delrée Sylvain\\
+            \emph{Soumis par :} \\
+            Delrée Sylvain\\
             Giachino Nicolas\\
             Martinez Eudes\\
             Ousseny Irfaane\\
-		\end{flushright}
-	\end{minipage}\\[2 cm]
-	
+        \end{flushright}
+    \end{minipage}\\[2 cm]
+    
 \end{titlepage}
 
 \section{TD - 23 janvier}
-\paragraph{}Discussion autour de la mise en place du cahier des besoins
+\paragraph{}Réunion autour de la mise en place du cahier des besoins
 \begin{itemize}
     \item Utilisation de verbe d'action afin de décrire les besoins fonctionnels
     \item Spécification de la dépendance (au sein des classes, packages, attributs, méthodes,...)
@@ -86,7 +84,7 @@
     \item Détailler les termes "Bons codes / Mauvais code", si possible les illustrer avec des exemples.
     \item Documentation (à demander au client) et format du résultat souhaité (graphe, résultat affiché dans un fichier, navigateur,...)
     \item Test de charge, pour le temps d'exécution du problème, est-on limiter à des contraintes de temps ? A voir avec le client.
-    \item Classifier les besoins par priorités (À l'aide de macros LaTeX) 
+    \item Classifier les besoins par priorités (À l'aide de macros \LaTeX{}) 
 \end{itemize}
 
 \section{TD - 30 janvier}
@@ -109,8 +107,9 @@ Des oublis ont été faits dans la description des besoins:
     \item Differents types de dépendances : extraction de dépendances classe à classe. Extraire la liste des méthodes et la liste des méthodes abstraites pour le calcul de l'abstraction
 \end{itemize}
 
-\textcolor{red}{Bilan du TD2 : revoir l'agencement / ordonnencement de certaines parties afin d'assurer une cohérence dans la lecture et du domaine au niveau de l'introduction}
+Bilan du TD2 : revoir l'agencement / ordonnencement de certaines parties afin d'assurer une cohérence dans la lecture et du domaine au niveau de l'introduction
 
+\pagebreak
 
 \section{TD - 5 Février}
 \paragraph{}Retour sur le cahier des besoins après le rendu
@@ -161,7 +160,6 @@ Malgré un code bien organisé, quelques remarques ont été faites :
     \item On peut négliger l'extension \textit{".class"} dans le nom des sommets des graphes
     \item L'architecture proposé est bonne
 \end{itemize}
-
 \paragraph{}Discussion autour des améliorations possibles :
 \begin{itemize}
     \item Analyse de code source JAVA
@@ -170,9 +168,33 @@ Malgré un code bien organisé, quelques remarques ont été faites :
 \end{itemize}
 
 \section{TD - 13 Mars}
+\paragraph{}Discussion autour de la sortie des résultats et des problèmes d'exécution:
+\begin{itemize}
+    \item Ecrire un script sur Python (ou R) afin d'afficher les résultats sous la forme d'un histogramme
+    \item Retravailler le graphe des dépendances afin d'afficher les dépendances externes (Non voulu par le client)
+    \item Echec de deux tests, lié aux path que l'on récupère au  niveau de la méthode \emph{generateStructure}
+    \item Revoir les options des lignes de commandes pour l'exécution au niveau du fichier README et fournir une documentation lors du lancement de l'application expliquant les differentes possibilités de traitements
+\end{itemize}
 
 \section{TD - 27 Mars}
+\paragraph{}Réunion autour du code et du mémoire avant le rendu final.
 
-\section{TD - 3 Avril}
+A propos du code : 
+\begin{itemize}
+    \item Spécifier les arguments au niveau de certains scripts Python
+    \item Ajouter un fichier \emph{Makefile} et d'un \emph{.gitignore} pour le code \LaTeX{}
+    \item Flexibilité du package \emph{metrics} afin de pouvoir par la suite ajouter de nouvelles métriques
+\end{itemize}
+
+A propos du mémoire :
+\begin{itemize}
+    \item Ajouter un recapitulatif des besoins, mettre en évidence ceux qui ont été réalisés et ceux qui n'ont pas été résolues.
+    \item Apporter des critiques vis-à-vis des graphes / histogrammes
+    \item Renommer la partie \emph{Terminologie} en \emph{Concepts} aurais plus de sens
+    \item Positionnement du terme de granularité dans le mémoire
+    \item Garder le concept de catégoie définit dans le mémoire en expliquant qu'elle est renseigné dans l'article de base de Martin (publié en 1994), puis dans son livre parut en 2003, il ne mentionne plus le terme de catégorie mais du terme de package.
+    \item Décrire les tests de rupture peut être une bonne chose à ajouter dans le partie "Ce qui ne passe pas" du mémoire 
+    
+\end{itemize}
 
 \end{document}
