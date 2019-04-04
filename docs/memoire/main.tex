@@ -905,23 +905,28 @@ public class B extends A {
 \newpage
 \subsection{Expérimentations}
 
-    \subsubsection{Analyse des (GoF's) Design Pattern}
-    \paragraph{}Nous avons, conjointement à l'unité d'enseignement PDP, une unité d'enseignement Architecture logicielle dans laquelle nous découvrons les Design Patterns exposés par les auteurs du \emph{Gang of Four}\cite{GoF:1994}. Dans ce contexte, nous avons souhaité créer une passerelle entre ces deux unités d'enseignement en procédant à une étude de l'analyse d'implémentations de ces design patterns par notre programme.
+    \begin{abstract}
+        Dans son article, Martin nous décrit un exemple du \textbf{principe d'inversion de dépendance} montrant le bon fonctionnement de la métrique sur celui-ci. Au travers de différentes expériences, nous avons souhaité vérifier la validité de l'application de la métrique sur d'autres exemples.
+    \end{abstract}
 
-    \paragraph{}La motivation ayant mené à l'élaboration des design patterns étant la production d'architectures flexibles, extensibles, maintenables et réutilisables, leur étude à l'aide de la métrique de Martin semble être intéressante. De plus, nous pouvons aisément trouver, sur internet, des catalogues de petits programmes mettant en oeuvre les différents patterns ce qui constitue un avantage supplémentaire. 
+    \subsubsection{Analyse des (GoF's) Design Patterns}
+    \paragraph{}Nous avons, conjointement à l'unité d'enseignement PDP, une UE \og Architecture Logicielle\fg{} dans laquelle nous découvrons les \emph{Design Patterns} exposés par les auteurs du \emph{Gang of Four}\cite{GoF:1994}. Dans ce contexte, nous avons souhaité créer une passerelle entre ces deux UE en procédant à une étude de l'analyse d'implémentations de ces design patterns par notre programme.
 
-    \paragraph{}Nous nous intéresserons ici à des implémentations dans leur forme minimale. Considérer de telles implémentations nous permet d'obtenir une forte \textbf{reproductibilité}. En effet, dans leur version minimale, les implémentations de pattern possèdent toutes des valeurs de métriques presque similaires.
+    \paragraph{}La motivation ayant mené à l'élaboration des design patterns étant la production d'architectures flexibles, extensibles, maintenables et réutilisables, leur étude à l'aide de la métrique de Martin semble être intéressante. De plus, nous pouvons aisément trouver sur internet des catalogues de petits programmes mettant en oeuvre les différents patterns, ce qui constitue un avantage supplémentaire. 
 
-    \paragraph{}Nous noterons cependant que, découplées de tout environnement, certaines classes peuvent avoir des valeurs de métriques qui ne correspondent pas à leurs valeurs dans une utilisation normale du pattern. Par exemple, une classe \emph{Singleton}, ou encore une classe \emph{Component} (classe mère d'une instance de pattern composite) aura tendance à avoir un couplage afférent important qui n’apparaîtra pas dans les exemples. 
+    \paragraph{}Nous nous intéresserons ici à des implémentations de ces patterns dans leur forme minimale. Considérer de telles implémentations nous permet d'obtenir une forte \textbf{reproductibilité}. En effet, dans leur version minimale, les implémentations possèdent toutes des valeurs de métriques presque similaires.
+
+    \paragraph{}Nous noterons cependant que, découplées de tout environnement, certaines classes peuvent avoir des valeurs de métriques qui ne correspondent pas à leurs valeurs dans une utilisation normale du pattern. Par exemple, une classe \emph{Singleton}, ou encore une classe \emph{Component} (classe mère d'une instance de pattern \emph{Composite}) aura tendance à avoir un couplage afférent important qui n’apparaîtra pas dans les exemples.
     
     De plus, comme indiqué par les auteurs du GoF, bien qu'il soit tout à fait possible de faire collaborer plusieurs patterns, nous ne verrons ici aucun cas d'une telle collaboration.
     
-    \paragraph{Échec critique}Nous avons, dans une première tentative, effectué des mesures sur l'ensemble des implémentations minimales des patterns présentés dans le dépôt \textbf{Refactoring\_Guru}\footnote{\url{https://github.com/RefactoringGuru/design-patterns-java}} de l'auteur \emph{Alexey Pyltsyn}. Cependant, les valeurs moyennes que nous avons obtenues n'était pas suffisamment révélatrices pour être indiquées ici. Nous avons donc fait le choix d'étudier de manière plus spécifique un sous ensemble de patterns.
+    \paragraph{Échec}Nous avons, au cours d'une première tentative, effectué des mesures sur l'ensemble des implémentations minimales des patterns présentés dans le dépôt \textbf{Refactoring\_Guru}\footnote{\url{https://github.com/RefactoringGuru/design-patterns-java}} de l'auteur \emph{Alexey Pyltsyn}. Cependant, les valeurs moyennes que nous avons obtenues n'étaient pas suffisamment révélatrices pour être reportées ici. Nous avons donc fait le choix d'étudier de manière plus spécifique un sous ensemble de patterns.
 
-    \paragraph{Études de cas}Nous étudierons donc plus en détail ici l'application de la métrique de Martin aux trois patterns suivants : \textbf{Abstract Factory} (\emph{Creational}), \textbf{Composite} (\emph{Structural}) et \textbf{Command} (\emph{Behavioral}). Pour chaque pattern étudié, nous présenterons leurs participants, et pour chacun d'entre eux, leurs caractéristiques.
+    \paragraph{Études de cas}Nous étudierons donc plus en détail ici l'application de la métrique de Martin sur les trois patterns suivants : \textbf{Abstract Factory} (\emph{Creational}), \textbf{Composite} (\emph{Structural}) et \textbf{Command} (\emph{Behavioral}). Pour chaque pattern étudié, nous présenterons leurs participants, et pour chacun d'entre eux, leurs caractéristiques.
 
-    \textbf{Remarque importante} : Les design patterns ne représente que des modèles théoriques qu'il faut adapter à chaque situation. Les caractéristiques exposées ci-dessous se concentrerons sur une vision générale et ne correspondront donc pas à l'ensemble des implémentations possibles.
+    \textbf{Remarque importante} : Les design patterns ne représentent que des modèles théoriques qu'il faut adapter à chaque situation. Les caractéristiques exposées ci-dessous se concentreront sur une vision générale de ceux-ci et ne correspondent donc pas à l'ensemble des implémentations possibles.
     
+    \bigbreak
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.35]{img/pattern/abstract_factory.png}
@@ -930,13 +935,11 @@ public class B extends A {
     \paragraph{Abstract Factory}Les participants du pattern sont les suivants : 
     \begin{itemize}
         \item \textbf{AbstractFactory} : La fabrique abstraite a un niveau d'abstraction élevé. Elle possède un couplage afférent lié au nombre de clients maintenant une référence vers elle, et un couplage efférent relatif au nombre de ses produits abstraits.
-        \item \textbf{ConcreteFactory} : Les fabriques concrètes ont un niveau d'abstraction nul. Elles possèdent un couplage afférent nul, et un couplage efférent relatif au nombre de produits liés : elles ont donc une forte instabilité. Cela implique qu'elles ont une distance faible à la Main Sequence.
-        \item \textbf{AbstractProduct} : Les produits abstraits ont un niveau d'abstraction élevé. Avec un Ca important et un Ce nul, ils ont une instabilité proche de 0. Ils se situent donc proche de la Main Sequence.
-        \item \textbf{ConcreteProduct} : Les produits concrets ont un niveau d'abstraction nul et un couplage afférent et efférent faible (possiblement égale).
-        \item \textbf{Client} : Enfin, le client possède une référence vers l'ensemble des classes abstraites du modèle. Ces classes étant supposées stable, les dépendances respectent le SDP.
+        \item \textbf{ConcreteFactory} : Les fabriques concrètes ont un niveau d'abstraction nul. Elles possèdent un couplage afférent nul, et un couplage efférent relatif au nombre de produits créés : elles ont donc une forte instabilité. Cela implique qu'elles ont une distance faible à la Main Sequence.
+        \item \textbf{AbstractProduct} : Les produits abstraits ont un niveau d'abstraction élevé. Avec un \textbf{Ca} important et un \textbf{Ce} nul, ils ont une instabilité proche de 0. Ils se situent donc proche de la Main Sequence.
+        \item \textbf{ConcreteProduct} : Les produits concrets ont un niveau d'abstraction nul et un couplage afférent et efférent faible (potentiellement égaux).
+        \item \textbf{Client} : Enfin, le client possède une référence vers l'ensemble des classes abstraites du modèle. Ces classes étant supposées stables, les dépendances respectent le SDP.
     \end{itemize}
-    
-    \vspace{2mm}\hrule
     
     \begin{figure}[H]
         \centering
@@ -945,14 +948,14 @@ public class B extends A {
     \end{figure}
     \paragraph{Composite}Les participants du pattern sont les suivants :
     \begin{itemize}
-        \item \textbf{Component} : Le composant a un niveau d'abstraction élevé. Avec un couplage efférent nul et un couplage afférent élevé, le composant à une forte stabilité. Cela implique qu'il est situé proche de la Main Sequence.
-        \item \textbf{Composite} : Le composite est un élément concret. Les couplages afférent et efférent sont directement liés aux besoins de spécialisations et au rôle de la classe.
-        \item \textbf{Leaf} : Même remarque que pour le Composite.
-        \item \textbf{Client} : Le client maintient généralement des références vers la classe mère de la structure (le composant étant stable, cette dépendance respecte le SDP). Il pourra tout de même maintenir des références vers les classes filles dans le but procéder à des contrôles de typage ou des spécialisations.
+        \item \textbf{Component} : Le composant a un niveau d'abstraction élevé. Avec un couplage efférent nul et un couplage afférent élevé, le composant a une forte stabilité. Cela implique qu'il est situé proche de la Main Sequence.
+        \item \textbf{Composite} : Le composite est un élément concret. Le couplage afférent est directement liés aux besoins de spécialisation. Cependant, on ne peut rien avancer sur le couplage efférent (celui-ci dépend du rôle de la structure).
+        \item \textbf{Leaf} : Même remarque que pour le \emph{Composite}.
+        \item \textbf{Client} : Le client maintient généralement des références vers la classe mère de la structure (le composant étant stable, cette dépendance respecte le SDP). Il pourra tout de même maintenir des références vers les classes filles dans le but de procéder à des contrôles de typage ou des spécialisations.
     \end{itemize}
     
-    \vspace{2mm}\hrule
-    
+
+    \bigbreak
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.35]{img/pattern/command.png}
@@ -960,24 +963,29 @@ public class B extends A {
     \end{figure}
     \paragraph{Command}Les participants du pattern sont les suivants :
     \begin{itemize}
-        \item \textbf{Command} : La classe commande est fortement abstraite. Avec un couplage afférent fort et un couplage efférent nul, la classe est d'une grande stabilité et se situe donc sur la Main Sequence.
-        \item \textbf{ConcreteCommand} : Les commandes concrètes ont un niveau d'abstraction nul. Elles ont un couplage afférent faible, réduit au nombre de client capable de \emph{lancé} la commande. Leur couplage efférent est cependant possiblement élevé dès lors que leurs états maintient des références vers leurs environnement. De plus 
+        \item \textbf{Command} : La classe \emph{Command} est fortement abstraite. Avec un couplage afférent fort et un couplage efférent nul, la classe est d'une grande stabilité et se situe donc sur la Main Sequence.
+        \item \textbf{ConcreteCommand} : Les commandes concrètes ont un niveau d'abstraction nul. Elles ont un couplage afférent faible, réduit au nombre de clients capables d'\emph{exécuter} la commande. Leur couplage efférent est cependant possiblement élevé dès lors que leur état maintient des références vers leur environnement.
         \item \textbf{Invoker} : L'invocateur maintient une référence vers la liste des commandes (il y a donc un respect du SDP).
-        \item \textbf{Client} : Le client maintient ici des références vers les commandes concrètes qui sont des éléments concret et possiblement instable.
+        \item \textbf{Client} : Le client maintient ici des références vers les commandes concrètes qui sont des éléments concrets et possiblement instables. Le client ne respecte donc pas forcément les principes énoncés par Martin.
+        \item \textbf{Receiver} : La spécification du receveur n'étant pas déterminée, il n'est pas possible d'avancer quoi que ce soit sur ses caractéristiques.
     \end{itemize}
     
-    \paragraph{Conclusion}Après ces différentes études de cas, nous remarquons que les principes sous-jacent à la métrique semblent être largement respectés par les design patterns. En effet, ces principes sont généralement adoptés par les développeurs de manière implicite, il est donc normal de les retrouver dans ces modèles théoriques. Nous trouvons certains cas de violation, mais la métrique ne représentant pas un absolu, il est parfois nécessaire de déroger à certaines règles.
+    \paragraph{Conclusion}Après ces différentes études de cas, nous remarquons que les principes sous-jacents à la métrique semblent être largement respectés par les design patterns. En effet, ces principes sont généralement adoptés par les développeurs de manière implicite. Il est donc normal de les retrouver dans ces modèles théoriques. Nous trouvons certains cas de violation, mais la métrique ne représentant pas un absolu, il est parfois nécessaire de déroger à certaines règles.
 
 
 \newpage
-\section{Conclusion et perspective}
+\section{Conclusion}
 \subsection{Bilan}
 
-    \paragraph{Travail effectué}La compréhension de la métrique, au travers des différents articles que nous avons étudié et de ses notions théoriques sous-jacentes a constitué la première étape de notre travail. Après de multiples discutions avec notre client, nous avons pu améliorer notre compréhension générale du projet et déterminer ses besoins. Par la suite, nous avons passé la plus grande partie de notre temps à concevoir notre application et à y implémenter les différentes fonctionnalités souhaitées. Enfin, nous avons tenté d'exploiter les différentes données que nous avons pu obtenir grâce à notre application en créant une série de visualisations de données. Ces différentes étapes nous ont permis d'améliorer continuellement notre compréhension du sujet, ce qui fut un préalable à la rédaction de ce mémoire.
-
-    \paragraph{Difficultés rencontrées}La compréhension du domaine, préambule à l'élaboration du projet, a constitué une grande difficulté. En effet, des concepts tels que la stabilité sont longtemps restés peu clair. Nous avons ainsi dû retravailler ces différentes notions théoriques à de multiples reprises. 
+    \paragraph{Travail effectué}La compréhension de la métrique, au travers des différents articles que nous avons étudiés et de ses notions théoriques sous-jacentes, a constitué la première étape de notre travail. Après de multiples discutions avec le client, nous avons pu améliorer notre compréhension générale du projet et déterminer ses besoins. 
     
-    \paragraph{}Au début du projet, sans aucune expérience dans l'analyse de code, la comparaison des méthodes d'analyse fut une tâche complexe. Nous avons ainsi passé beaucoup de temps sur l'étude de ces différents outils permettant ces analyses.
+    Par la suite, nous avons passé la plus grande partie de notre temps à concevoir notre application et à y implémenter les différentes fonctionnalités souhaitées. Enfin, nous avons exploité les différentes données que nous avons pu obtenir grâce à notre application en créant une série de visualisations de celles-ci.
+
+    \paragraph{Difficultés rencontrées}La compréhension du domaine, préambule à l'élaboration du projet, a constitué une grande difficulté. En effet, des concepts tels que la stabilité sont longtemps restés floues. Nous avons ainsi dû retravailler ces différentes notions théoriques à de multiples reprises. 
+    
+    Au début du projet, sans aucune expérience dans l'analyse de code, la comparaison des méthodes d'analyse fut une tâche complexe. Nous avons ainsi passé beaucoup de temps sur l'étude des différents outils permettant ces analyses.
+    
+    \paragraph{Résultats encourageants}Grâce aux expériences effectuées à l'aide de notre logiciel, nous avons pu observer que les améliorations que nous avons apportées à la métrique semblent pertinentes. En effet, on remarque par exemple que les design patterns, considérés comme de bonnes pratiques, semblent valider nos résultats.
 
     \paragraph{Conclusion}Nous avons réussi à satisfaire l'ensemble des besoins exposés par le client. Cependant, dans un soucis d'amélioration continue, nous exposons tout de même une série d'évolutions envisageables dans la section suivante.
     
@@ -989,23 +997,23 @@ public class B extends A {
     \paragraph{}En plus de celle-ci, nous avons pensé à la mise en oeuvre de quelques améliorations :
     \begin{itemize}
     
-        \item \textbf{Optimisation mémoire} : Actuellement, notre représentation des granules après analyse conserve une référence vers leur fichier/dossier. Or, d'après le pipeline, il n'est plus nécessaire d'accéder à nouveau aux fichiers après l'analyse. De ce fait, nous pourrions corriger l'implémentation afin de supprimer cette référence inutile.
+        \item \textbf{Optimisation mémoire} : Actuellement, notre représentation des granules après analyse conserve une référence vers leur fichier / dossier. Or, d'après le pipeline, il n'est plus nécessaire d'accéder à nouveau aux fichiers après l'analyse. De ce fait, nous pourrions corriger l'implémentation afin de supprimer cette référence inutile.
         
         \item \textbf{Formats de sortie} : Les sorties de notre programme sont actuellement formatées en CSV. Ce format est pratique pour représenter une série de données partageant la même structure. En conséquence, il est nécessaire de créer un fichier par type de données à représenter (valeurs de métriques, dépendances, ...). Un format plus riche, comme le XML, pourrait permettre de représenter plus d'informations dans moins de fichiers, tout en gardant la facilité de lecture du CSV.
 
-        \item \textbf{Visualisation de données} : En plus des différentes visualisations de données proposées, il serait intéressant de penser et de mettre en oeuvre d'autres représentations permettant une bonne interprétation des données.
+        \item \textbf{Visualisation de données} : En plus des différentes visualisations de données proposées, il serait intéressant de concevoir et de mettre en œuvre d'autres représentations permettant une bonne interprétation des données.
         
-        \item \textbf{Niveaux de granularité} : Il serait intéressant de considérer de nouveaux niveaux de granularité tels que les modules, ainsi que les attributs et méthodes au sein d'une classe.
+        \item \textbf{Niveaux de granularité} : Il serait intéressant de considérer de nouveaux niveaux de granularité tels que les modules, ainsi que les attributs et méthodes.
 
-        \item \textbf{Améliorer le calcul de métrique} : La bibliographie sur la métrique de Martin étant très vaste, il est toujours possible d'améliorer les différentes spécificités du calcul de celle-ci. 
+        \item \textbf{Améliorer le calcul des métriques} : La bibliographie sur les métriques de Martin étant très vaste, il est toujours possible d'améliorer les différentes spécificités du calcul de celle-ci. 
         
         \item \textbf{Application du SDP} : Comme abordé dans la description du domaine, un calcul itératif sur le graphe permettrait de minimiser le poids des dépendances stables dans le calcul du couplage en propageant la stabilité. Il serait alors possible d'appliquer le SDP, qui n'est actuellement pas pris en compte dans la métrique.
         
-        \item \textbf{Métriques supplémentaires} : Grâce à la flexibilité de notre package \texttt{metrics}, l'intégration de métriques est facilitée. On pourrait donc envisager l'ajout de métriques supplémentaires (les métriques de Chidamber et Kemerer, ...).
+        \item \textbf{Métriques supplémentaires} : Grâce à la flexibilité de notre package \texttt{metrics}, l'intégration de métriques est facilitée. On pourrait donc envisager l'ajout de métriques supplémentaires, telles que les métriques de Chidamber et Kemerer.
         
         \item \textbf{Intégration aux IDE} : Afin de faciliter l'utilisation de notre application, il pourrait être opportun de l'intégrer aux IDE les plus utilisés (Eclipse, IntelliJ, ...).
         
-        \item \textbf{Gestion des releases d'un projet} : Pour voir l'évolution des métriques en fonctions des releases (fonctionnalités apportées et \emph{refactor} effectués), il pourrait être envisagé d'intégrer notre application à des outils de gestion de version (Gitlab, ...).
+        \item \textbf{Gestion des releases d'un projet} : Pour suivre l'évolution des métriques en fonction des \emph{releases} (fonctionnalités apportées et \emph{refactor} effectués), il pourrait être envisagé d'intégrer notre application à des outils de gestion de version tels que Gitlab.
        
     \end{itemize}
 
@@ -1024,10 +1032,10 @@ public class B extends A {
 
 \section{Analyse de projet : Exemple}
 
-    \paragraph{}Dans le but de vérifier que l'application calcule les valeurs de métrique correctement, il est nécessaire d'écrire de petits logiciels simples présentant des configurations de dépendances différentes. Nous donnons ici un exemple élémentaire de projet ainsi que les sorties de l'application pour celui-ci.
+    \paragraph{}Dans le but de vérifier que l'application calcule les valeurs des métriques correctement, il est nécessaire d'écrire de petits logiciels simples présentant des configurations de dépendances différentes. Nous donnons ici un exemple élémentaire de projet ainsi que les sorties de l'application pour celui-ci.
     
 \begin{minipage}{7.5cm}
-\begin{lstlisting}[caption=Classe Vehicle]
+\begin{lstlisting}[caption=Classe \texttt{Vehicle}]
 public abstract class Vehicle {
     private int nbWheel;
     private ArrayList<Wheel> wheels;
@@ -1039,7 +1047,7 @@ public abstract class Vehicle {
 \end{minipage}
 \hspace{0.5cm}
 \begin{minipage}{6cm}
-\begin{lstlisting}[caption=Enumeration Material]
+\begin{lstlisting}[caption=Enumeration \texttt{Material}]
 public enum Material {
     Plastic,
     Metal,
@@ -1048,19 +1056,19 @@ public enum Material {
 \end{lstlisting}
 \end{minipage}
 \vspace{0.5cm}
-\begin{lstlisting}[caption=Classe Airplane]
+\begin{lstlisting}[caption=Classe \texttt{Airplane}]
 public class Airplane extends Vehicle {
     @Override
     public void move() { /* ... */ }
 }
 \end{lstlisting}
-\begin{lstlisting}[caption=Classe Car]
+\begin{lstlisting}[caption=Classe \texttt{Car}]
 public class Car extends Vehicle {
     @Override
     public void move() { /* ... */ }
 }
 \end{lstlisting}
-\begin{lstlisting}[caption=Classe Wheel]
+\begin{lstlisting}[caption=Classe \texttt{Wheel}]
 public class Wheel {
     private Material material;
     public Material getMaterial() { return this.material; }
@@ -1073,11 +1081,11 @@ public class Wheel {
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.6]{img/example_uml.png}
-    \caption{Diagramme de classe du projet exemple}
+    \caption{Diagramme de classes du projet exemple}
 \end{figure}
 
 
-\begin{table}[H]\caption{Tableau exposant les métriques}
+\begin{table}[H]\caption{Tableau exposant les métriques du projet exemple}
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
