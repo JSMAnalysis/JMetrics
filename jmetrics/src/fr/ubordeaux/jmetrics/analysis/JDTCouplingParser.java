@@ -211,9 +211,7 @@ public class JDTCouplingParser extends JDTParser implements CouplingParser {
         }
         return true;
     }
-
-
-    //TODO test this implementation more deeply
+    
     @Override
     public boolean visit(SimpleName node) {
         // Find dependencies from a static field access

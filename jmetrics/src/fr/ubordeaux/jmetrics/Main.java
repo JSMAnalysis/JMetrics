@@ -105,8 +105,9 @@ public class Main {
             System.out.println("Exploring files tree.");
         }
         try {
-            ProjectStructure.getInstance().setStructure(explorer.generateStructure(path, subdirectory));
-            if(ProjectStructure.getInstance().getClasses().size() == 0){
+            ProjectStructure structure = ProjectStructure.getInstance();
+            structure.setStructure(explorer.generateStructure(path, subdirectory));
+            if(structure.getClasses().size() == 0){
                 System.out.println("Directory " + subdirectory + " does not contain any class");
                 System.exit(1);
             }
