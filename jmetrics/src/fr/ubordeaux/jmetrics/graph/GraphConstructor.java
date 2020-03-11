@@ -11,7 +11,10 @@ import java.util.Set;
 /**
  * Service that provide graph construction and presentation methods.
  */
-public abstract class GraphConstructor {
+public final class GraphConstructor {
+
+    // Private constructor to prevent instantiation
+    private GraphConstructor() { }
 
     public static DirectedGraph<Granule, DependencyEdge> constructGraph(Set<Granule> nodes, Set<Dependency> dependencies) {
         DirectedGraph<Granule, DependencyEdge> graph = new DirectedGraph<>();

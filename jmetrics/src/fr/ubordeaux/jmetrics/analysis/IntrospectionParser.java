@@ -55,7 +55,7 @@ public abstract class IntrospectionParser {
      * A class loader that is able to create a class object from an array of bytes.
      * It is also able to load a class that is already loader, even if their versions differ.
      */
-    private class ByteCodeSandboxClassLoader extends URLClassLoader {
+    private static class ByteCodeSandboxClassLoader extends URLClassLoader {
 
         ByteCodeSandboxClassLoader(){
             super(new URL[0]);

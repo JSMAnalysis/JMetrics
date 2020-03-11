@@ -3,9 +3,12 @@ package fr.ubordeaux.jmetrics.presentation;
 import java.util.List;
 import java.util.Set;
 
-public abstract class CSVBuilder {
+public final class CSVBuilder {
 
     private final static char DELIMITER = ';'; // Use semicolon character for Excel support
+
+    // Private constructor to prevent instantiation
+    private CSVBuilder() { }
 
     static String buildContent(List<String> caption, Set<CSVRepresentable> data) {
         StringBuilder strBuilder = new StringBuilder();
