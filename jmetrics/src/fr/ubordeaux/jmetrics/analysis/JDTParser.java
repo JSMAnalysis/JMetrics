@@ -23,27 +23,13 @@ public abstract class JDTParser extends ASTVisitor{
     private PackageNameChecker packageNameChecker = new PackageNameChecker();
 
     /**
-     * Reads the source code of a class from a .java file.
-     * @param file The file that contains the source code.
-     * @return An array of chars containing the source code.
-     */
-    char[] getSourceCodeFromFile(ClassFile file) {
-        byte[] code;
-        try {
-            code = Files.readAllBytes(file.getFile().toPath());
-        } catch (IOException e) {
-            throw new ClassFileNotFoundException(file);
-        }
-        return (new String(code, charset).toCharArray());
-    }
-
-    /**
-     * Creates a JDT AST from a source code and the corresponding source file.
-     * @param sourceCode The source code to use to build the AST.
+     * Creates a JDT AST from a source file.
      * @param srcFile The source file to use to build the AST.
+     * @param needBindings If the AST needs to have its bindings resolved.
      * @return The created AST.
      */
-    CompilationUnit createAST(char[] sourceCode, ClassFile srcFile, boolean needBindings) {
+    CompilationUnit createAST(ClassFile srcFile, boolean needBindings) {
+        char[] sourceCode = getSourceCodeFromFile(srcFile);
         ASTParser parser = ASTParser.newParser(AST.JLS11);
         Map<String,String> options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
@@ -61,6 +47,20 @@ public abstract class JDTParser extends ASTVisitor{
         return ast;
     }
 
+    /**
+     * Reads the source code of a class from a .java file.
+     * @param file The file that contains the source code.
+     * @return An array of chars containing the source code.
+     */
+    private char[] getSourceCodeFromFile(ClassFile file) {
+        byte[] code;
+        try {
+            code = Files.readAllBytes(file.getFile().toPath());
+        } catch (IOException e) {
+            throw new ClassFileNotFoundException(file);
+        }
+        return (new String(code, charset).toCharArray());
+    }
 
     /**
      * Removes all the classes that are not the srcClass one from an ast.
@@ -87,7 +87,7 @@ public abstract class JDTParser extends ASTVisitor{
     /**
      * A service providing a method to checks that a ClassFile's package is the same as its associated source file.
      */
-    private class PackageNameChecker extends ASTVisitor{
+    private static class PackageNameChecker extends ASTVisitor{
 
         private boolean corresponds;
         private String expectedPackage = "";
